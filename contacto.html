@@ -113,8 +113,23 @@
                 <a href="terminos.html" style="color: var(--text-muted); text-decoration: none;">Términos</a>
                 <a href="contacto.html" style="color: var(--text-muted); text-decoration: none;">Contacto</a>
             </div>
+            <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.8;">
+                <span id="visitas-count">Cargando visitas...</span>
+            </div>
         </div>
     </footer>
+
+    <script>
+        fetch('https://api.counterapi.dev/v1/acordesrafa/contacto/up')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('visitas-count').innerText = data.count.toLocaleString() + ' visitas';
+            })
+            .catch(err => {
+                console.error('Error al cargar visitas:', err);
+                document.getElementById('visitas-container').style.display = 'none';
+            });
+    </script>
 
 </body>
 </html>
