@@ -19,13 +19,14 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 
 # === CONFIGURACIÓN ===
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FOLDERS = {
-    "populares": "Cancionero Popular",
-    "dios": "Canciones para Dios Word"
+    "populares": os.path.join(BASE_DIR, "Cancionero Popular"),
+    "dios": os.path.join(BASE_DIR, "Canciones para Dios Word")
 }
-OUTPUT_JS = "songs_data.js"
-SEO_FOLDER = "canciones"
-SITEMAP = "sitemap.xml"
+OUTPUT_JS = os.path.join(BASE_DIR, "songs_data.js")
+SEO_FOLDER = os.path.join(BASE_DIR, "canciones")
+SITEMAP = os.path.join(BASE_DIR, "sitemap.xml")
 
 # HTML Template para las páginas SEO individuales
 HTML_TEMPLATE = """<!DOCTYPE html>
