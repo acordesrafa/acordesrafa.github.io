@@ -25,7 +25,8 @@ FOLDERS = {
     "dios": os.path.join(BASE_DIR, "Canciones para Dios Word")
 }
 OUTPUT_JS = os.path.join(BASE_DIR, "songs_data.js")
-SEO_FOLDER = os.path.join(BASE_DIR, "canciones")
+SEO_FOLDER_NAME = "letras"
+SEO_FOLDER = os.path.join(BASE_DIR, SEO_FOLDER_NAME)
 SITEMAP = os.path.join(BASE_DIR, "sitemap.xml")
 
 # HTML Template para las páginas SEO individuales
@@ -37,7 +38,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <title>{title} - Letra y Acordes | Acordes Rafa</title>
     <meta name="description" content="Aprende a tocar los acordes y la letra de {title} en guitarra. Tutorial completo y cancionero.">
     <meta name="keywords" content="{title} acordes, {title} letra, acordes de guitarra, cancionero {category}">
-    <link rel="canonical" href="https://acordesrafa.github.io/canciones/{safe_name}.html">
+    <link rel="canonical" href="https://acordesrafa.github.io/letras/{safe_name}.html">
     <link rel="stylesheet" href="../styles.css">
     <link rel="icon" href="../Fondoapp.webp">
     <!-- Google AdSense -->
@@ -233,7 +234,7 @@ def main():
                 with open(html_filepath, "w", encoding="utf-8") as f:
                     f.write(html_export)
                 
-                generated_urls.append(f"https://acordesrafa.github.io/{SEO_FOLDER}/{safe_name}.html")
+                generated_urls.append(f"https://acordesrafa.github.io/{SEO_FOLDER_NAME}/{safe_name}.html")
                 total += 1
                 print("OK")
             else:
