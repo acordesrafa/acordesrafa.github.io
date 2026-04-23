@@ -79,8 +79,26 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <footer>
         <div class="container" style="text-align: center; padding: 20px;">
             <p>&copy; 2026 Acordes Rafa. Todos los derechos reservados.</p>
+            <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.8;">
+                <span id="visitas-count">Cargando visitas...</span>
+            </div>
         </div>
     </footer>
+
+    <script>
+        fetch('https://api.counterapi.dev/v1/acordesrafa/letras-{safe_name}/up')
+            .then(res => {{
+                if (!res.ok) throw new Error('Servicio no disponible');
+                return res.json();
+            }})
+            .then(data => {{
+                document.getElementById('visitas-count').innerHTML = `<strong>${{data.count.toLocaleString()}}</strong> visitas desde 2026`;
+            }})
+            .catch(err => {{
+                console.error('Error al cargar visitas:', err);
+                document.getElementById('visitas-count').innerHTML = 'Contador temporalmente fuera de línea';
+            }});
+    </script>
 </body>
 </html>"""
 

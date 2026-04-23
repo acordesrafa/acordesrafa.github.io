@@ -144,13 +144,16 @@
 
         // Visits counter
         fetch('https://api.counterapi.dev/v1/acordesrafa/contacto/up')
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error('Servicio no disponible');
+                return res.json();
+            })
             .then(data => {
                 document.getElementById('visitas-count').innerHTML = `<strong>${data.count.toLocaleString()}</strong> visitas desde 2026`;
             })
             .catch(err => {
                 console.error('Error al cargar visitas:', err);
-                document.getElementById('visitas-container').style.display = 'none';
+                document.getElementById('visitas-count').innerHTML = 'Contador temporalmente fuera de línea';
             });
     </script>
 

@@ -158,22 +158,23 @@
                 <a href="https://www.youtube.com/@AcordesRafa" target="_blank" style="color: var(--text-muted); text-decoration: none;">YouTube</a>
             </div>
             <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.8;">
-                <span id="visitas-count"></span>
+                <span id="visitas-count">Cargando visitas...</span>
             </div>
         </div>
     </footer>
 
     <script>
         fetch('https://api.counterapi.dev/v1/acordesrafa/leccion-escalas/up')
-            .then(res => res.json())
+            .then(res => { if (!res.ok) throw new Error("Servicio no disponible"); return res.json(); })
             .then(data => {
                 document.getElementById('visitas-count').innerHTML = `<strong>${data.count.toLocaleString()}</strong> visitas desde 2026`;
             })
             .catch(err => {
                 console.error('Error al cargar visitas:', err);
-                document.getElementById('visitas-container').style.display = 'none';
+                document.getElementById('visitas-count').innerHTML = 'Contador temporalmente fuera de línea';
             });
     </script>
 
 </body>
 </html>
+
