@@ -39,7 +39,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <meta name="description" content="Aprende a tocar los acordes y la letra de {title} en guitarra. Tutorial completo y cancionero.">
     <meta name="keywords" content="{title} acordes, {title} letra, acordes de guitarra, cancionero {category}">
     <link rel="canonical" href="https://acordesrafa.github.io/letras/{safe_name}.html">
+    
+    <!-- Google Fonts Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../styles.css">
+    
+    <!-- Preload LCP Image -->
+    <link rel="preload" as="image" href="../Fondoapp.webp">
     <link rel="icon" href="../Fondoapp.webp">
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2394918736393015" crossorigin="anonymous"></script>
@@ -54,7 +63,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <header>
         <nav>
             <a href="../index.html" class="logo">
-                <img src="../Fondoapp.webp" alt="Icono">
+                <img src="../Fondoapp.webp" alt="Logo Acordes Rafa" width="35" height="35">
                 Acordes Rafa
             </a>
             <ul class="nav-links">
@@ -65,6 +74,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         </nav>
     </header>
 
+    <main>
     <div class="song-container">
         <h1 style="font-family: 'Outfit', sans-serif; color: var(--stripe-blue); margin-bottom: 20px; text-align: center;">{title}</h1>
         <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Letra y Acordes para guitarra acústica y eléctrica. <strong><a href="../acordes.html" style="color: var(--stripe-blue);">Ir al Visor Interactivo y PDF</a></strong></p>
@@ -75,6 +85,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <a href="../acordes.html" class="btn-back">⬅ Volver al Cancionero Principal</a>
         </div>
     </div>
+    </main>
 
     <footer>
         <div class="container" style="text-align: center; padding: 20px;">

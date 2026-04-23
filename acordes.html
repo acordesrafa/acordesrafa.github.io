@@ -19,10 +19,18 @@
     <meta property="twitter:title" content="Letras con Acordes de Guitarra | Acordes Rafa">
     <meta property="twitter:description" content="Busca y descarga letras con acordes de tus canciones favoritas. Cancionero popular y música cristiana.">
     <meta property="twitter:image" content="https://acordesrafa.github.io/Iconogrande.jpg">
+    <!-- Google Fonts Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2394918736393015"
      crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Preload main background -->
+    <link rel="preload" as="image" href="Fondoapp.webp">
     <link rel="icon" href="Fondoapp.webp">
     <style>
         /* Protección contra copia */
@@ -312,7 +320,7 @@
     <header>
         <nav>
             <a href="index.html" class="logo">
-                <img src="Fondoapp.webp" alt="Icono">
+                <img src="Fondoapp.webp" alt="Logo de Acordes Rafa" width="35" height="35">
                 Acordes Rafa
             </a>
             <ul class="nav-links">
@@ -332,61 +340,62 @@
         </nav>
     </header>
 
-    <div class="search-container">
-        <input type="text" id="searchInput" class="search-box" placeholder="Busca tu canción favorita..." oninput="filterSongs()">
-    </div>
-
-    <main class="chords-explorer">
-        <div class="tabs-container">
-            <button class="tab-btn active" id="btnPopulares" onclick="switchCategory('populares')">Cancionero Popular</button>
-            <button class="tab-btn" id="btnDios" onclick="switchCategory('dios')">Cantos para Dios</button>
+    <main>
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-box" placeholder="Busca tu canción favorita..." oninput="filterSongs()">
         </div>
 
-        <div class="explorer-layout">
-            <div class="songs-list-container">
-                <div class="list-header" id="listHeaderTitle">Canciones Populares</div>
-                <div class="songs-list" id="songsList">
-                    <!-- Se llenará dinámicamente -->
-                </div>
+        <div class="chords-explorer">
+            <div class="tabs-container">
+                <button class="tab-btn active" id="btnPopulares" onclick="switchCategory('populares')">Cancionero Popular</button>
+                <button class="tab-btn" id="btnDios" onclick="switchCategory('dios')">Cantos para Dios</button>
             </div>
 
-            <div class="chord-viewer-container">
-                <div id="viewerPlaceholder" class="viewer-placeholder">
-                    <img src="Fondoapp.webp" alt="Logo" style="width: 80px; opacity: 0.1; margin-bottom: 20px;">
-                    <p>Selecciona una obra para visualizar los acordes protegidos.</p>
+            <div class="explorer-layout">
+                <div class="songs-list-container">
+                    <div class="list-header" id="listHeaderTitle">Canciones Populares</div>
+                    <div class="songs-list" id="songsList">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
                 </div>
 
-                <div id="chordContent" class="protected-content">
-                    <!-- Eliminada capa de protección para permitir scroll -->
-                    <div id="actionButtons"></div>
-                    <h2 id="songTitleDisplay" class="song-title-display"></h2>
-                    <div id="songDescription" style="margin-bottom: 25px; color: var(--text-muted); line-height: 1.6; font-size: 1.05rem; padding: 0 10px;"></div>
-                    <div id="textTarget">
-                        <!-- El contenido del PDF aparecerá aquí -->
+                <div class="chord-viewer-container">
+                    <div id="viewerPlaceholder" class="viewer-placeholder">
+                        <img src="Fondoapp.webp" alt="Logo" width="80" height="80" style="opacity: 0.1; margin-bottom: 20px;" loading="lazy">
+                        <p>Selecciona una obra para visualizar los acordes protegidos.</p>
+                    </div>
+
+                    <div id="chordContent" class="protected-content">
+                        <!-- Eliminada capa de protección para permitir scroll -->
+                        <div id="actionButtons"></div>
+                        <h2 id="songTitleDisplay" class="song-title-display"></h2>
+                        <div id="songDescription" style="margin-bottom: 25px; color: var(--text-muted); line-height: 1.6; font-size: 1.05rem; padding: 0 10px;"></div>
+                        <div id="textTarget">
+                            <!-- El contenido del PDF aparecerá aquí -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
 
-    <!-- Subscription Modal -->
-    <div id="subscriptionModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
-            <span class="modal-icon">⭐</span>
-            <h3 class="modal-title">Contenido Premium</h3>
-            <p class="modal-text">Suscríbete para poder descargar todas las canciones en formato PDF y llevar tus acordes a donde quieras, incluso sin conexión.</p>
-            <a href="https://www.youtube.com/@AcordesRafa/join" target="_blank" id="subscribeBtn" class="btn btn-premium" onclick="startValidation()">Suscribirme Ahora</a>
-            <div id="countdownArea" style="display: none; margin-top: 20px;">
-                <p id="countdownText" style="color: var(--stripe-blue); font-weight: 700;">Verificando suscripción... <span id="timer">10</span>s</p>
-                <div style="width: 100%; background: #eee; height: 6px; border-radius: 3px; margin-top: 10px; overflow: hidden;">
-                    <div id="progressBar" style="width: 0%; background: var(--stripe-blue); height: 100%; transition: width 1s linear;"></div>
+        <!-- Subscription Modal -->
+        <div id="subscriptionModal" class="modal">
+            <div class="modal-content">
+                <span class="modal-close" onclick="closeModal()">&times;</span>
+                <span class="modal-icon">⭐</span>
+                <h3 class="modal-title">Contenido Premium</h3>
+                <p class="modal-text">Suscríbete para poder descargar todas las canciones en formato PDF y llevar tus acordes a donde quieras, incluso sin conexión.</p>
+                <a href="https://www.youtube.com/@AcordesRafa/join" target="_blank" id="subscribeBtn" class="btn btn-premium" onclick="startValidation()">Suscribirme Ahora</a>
+                <div id="countdownArea" style="display: none; margin-top: 20px;">
+                    <p id="countdownText" style="color: var(--stripe-blue); font-weight: 700;">Verificando suscripción... <span id="timer">10</span>s</p>
+                    <div style="width: 100%; background: #eee; height: 6px; border-radius: 3px; margin-top: 10px; overflow: hidden;">
+                        <div id="progressBar" style="width: 0%; background: var(--stripe-blue); height: 100%; transition: width 1s linear;"></div>
+                    </div>
                 </div>
+                <p style="margin-top: 15px; font-size: 0.8rem; color: #999;">Apoya el crecimiento de Acordes Rafa</p>
             </div>
-            <p style="margin-top: 15px; font-size: 0.8rem; color: #999;">Apoya el crecimiento de Acordes Rafa</p>
         </div>
-    </div>
-
+    </main>
 
     <footer>
         <div class="container">
@@ -837,6 +846,16 @@
         window.onload = () => switchCategory('populares');
 
     </script>
+    <!-- Global Background Logo -->
+    <div class="fixed-background">
+        <img src="Fondoapp.webp" alt="Fondo Decorativo" width="1200" height="1200" loading="lazy">
+    </div>
+
+    <!-- Global Floating Guitar -->
+    <div class="fixed-guitar">
+        <img src="Guitarra_Ibanez.png" alt="Guitarra Ibanez Acordes Rafa" width="500" height="800" loading="lazy">
+    </div>
+
     <!-- Datos de canciones extraídas en HTML para SEO -->
     <script src="songs_data.js"></script>
 </body>
