@@ -7,7 +7,16 @@
     <meta name="description" content="Aprende a tocar los acordes y la letra de Mariposa Traicionera en guitarra. Tutorial completo y cancionero.">
     <meta name="keywords" content="Mariposa Traicionera acordes, Mariposa Traicionera letra, acordes de guitarra, cancionero populares">
     <link rel="canonical" href="https://acordesrafa.github.io/letras/mariposa-traicionera.html">
+    
+    <!-- Google Fonts Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../styles.css">
+    
+    <!-- Preload LCP Image -->
+    <link rel="preload" as="image" href="../Fondoapp.webp">
     <link rel="icon" href="../Fondoapp.webp">
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2394918736393015" crossorigin="anonymous"></script>
@@ -22,7 +31,7 @@
     <header>
         <nav>
             <a href="../index.html" class="logo">
-                <img src="../Fondoapp.webp" alt="Icono">
+                <img src="../Fondoapp.webp" alt="Logo Acordes Rafa" width="35" height="35">
                 Acordes Rafa
             </a>
             <ul class="nav-links">
@@ -33,6 +42,7 @@
         </nav>
     </header>
 
+    <main>
     <div class="song-container">
         <h1 style="font-family: 'Outfit', sans-serif; color: var(--stripe-blue); margin-bottom: 20px; text-align: center;">Mariposa Traicionera</h1>
         <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Letra y Acordes para guitarra acústica y eléctrica. <strong><a href="../acordes.html" style="color: var(--stripe-blue);">Ir al Visor Interactivo y PDF</a></strong></p>
@@ -136,11 +146,30 @@
             <a href="../acordes.html" class="btn-back">⬅ Volver al Cancionero Principal</a>
         </div>
     </div>
+    </main>
 
     <footer>
         <div class="container" style="text-align: center; padding: 20px;">
             <p>&copy; 2026 Acordes Rafa. Todos los derechos reservados.</p>
+            <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.8;">
+                <span id="visitas-count">Cargando visitas...</span>
+            </div>
         </div>
     </footer>
+
+    <script>
+        fetch('https://api.counterapi.dev/v1/acordesrafa/letras-mariposa-traicionera/up')
+            .then(res => {
+                if (!res.ok) throw new Error('Servicio no disponible');
+                return res.json();
+            })
+            .then(data => {
+                document.getElementById('visitas-count').innerHTML = `<strong>${data.count.toLocaleString()}</strong> visitas desde 2026`;
+            })
+            .catch(err => {
+                console.error('Error al cargar visitas:', err);
+                document.getElementById('visitas-count').innerHTML = 'Contador temporalmente fuera de línea';
+            });
+    </script>
 </body>
 </html>
