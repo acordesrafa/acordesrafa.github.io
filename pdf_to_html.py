@@ -36,7 +36,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title} - Letra y Acordes | Acordes Rafa</title>
-    <meta name="description" content="Aprende a tocar los acordes y la letra de {title} en guitarra. Tutorial completo y cancionero.">
+    <meta name="description" content="{seo_description}">
     <meta name="keywords" content="{title} acordes, {title} letra, acordes de guitarra, cancionero {category}">
     <link rel="canonical" href="https://acordesrafa.github.io/letras/{safe_name}.html">
     
@@ -53,10 +53,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2394918736393015" crossorigin="anonymous"></script>
     <style>
-        .song-container {{ max-width: 900px; margin: 150px auto 50px; padding: 30px; background: white; border-radius: 16px; box-shadow: var(--shadow-soft); }}
+        .song-container {{ max-width: 900px; margin: 120px auto 50px; padding: 30px; background: white; border-radius: 16px; box-shadow: var(--shadow-soft); }}
         .chord-sheet {{ font-family: 'Courier New', Courier, monospace; font-size: 1.1rem; line-height: 1.6; color: #1a1a1a; white-space: pre-wrap; overflow-x: auto; background: #fdfdfd; padding: 25px; border-radius: 12px; border: 1px solid #eee; }}
         .btn-back {{ display: inline-flex; align-items: center; justify-content: center; background: var(--stripe-blue); color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 20px; transition: 0.3s; }}
         .btn-back:hover {{ transform: translateY(-2px); filter: brightness(1.1); }}
+        .video-container {{ position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: 12px; margin-bottom: 30px; }}
+        .video-container iframe {{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }}
+        .song-meta-box {{ background: #f8faff; padding: 20px; border-radius: 12px; margin-bottom: 30px; border-left: 4px solid var(--stripe-blue); }}
     </style>
 </head>
 <body>
@@ -76,9 +79,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     <main>
     <div class="song-container">
-        <h1 style="font-family: 'Outfit', sans-serif; color: var(--stripe-blue); margin-bottom: 20px; text-align: center;">{title}</h1>
-        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Letra y Acordes para guitarra acústica y eléctrica. <strong><a href="../acordes.html" style="color: var(--stripe-blue);">Ir al Visor Interactivo y PDF</a></strong></p>
+        <h1 style="font-family: 'Outfit', sans-serif; color: var(--stripe-blue); margin-bottom: 10px; text-align: center;">{title}</h1>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 0.9rem;">Categoría: {category_name} · <strong><a href="../acordes.html" style="color: var(--stripe-blue);">Visor Interactivo y PDF</a></strong></p>
         
+        {video_embed}
+
+        <div class="song-meta-box">
+            <h2 style="font-size: 1.2rem; margin-bottom: 10px; color: var(--text-dark);">Sobre esta canción</h2>
+            <p style="color: var(--text-muted); line-height: 1.6;">{description}</p>
+        </div>
+
+        <h2 style="font-size: 1.3rem; margin-bottom: 15px; color: var(--stripe-blue); font-family: 'Outfit', sans-serif;">Letra y Acordes</h2>
         {html_content}
 
         <div style="text-align: center; margin-top: 40px;">
@@ -112,6 +123,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </script>
 </body>
 </html>"""
+
 
 
 def extract_pdf_to_html(pdf_path, pdf_file):
@@ -218,7 +230,57 @@ def update_sitemap(new_urls):
             f.write(xmlstr)
         print(f"Sitemap actualizado: {added} nuevas URLs añadidas.")
 
+def load_metadata():
+    """Carga los metadatos (descripciones y tutoriales) desde acordes.html"""
+    metadata = {"populares": {}, "dios": {}}
+    raw_path = os.path.join(BASE_DIR, "cancionero_raw.txt")
+    if not os.path.exists(raw_path):
+        return metadata
+    
+    with open(raw_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    # Búsqueda manual flexible
+    for cat in ["populares", "dios"]:
+        # Buscar la categoría con regex para ignorar espacios
+        cat_match = re.search(fr'{cat}:\s*\{{', content)
+        if not cat_match: continue
+        
+        cat_start = cat_match.end()
+        # Encontrar el final de la categoría (donde se cierra el objeto de la categoría)
+        # Buscamos el "}," que separa categorías o el "}" final
+        cat_end = content.find("},", cat_start)
+        if cat_end == -1: cat_end = content.rfind("}")
+        
+        cat_content = content[cat_start:cat_end]
+        
+        # Extraer cada canción: "Nombre": { ... }
+        # Usamos un patrón que capture el nombre y el bloque de datos interno
+        song_matches = re.finditer(r'"([^"]+)":\s*\{', cat_content)
+        for m in song_matches:
+            name = m.group(1)
+            start_pos = m.end()
+            # Encontrar el cierre de este objeto específico (hasta el siguiente })
+            end_pos = cat_content.find("}", start_pos)
+            inner = cat_content[start_pos:end_pos]
+            
+            # Extraer campos de forma individual y flexible
+            def get_field(field, text):
+                # Busca field: "value" (captura todo entre las comillas exteriores)
+                m = re.search(fr'{field}:\s*"([^"]+)"', text)
+                if not m:
+                    # Intento con comillas simples si no hay dobles
+                    m = re.search(fr'{field}:\s*\'([^\']+)\'', text)
+                return m.group(1).strip() if m else ""
+
+            metadata[cat][name] = {
+                "tutorial": get_field("tutorial", inner),
+                "description": get_field("description", inner)
+            }
+    return metadata
+
 def main():
+    metadata = load_metadata()
     songs_html = {}
     total = 0
     errors = 0
@@ -251,11 +313,32 @@ def main():
                 # Nombre seguro (slug) para el archivo HTML
                 safe_name = re.sub(r'[^a-zA-Z0-9]+', '-', song_title.lower()).strip('-')
                 if not safe_name: safe_name = f"cancion-{total}"
+
+                # Buscar metadatos
+                song_meta = metadata.get(cat_key, {}).get(song_title, {"tutorial": "", "description": ""})
+                description = song_meta["description"] or f"Aprende cómo tocar los acordes de {song_title} en la guitarra. Letra completa con cifrado para acompañamiento acústico o eléctrico."
                 
+                # Tutorial Embed
+                video_embed = ""
+                if song_meta["tutorial"]:
+                    # Convertir watch?v= o youtu.be a embed
+                    vid_id = ""
+                    if "youtu.be/" in song_meta["tutorial"]:
+                        vid_id = song_meta["tutorial"].split("youtu.be/")[1].split("?")[0]
+                    elif "v=" in song_meta["tutorial"]:
+                        vid_id = song_meta["tutorial"].split("v=")[1].split("&")[0]
+                    
+                    if vid_id:
+                        video_embed = f'<div class="video-container"><iframe src="https://www.youtube.com/embed/{vid_id}" allowfullscreen></iframe></div>'
+
                 html_export = HTML_TEMPLATE.format(
                     title=song_title,
                     safe_name=safe_name,
                     category=cat_key,
+                    category_name="Cancionero Popular" if cat_key == "populares" else "Cantos para Dios",
+                    description=description,
+                    seo_description=description[:150] + "...",
+                    video_embed=video_embed,
                     html_content=html
                 )
                 
