@@ -4,25 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Puerta Azul - Letra y Acordes | Acordes Rafa</title>
-    <meta name="description" content="Aprende a tocar los acordes y la letra de La Puerta Azul en guitarra. Tutorial completo y cancionero.">
+    <meta name="description" content="Aprende cómo tocar los acordes de La Puerta Azul en la guitarra. Letra completa con cifrado para acompañamiento acústico o eléctrico....">
     <meta name="keywords" content="La Puerta Azul acordes, La Puerta Azul letra, acordes de guitarra, cancionero populares">
     <link rel="canonical" href="https://acordesrafa.github.io/letras/la-puerta-azul.html">
+    
+    <!-- Google Fonts Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../styles.css">
+    
+    <!-- Preload LCP Image -->
+    <link rel="preload" as="image" href="../Fondoapp.webp">
     <link rel="icon" href="../Fondoapp.webp">
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2394918736393015" crossorigin="anonymous"></script>
     <style>
-        .song-container { max-width: 900px; margin: 150px auto 50px; padding: 30px; background: white; border-radius: 16px; box-shadow: var(--shadow-soft); }
+        .song-container { max-width: 900px; margin: 120px auto 50px; padding: 30px; background: white; border-radius: 16px; box-shadow: var(--shadow-soft); }
         .chord-sheet { font-family: 'Courier New', Courier, monospace; font-size: 1.1rem; line-height: 1.6; color: #1a1a1a; white-space: pre-wrap; overflow-x: auto; background: #fdfdfd; padding: 25px; border-radius: 12px; border: 1px solid #eee; }
         .btn-back { display: inline-flex; align-items: center; justify-content: center; background: var(--stripe-blue); color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 20px; transition: 0.3s; }
         .btn-back:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: 12px; margin-bottom: 30px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .song-meta-box { background: #f8faff; padding: 20px; border-radius: 12px; margin-bottom: 30px; border-left: 4px solid var(--stripe-blue); }
     </style>
 </head>
 <body>
     <header>
         <nav>
             <a href="../index.html" class="logo">
-                <img src="../Fondoapp.webp" alt="Icono">
+                <img src="../Fondoapp.webp" alt="Logo Acordes Rafa" width="35" height="35">
                 Acordes Rafa
             </a>
             <ul class="nav-links">
@@ -33,10 +45,19 @@
         </nav>
     </header>
 
+    <main>
     <div class="song-container">
-        <h1 style="font-family: 'Outfit', sans-serif; color: var(--stripe-blue); margin-bottom: 20px; text-align: center;">La Puerta Azul</h1>
-        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Letra y Acordes para guitarra acústica y eléctrica. <strong><a href="../acordes.html" style="color: var(--stripe-blue);">Ir al Visor Interactivo y PDF</a></strong></p>
+        <h1 style="font-family: 'Outfit', sans-serif; color: var(--stripe-blue); margin-bottom: 10px; text-align: center;">La Puerta Azul</h1>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 0.9rem;">Categoría: Cancionero Popular · <strong><a href="../acordes.html" style="color: var(--stripe-blue);">Visor Interactivo y PDF</a></strong></p>
         
+        
+
+        <div class="song-meta-box">
+            <h2 style="font-size: 1.2rem; margin-bottom: 10px; color: var(--text-dark);">Sobre esta canción</h2>
+            <p style="color: var(--text-muted); line-height: 1.6;">Aprende cómo tocar los acordes de La Puerta Azul en la guitarra. Letra completa con cifrado para acompañamiento acústico o eléctrico.</p>
+        </div>
+
+        <h2 style="font-size: 1.3rem; margin-bottom: 15px; color: var(--stripe-blue); font-family: 'Outfit', sans-serif;">Letra y Acordes</h2>
         <pre class="chord-sheet">                           la
                            can ión .
    La   puerta    azul   (Maná).
@@ -88,11 +109,30 @@
             <a href="../acordes.html" class="btn-back">⬅ Volver al Cancionero Principal</a>
         </div>
     </div>
+    </main>
 
     <footer>
         <div class="container" style="text-align: center; padding: 20px;">
             <p>&copy; 2026 Acordes Rafa. Todos los derechos reservados.</p>
+            <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.8;">
+                <span id="visitas-count">Cargando visitas...</span>
+            </div>
         </div>
     </footer>
+
+    <script>
+        fetch('https://api.counterapi.dev/v1/acordesrafa/letras-la-puerta-azul/up')
+            .then(res => {
+                if (!res.ok) throw new Error('Servicio no disponible');
+                return res.json();
+            })
+            .then(data => {
+                document.getElementById('visitas-count').innerHTML = `<strong>${data.count.toLocaleString()}</strong> visitas desde 2026`;
+            })
+            .catch(err => {
+                console.error('Error al cargar visitas:', err);
+                document.getElementById('visitas-count').innerHTML = 'Contador temporalmente fuera de línea';
+            });
+    </script>
 </body>
 </html>
