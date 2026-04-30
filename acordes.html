@@ -19,19 +19,11 @@
     <meta property="twitter:title" content="Letras con Acordes de Guitarra | Acordes Rafa">
     <meta property="twitter:description" content="Busca y descarga letras con acordes de tus canciones favoritas. Cancionero popular y música cristiana.">
     <meta property="twitter:image" content="https://acordesrafa.github.io/Iconogrande.jpg">
-    <!-- Google Fonts Preconnect -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2394918736393015"
-     crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css">
     
     <!-- Preload main background -->
-    <link rel="preload" as="image" href="Fondoapp.webp">
-    <link rel="icon" href="Fondoapp.webp">
+    <link rel="preload" as="image" href="Fondoapp-420.webp">
+    <link rel="icon" href="Fondoapp-420.webp">
     <style>
         /* Protección contra copia */
         /* body {
@@ -182,14 +174,14 @@
             padding: 20px 40px; /* Reducido de 50px */
             border: 1px solid #f0f0f0;
             border-radius: 12px;
-            font-family: 'Inter', sans-serif;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             position: relative;
             display: none;
             box-shadow: var(--shadow-soft);
         }
 
         .song-title-display {
-            font-family: 'Outfit', sans-serif;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             font-size: 1.8rem;
             color: var(--text-dark);
             margin-bottom: 15px;
@@ -290,7 +282,7 @@
         }
 
         .modal-title {
-            font-family: 'Outfit', sans-serif;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             font-size: 1.8rem;
             margin-bottom: 15px;
             color: var(--text-dark);
@@ -320,7 +312,7 @@
     <header>
         <nav>
             <a href="index.html" class="logo">
-                <img src="Fondoapp.webp" alt="Logo de Acordes Rafa" width="35" height="35">
+                <img src="Fondoapp-420.webp" alt="Logo de Acordes Rafa" width="35" height="35" decoding="async">
                 Acordes Rafa
             </a>
             <ul class="nav-links">
@@ -361,7 +353,7 @@
 
                 <div class="chord-viewer-container">
                     <div id="viewerPlaceholder" class="viewer-placeholder">
-                        <img src="Fondoapp.webp" alt="Logo" width="80" height="80" style="opacity: 0.1; margin-bottom: 20px;" loading="lazy">
+                        <img src="Fondoapp-420.webp" alt="Logo" width="80" height="80" style="opacity: 0.1; margin-bottom: 20px;" loading="lazy" decoding="async">
                         <p>Selecciona una obra para visualizar los acordes protegidos.</p>
                     </div>
 
@@ -413,20 +405,10 @@
         </div>
     </footer>
 
-    <!-- Script del Contador de Visitas -->
+    <script src="site-performance.js"></script>
     <script>
-        fetch('https://api.counterapi.dev/v1/acordesrafa/acordes/up')
-            .then(res => {
-                if (!res.ok) throw new Error('Servicio no disponible');
-                return res.json();
-            })
-            .then(data => {
-                document.getElementById('visitas-count').innerHTML = `<strong>${data.count.toLocaleString()}</strong> visitas desde 2026`;
-            })
-            .catch(err => {
-                console.error('Error al cargar visitas:', err);
-                document.getElementById('visitas-count').innerHTML = 'Contador temporalmente fuera de línea';
-            });
+        loadVisitCounter('acordes');
+        loadAdsense();
     </script>
 
     <style>
@@ -721,7 +703,7 @@
             if (typeof songsHtmlData !== 'undefined' && songsHtmlData[jsKey]) {
                 textualContent = `
                     <div style="margin-top: 40px; text-align: left;">
-                        <h3 style="color: var(--stripe-blue); font-family: 'Outfit', sans-serif; font-size: 1.3rem; margin-bottom: 15px;">Letra y Acordes (Accesibilidad y SEO)</h3>
+                        <h3 style="color: var(--stripe-blue); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 1.3rem; margin-bottom: 15px;">Letra y Acordes (Accesibilidad y SEO)</h3>
                         <div class="chord-sheet-container" style="
                             background: #fdfdfd; 
                             padding: 25px; 
@@ -848,12 +830,15 @@
     </script>
     <!-- Global Background Logo -->
     <div class="fixed-background">
-        <img src="Fondoapp.webp" alt="Fondo Decorativo" width="1200" height="1200" loading="lazy">
+        <img src="Fondoapp-900.webp" srcset="Fondoapp-420.webp 420w, Fondoapp-900.webp 900w" sizes="(max-width: 768px) 420px, 900px" alt="Fondo Decorativo" width="900" height="883" loading="lazy" decoding="async">
     </div>
 
     <!-- Global Floating Guitar -->
     <div class="fixed-guitar">
-        <img src="Guitarra_Ibanez.png" alt="Guitarra Ibanez Acordes Rafa" width="500" height="800" loading="lazy">
+        <picture>
+            <source srcset="Guitarra_Ibanez-220.webp 220w, Guitarra_Ibanez-320.webp 320w" sizes="220px" type="image/webp">
+            <img src="Guitarra_Ibanez-320.webp" alt="Guitarra Ibanez Acordes Rafa" width="320" height="320" loading="lazy" decoding="async">
+        </picture>
     </div>
 
     <!-- Datos de canciones extraídas en HTML para SEO -->

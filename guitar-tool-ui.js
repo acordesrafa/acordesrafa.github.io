@@ -78,7 +78,7 @@ function renderGeneratorResult(data) {
     // Selected voicing diagram (first one)
     const selectedVoicing = voicings[selectedVoicingIdx] || null;
     const fretDiagram = selectedVoicing
-        ? renderFretDiagram(selectedVoicing, data)
+        ? renderHorizontalFretDiagram(selectedVoicing, data)
         : '<p style="color:var(--muted)">Sin digitación</p>';
 
     const spanishChordName = GuitarTheory.toSpanishDisplayName(displayName);
@@ -150,7 +150,7 @@ function selectVoicing(idx) {
     });
     const v = currentChordData.voicings[idx];
     if (v) {
-        document.getElementById('activeDiagram').innerHTML = renderFretDiagram(v, currentChordData);
+        document.getElementById('activeDiagram').innerHTML = renderHorizontalFretDiagram(v, currentChordData);
         if (typeof renderGeneratorHorizontalFretboard === 'function') {
             renderGeneratorHorizontalFretboard(v);
         }
@@ -244,11 +244,11 @@ function renderFretDiagram(voicing, data) {
 }
 
 function renderMiniDiagram(voicing, data) {
-    const W = 130, H = 130;
+    const W = 320, H = 126;
     const STRINGS = 6, FRETS_SHOWN = 5;
-    const LEFT = 14, TOP = 24, RIGHT = W - 6;
-    const strW = (RIGHT - LEFT) / (STRINGS - 1);
-    const fretH = (H - TOP - 20) / FRETS_SHOWN;
+    const LEFT = 18, RIGHT = W - 44, TOP = 24, BOTTOM = H - 22;
+    const strH = (BOTTOM - TOP) / (STRINGS - 1);
+    const fretW = (RIGHT - LEFT) / FRETS_SHOWN;
 
     const playedFrets = voicing.filter(f => f.fret !== 'x' && f.fret > 0).map(f => f.fret);
     let startFret = 0;
@@ -256,41 +256,112 @@ function renderMiniDiagram(voicing, data) {
         const minF = Math.min(...playedFrets);
         startFret = Math.max(0, minF - 1);
     }
+    const endFret = startFret + FRETS_SHOWN;
 
-    let svg = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`;
+    let svg = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">`;
 
     if (startFret === 0) {
-        svg += `<rect x="${LEFT}" y="${TOP - 3}" width="${RIGHT - LEFT}" height="4" rx="1" fill="#1a1f36"/>`;
+        svg += `<line x1="${RIGHT}" y1="${TOP}" x2="${RIGHT}" y2="${BOTTOM}" stroke="#1a1f36" stroke-width="4"/>`;
+    } else {
+        svg += `<text x="${RIGHT - fretW * 0.5}" y="${TOP - 9}" font-size="10" fill="#6b7280" font-weight="700" text-anchor="middle" font-family="var(--mono)">${startFret + 1}</text>`;
     }
 
     for (let f = 0; f <= FRETS_SHOWN; f++) {
-        const y = TOP + f * fretH;
-        svg += `<line x1="${LEFT}" y1="${y}" x2="${RIGHT}" y2="${y}" stroke="#d1d5db" stroke-width="0.8"/>`;
+        const x = RIGHT - f * fretW;
+        svg += `<line x1="${x}" y1="${TOP}" x2="${x}" y2="${BOTTOM}" stroke="${f === 0 && startFret === 0 ? '#1a1f36' : '#d1d5db'}" stroke-width="${f === 0 && startFret === 0 ? 4 : 1}"/>`;
     }
 
     for (let s = 0; s < STRINGS; s++) {
-        const x = LEFT + s * strW;
-        svg += `<line x1="${x}" y1="${TOP}" x2="${x}" y2="${TOP + FRETS_SHOWN * fretH}" stroke="#c4c9d6" stroke-width="0.8"/>`;
+        const y = TOP + s * strH;
+        const thickness = 1 + (STRINGS - 1 - s) * 0.25;
+        svg += `<line x1="${LEFT}" y1="${y}" x2="${RIGHT}" y2="${y}" stroke="#9ca3af" stroke-width="${thickness}"/>`;
+    }
 
+    for (let s = 0; s < STRINGS; s++) {
+        const y = TOP + s * strH;
         const v = voicing[s];
         if (v.fret === 'x') {
-            svg += `<text x="${x}" y="${TOP - 8}" font-size="9" text-anchor="middle" fill="#ef4444" font-weight="700">✕</text>`;
+            svg += `<text x="${RIGHT + 19}" y="${y + 4}" font-size="12" text-anchor="middle" fill="#ef4444" font-weight="700">x</text>`;
         } else if (v.fret === 0) {
-            svg += `<circle cx="${x}" cy="${TOP - 7}" r="4" fill="none" stroke="#635bff" stroke-width="1.5"/>`;
+            svg += `<circle cx="${RIGHT + 19}" cy="${y}" r="7" fill="none" stroke="#635bff" stroke-width="1.7"/>`;
         }
     }
 
     for (let s = 0; s < STRINGS; s++) {
         const v = voicing[s];
         if (v.fret === 'x' || v.fret === 0) continue;
-        const relFret = v.fret - startFret;
-        if (relFret < 1 || relFret > FRETS_SHOWN) continue;
+        if (v.fret < startFret || v.fret > endFret) continue;
 
-        const x = LEFT + s * strW;
-        const y = TOP + (relFret - 0.5) * fretH;
+        const relFret = v.fret - startFret;
+        const x = RIGHT - (relFret - 0.5) * fretW;
+        const y = TOP + s * strH;
         const color = intervalColor(v.interval);
-        svg += `<circle cx="${x}" cy="${y}" r="7" fill="${color}"/>`;
+        svg += `<circle cx="${x}" cy="${y}" r="8" fill="${color}"/>`;
         svg += `<text x="${x}" y="${y + 3}" font-size="7" text-anchor="middle" fill="white" font-weight="700">${v.interval}</text>`;
+    }
+
+    svg += '</svg>';
+    return svg;
+}
+
+function renderHorizontalFretDiagram(voicing, data) {
+    const STRINGS = 6;
+    const FRETS = 14;
+    const W = 560;
+    const H = 176;
+    const LEFT = 20;
+    const RIGHT = W - 56;
+    const TOP = 34;
+    const BOTTOM = H - 28;
+    const strH = (BOTTOM - TOP) / (STRINGS - 1);
+    const fretW = (RIGHT - LEFT) / FRETS;
+    const stringNames = ['E', 'A', 'D', 'G', 'B', 'e'];
+
+    let svg = `<svg width="100%" viewBox="0 0 ${W} ${H}" class="fretboard-svg fretboard-horizontal-svg" preserveAspectRatio="xMidYMid meet">`;
+
+    for (let f = 1; f <= FRETS; f++) {
+        const x = RIGHT - (f - 0.5) * fretW;
+        svg += `<text x="${x}" y="${TOP - 13}" font-size="10" fill="var(--muted)" font-weight="600" text-anchor="middle" font-family="var(--mono)">${f}</text>`;
+    }
+
+    const markerFrets = [3, 5, 7, 9, 12];
+    markerFrets.forEach(f => {
+        const x = RIGHT - (f - 0.5) * fretW;
+        if (f === 12) {
+            svg += `<circle cx="${x}" cy="${TOP + 1.5 * strH}" r="4.5" fill="#e5e7eb" />`;
+            svg += `<circle cx="${x}" cy="${TOP + 3.5 * strH}" r="4.5" fill="#e5e7eb" />`;
+        } else {
+            svg += `<circle cx="${x}" cy="${TOP + 2.5 * strH}" r="5" fill="#e5e7eb" />`;
+        }
+    });
+
+    for (let f = 0; f <= FRETS; f++) {
+        const x = RIGHT - f * fretW;
+        svg += `<line x1="${x}" y1="${TOP}" x2="${x}" y2="${BOTTOM}" stroke="${f === 0 ? 'var(--text)' : '#d1d5db'}" stroke-width="${f === 0 ? 4 : 1.5}" />`;
+    }
+
+    for (let i = 0; i < STRINGS; i++) {
+        const y = TOP + i * strH;
+        const thickness = 1 + (STRINGS - 1 - i) * 0.35;
+        const v = voicing[i] || { fret: 0, note: null, interval: null };
+        const isMuted = v.fret === 'x';
+        const isOpen = !isMuted && v.fret === 0;
+
+        svg += `<line x1="${LEFT}" y1="${y}" x2="${RIGHT}" y2="${y}" stroke="#9ca3af" stroke-width="${thickness}" />`;
+        svg += `<text x="${RIGHT + 21}" y="${y + 4}" font-size="12" fill="${isMuted ? 'var(--muted)' : 'var(--accent)'}" font-weight="700" text-anchor="middle" font-family="var(--mono)">${stringNames[i]}</text>`;
+        svg += `<text x="${RIGHT + 42}" y="${y + 4}" font-size="12" fill="${isMuted ? '#ef4444' : 'var(--muted)'}" font-weight="700" text-anchor="middle" font-family="var(--mono)">x</text>`;
+
+        if (isOpen) {
+            svg += `<circle cx="${RIGHT + 21}" cy="${y}" r="8" fill="transparent" stroke="var(--accent)" stroke-width="2" />`;
+        }
+
+        if (!isMuted && v.fret > 0 && v.fret <= FRETS) {
+            const cx = RIGHT - (v.fret - 0.5) * fretW;
+            const color = intervalColor(v.interval);
+            const label = v.note || v.interval || '';
+            svg += `<circle cx="${cx}" cy="${y}" r="11" fill="${color}" />`;
+            svg += `<text x="${cx}" y="${y + 4}" font-size="9" text-anchor="middle" fill="white" font-weight="700" font-family="var(--mono)">${label}</text>`;
+        }
     }
 
     svg += '</svg>';
@@ -692,7 +763,7 @@ function renderIdentifierResult(result, frets) {
         return { fret: f, note: GuitarTheory.indexToNote(noteIdx), interval: null };
     });
 
-    const diagram = renderFretDiagram(voicingForDiagram, { root: result.candidates[0]?.root });
+    const diagram = renderHorizontalFretDiagram(voicingForDiagram, { root: result.candidates[0]?.root });
 
     document.getElementById('identifierResult').innerHTML = `
         <div class="card">
