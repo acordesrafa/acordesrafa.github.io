@@ -6,7 +6,7 @@ Genera además páginas HTML estáticas por cada canción para mejorar el SEO (A
 
 Uso: python pdf_to_html.py
 Genera: 
-1. songs_data.js  (se incluye en acordes.html)
+1. songs_data.js  (se incluye en guitar-tool.html)
 2. Carpeta canciones/ con archivos HTML individuales
 3. Actualiza sitemap.xml automáticamente
 """
@@ -71,7 +71,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             </a>
             <ul class="nav-links">
                 <li><a href="../index.html">Inicio</a></li>
-                <li><a href="../acordes.html" class="active">Letras con Acordes</a></li>
+                <li><a href="../guitar-tool.html" class="active">Letras con Acordes</a></li>
                 <li><a href="../guitar-tool.html">🎸 Herramienta</a></li>
             </ul>
         </nav>
@@ -80,7 +80,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <main>
     <div class="song-container">
         <h1 style="font-family: 'Outfit', sans-serif; color: var(--stripe-blue); margin-bottom: 10px; text-align: center;">{title}</h1>
-        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 0.9rem;">Categoría: {category_name} · <strong><a href="../acordes.html" style="color: var(--stripe-blue);">Visor Interactivo y PDF</a></strong></p>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 0.9rem;">Categoría: {category_name} · <strong><a href="../guitar-tool.html" style="color: var(--stripe-blue);">Visor Interactivo y PDF</a></strong></p>
         
         {video_embed}
 
@@ -93,7 +93,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         {html_content}
 
         <div style="text-align: center; margin-top: 40px;">
-            <a href="../acordes.html" class="btn-back">⬅ Volver al Cancionero Principal</a>
+            <a href="../guitar-tool.html" class="btn-back">⬅ Volver al Cancionero Principal</a>
         </div>
     </div>
     </main>
@@ -231,7 +231,7 @@ def update_sitemap(new_urls):
         print(f"Sitemap actualizado: {added} nuevas URLs añadidas.")
 
 def load_metadata():
-    """Carga los metadatos (descripciones y tutoriales) desde acordes.html"""
+    """Carga los metadatos (descripciones y tutoriales) desde guitar-tool.html"""
     metadata = {"populares": {}, "dios": {}}
     raw_path = os.path.join(BASE_DIR, "cancionero_raw.txt")
     if not os.path.exists(raw_path):
@@ -279,10 +279,27 @@ def load_metadata():
             }
     return metadata
 
+def load_existing_songs_data():
+    """Carga los datos previos de songs_data.js para evitar regenerar todo"""
+    existing = {}
+    if os.path.exists(OUTPUT_JS):
+        try:
+            with open(OUTPUT_JS, "r", encoding="utf-8") as f:
+                content = f.read()
+                # Extraer el JSON: const songsHtmlData = {...};
+                match = re.search(r"const songsHtmlData\s*=\s*(\{.*?\});?\s*$", content, re.DOTALL)
+                if match:
+                    existing = json.loads(match.group(1))
+        except Exception as e:
+            print(f"Nota: No se pudo cargar songs_data.js previo: {e}")
+    return existing
+
 def main():
     metadata = load_metadata()
+    existing_songs_html = load_existing_songs_data()
     songs_html = {}
-    total = 0
+    total_processed = 0
+    total_skipped = 0
     errors = 0
     generated_urls = []
 
@@ -299,20 +316,39 @@ def main():
 
         for pdf_file in sorted(pdfs):
             pdf_path = os.path.join(folder, pdf_file)
+            key = f"{cat_key}/{pdf_file}"
+            
+            # Nombre de la canción limpio para el título
+            title_match = re.search(r"^(.*?)(?:\(|[0-9]{3,})", pdf_file)
+            song_title = title_match.group(1).strip() if title_match else pdf_file.replace(".pdf", "")
+            
+            # Nombre seguro (slug) para el archivo HTML
+            safe_name = re.sub(r'[^a-zA-Z0-9]+', '-', song_title.lower()).strip('-')
+            if not safe_name: safe_name = f"cancion-{len(songs_html) + len(existing_songs_html)}"
+            
+            html_filepath = os.path.join(SEO_FOLDER, f"{safe_name}.html")
+            
+            # Condición de caché
+            raw_path = os.path.join(BASE_DIR, "cancionero_raw.txt")
+            raw_mtime = os.path.getmtime(raw_path) if os.path.exists(raw_path) else 0
+            
+            if os.path.exists(html_filepath) and key in existing_songs_html:
+                pdf_mtime = os.path.getmtime(pdf_path)
+                html_mtime = os.path.getmtime(html_filepath)
+                
+                # Si el PDF y los metadatos (cancionero_raw.txt) son más antiguos que el archivo HTML, saltamos
+                if pdf_mtime <= html_mtime and raw_mtime <= html_mtime:
+                    songs_html[key] = existing_songs_html[key]
+                    generated_urls.append(f"https://acordesrafa.github.io/{SEO_FOLDER_NAME}/{safe_name}.html")
+                    total_skipped += 1
+                    # print(f"  -> {pdf_file[:60]}... (Saltado, ya generado)")
+                    continue
+
             print(f"  -> {pdf_file[:60]}...", end=" ", flush=True)
             html = extract_pdf_to_html(pdf_path, pdf_file)
             
             if html:
-                key = f"{cat_key}/{pdf_file}"
                 songs_html[key] = html
-                
-                # Nombre de la canción limpio para el título
-                title_match = re.search(r"^(.*?)(?:\(|[0-9]{3,})", pdf_file)
-                song_title = title_match.group(1).strip() if title_match else pdf_file.replace(".pdf", "")
-                
-                # Nombre seguro (slug) para el archivo HTML
-                safe_name = re.sub(r'[^a-zA-Z0-9]+', '-', song_title.lower()).strip('-')
-                if not safe_name: safe_name = f"cancion-{total}"
 
                 # Buscar metadatos
                 song_meta = metadata.get(cat_key, {}).get(song_title, {"tutorial": "", "description": ""})
@@ -347,7 +383,7 @@ def main():
                     f.write(html_export)
                 
                 generated_urls.append(f"https://acordesrafa.github.io/{SEO_FOLDER_NAME}/{safe_name}.html")
-                total += 1
+                total_processed += 1
                 print("OK")
             else:
                 errors += 1
@@ -364,7 +400,7 @@ def main():
     # Actualizar Sitemap
     update_sitemap(generated_urls)
 
-    print(f"\nCompletado! {total} canciones exportadas.")
+    print(f"\nCompletado! {total_processed} canciones procesadas ({total_skipped} omitidas, ya existían).")
     print(f" -> Funcionalidad SPA (JS) actualizada: {OUTPUT_JS}")
     print(f" -> Archivos HTML para SEO (AdSense) generados en: {SEO_FOLDER}/")
     if errors:

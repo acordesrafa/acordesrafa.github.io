@@ -3,11 +3,11 @@ import re
 import os
 
 def extract_metadata():
-    if not os.path.exists('acordes.html'):
-        print("acordes.html not found")
+    if not os.path.exists('guitar-tool.html'):
+        print("guitar-tool.html not found")
         return
     
-    with open('acordes.html', 'r', encoding='utf-8') as f:
+    with open('guitar-tool.html', 'r', encoding='utf-8') as f:
         content = f.read()
     
     # Simple regex to find the object. It's between 'const cancionero = {' and the next '};'

@@ -32,6 +32,8 @@ function liveGenerate() {
     liveTimer = setTimeout(generateChord, 400);
 }
 
+let isGeneratingLive = false;
+
 function generateChord() {
     const rawInput = document.getElementById('chordInput').value.trim();
     if (!rawInput) return;
@@ -45,14 +47,19 @@ function generateChord() {
         selectedVoicingIdx = 0;
 
         if (data.error) {
-            document.getElementById('generatorResult').innerHTML =
+            document.getElementById('unifiedResult').innerHTML =
                 `<div class="card"><p class="error-msg">⚠️ ${data.error}</p></div>`;
             return;
         }
 
+        isGeneratingLive = true;
+        if (data.voicings.length > 0) {
+            setFretsSilent(data.voicings[0].map(v => v.fret));
+        }
         renderGeneratorResult(data);
+        isGeneratingLive = false;
     } catch (e) {
-        document.getElementById('generatorResult').innerHTML =
+        document.getElementById('unifiedResult').innerHTML =
             `<div class="card"><p class="error-msg">⚠️ Error: ${e.message}</p></div>`;
     }
 }
@@ -84,49 +91,50 @@ function renderGeneratorResult(data) {
     const spanishChordName = GuitarTheory.toSpanishDisplayName(displayName);
     const showSpanish = spanishChordName !== displayName;
 
-    document.getElementById('generatorResult').innerHTML = `
-        <div class="card">
-            <div class="two-col">
-                <div>
-                    <p class="section-subtitle">Acorde identificado</p>
-                    <div style="font-family:'Outfit',sans-serif;font-size:2rem;font-weight:700;
-                        background:linear-gradient(135deg,#635bff,#a259ff);
-                        -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-                        background-clip:text;margin-bottom:4px;">${displayName}</div>
-                    ${showSpanish ? `<div style="font-family:'Outfit',sans-serif;font-size:1.1rem;color:var(--muted);margin-bottom:12px;font-weight:600;">${spanishChordName}</div>` : '<div style="margin-bottom:12px;"></div>'}
-                    <div class="chord-info">
-                        <div class="info-badge">
-                            <div class="label">Tónica</div>
-                            <div class="value">${data.rootDisplay}</div>
-                        </div>
-                        <div class="info-badge">
-                            <div class="label">Fórmula</div>
-                            <div class="value" style="font-size:0.85rem">${formula.join(' - ')}</div>
-                        </div>
-                        ${data.bassNote ? `<div class="info-badge">
-                            <div class="label">Bajo</div>
-                            <div class="value">${data.bassNote.bassDisplay}</div>
-                        </div>` : ''}
+    document.getElementById('unifiedResult').innerHTML = `
+        <div style="display:grid; grid-template-columns: 1fr 220px; gap:16px; margin-bottom:16px;">
+            <div class="card" style="margin-bottom:0">
+                <p class="section-subtitle">Acorde identificado</p>
+                <div style="font-family:'Outfit',sans-serif;font-size:2rem;font-weight:700;
+                    background:linear-gradient(135deg,#635bff,#a259ff);
+                    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+                    background-clip:text;margin-bottom:4px;">${displayName}</div>
+                ${showSpanish ? `<div style="font-family:'Outfit',sans-serif;font-size:1.1rem;color:var(--muted);margin-bottom:12px;font-weight:600;">${spanishChordName}</div>` : '<div style="margin-bottom:12px;"></div>'}
+                <div class="chord-info">
+                    <div class="info-badge">
+                        <div class="label">Tónica</div>
+                        <div class="value">${data.rootDisplay}</div>
                     </div>
-                    <table class="notes-table" style="margin-top:16px">
-                        <thead>
-                            <tr>
-                                <th>Intervalo</th>
-                                <th>Nota</th>
-                                <th>Nombre</th>
-                            </tr>
-                        </thead>
-                        <tbody>${noteRows}</tbody>
-                    </table>
+                    <div class="info-badge">
+                        <div class="label">Fórmula</div>
+                        <div class="value" style="font-size:0.85rem">${formula.join(' - ')}</div>
+                    </div>
+                    ${data.bassNote ? `<div class="info-badge">
+                        <div class="label">Bajo</div>
+                        <div class="value">${data.bassNote.bassDisplay}</div>
+                    </div>` : ''}
                 </div>
-                <div>
-                    <p class="section-subtitle">Diagrama de digitación</p>
-                    <div id="activeDiagram">${fretDiagram}</div>
+                <table class="notes-table" style="margin-top:16px">
+                    <thead>
+                        <tr>
+                            <th>Int.</th>
+                            <th>Nota</th>
+                            <th>Nombre</th>
+                        </tr>
+                    </thead>
+                    <tbody>${noteRows}</tbody>
+                </table>
+            </div>
+            <div class="card" style="margin-bottom:0; display:flex; flex-direction:column; align-items:center; text-align:center; justify-content:center; padding:12px; background:white;">
+                <p class="section-subtitle" style="margin-bottom:8px">Guía de Mano</p>
+                <img src="hand-guide-white.png" alt="Guía de mano izquierda" style="width:160px; height:auto; border-radius:4px;">
+                <div style="font-size:0.7rem; color:var(--muted); margin-top:8px; line-height:1.2; font-weight:600;">
+                    1:Índice | 2:Medio<br>3:Anular | 4:Meñique
                 </div>
             </div>
         </div>
         <div class="card">
-            <p class="section-subtitle">Digitaciones disponibles (haz clic para ver)</p>
+            <p class="section-subtitle">Digitaciones alternativas (haz clic para ver)</p>
             <div class="voicings-grid" id="voicingsGrid">
                 ${voicingCards}
             </div>
@@ -136,10 +144,6 @@ function renderGeneratorResult(data) {
     // Mark first selected
     const firstCard = document.querySelector('.voicing-card');
     if (firstCard) firstCard.classList.add('selected');
-
-    if (typeof renderGeneratorHorizontalFretboard === 'function') {
-        renderGeneratorHorizontalFretboard(selectedVoicing);
-    }
 }
 
 function selectVoicing(idx) {
@@ -150,10 +154,9 @@ function selectVoicing(idx) {
     });
     const v = currentChordData.voicings[idx];
     if (v) {
-        document.getElementById('activeDiagram').innerHTML = renderHorizontalFretDiagram(v, currentChordData);
-        if (typeof renderGeneratorHorizontalFretboard === 'function') {
-            renderGeneratorHorizontalFretboard(v);
-        }
+        isGeneratingLive = true;
+        setFretsSilent(v.map(str => str.fret));
+        isGeneratingLive = false;
     }
 }
 
@@ -166,6 +169,43 @@ function buildVoicingCard(voicing, data, idx) {
             <div class="voicing-label">${fretsStr}</div>
         </div>
     `;
+}
+
+function getBarres(voicing) {
+    if (!voicing) return [];
+    const frets = voicing.map(v => (typeof v === 'object' && v !== null) ? v.fret : v);
+    
+    const fretCounts = {};
+    for (let s = 0; s < 6; s++) {
+        const f = frets[s];
+        if (f !== 'x' && f > 0) {
+            if (!fretCounts[f]) fretCounts[f] = { startStr: s, endStr: s };
+            fretCounts[f].endStr = s;
+        }
+    }
+    
+    const barres = [];
+    for (const fStr in fretCounts) {
+        const f = parseInt(fStr);
+        const data = fretCounts[f];
+        if (data.endStr - data.startStr >= 2) {
+            let valid = true;
+            for (let s = data.startStr + 1; s < data.endStr; s++) {
+                if (frets[s] === 0) {
+                    valid = false;
+                    break;
+                }
+                if (frets[s] !== 'x' && frets[s] > 0 && frets[s] < f) {
+                    valid = false;
+                    break;
+                }
+            }
+            if (valid) {
+                barres.push({ fret: f, startStr: data.startStr, endStr: data.endStr });
+            }
+        }
+    }
+    return barres;
 }
 
 // ── SVG Fret Diagram Renderer ──
@@ -277,6 +317,16 @@ function renderMiniDiagram(voicing, data) {
         svg += `<line x1="${LEFT}" y1="${y}" x2="${RIGHT}" y2="${y}" stroke="#9ca3af" stroke-width="${thickness}"/>`;
     }
 
+    const barres = getBarres(voicing);
+    for (const b of barres) {
+        if (b.fret < startFret || b.fret > endFret) continue;
+        const relFret = b.fret - startFret;
+        const x = RIGHT - (relFret - 0.5) * fretW;
+        const y1 = TOP + b.startStr * strH;
+        const y2 = TOP + b.endStr * strH;
+        svg += `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="#635bff" stroke-width="14" stroke-linecap="round" opacity="0.4"/>`;
+    }
+
     for (let s = 0; s < STRINGS; s++) {
         const y = TOP + s * strH;
         const v = voicing[s];
@@ -296,8 +346,14 @@ function renderMiniDiagram(voicing, data) {
         const x = RIGHT - (relFret - 0.5) * fretW;
         const y = TOP + s * strH;
         const color = intervalColor(v.interval);
-        svg += `<circle cx="${x}" cy="${y}" r="8" fill="${color}"/>`;
-        svg += `<text x="${x}" y="${y + 3}" font-size="7" text-anchor="middle" fill="white" font-weight="700">${v.interval}</text>`;
+        
+        // Organic Finger Dot
+        svg += `<circle cx="${x}" cy="${y}" r="9" fill="${color}" filter="url(#shadow)"/>`;
+        svg += `<circle cx="${x}" cy="${y}" r="9" fill="url(#fingerGrad)"/>`;
+        
+        const dotText = v.finger || v.interval;
+        svg += `<text x="${x}" y="${y + 3}" font-size="8" text-anchor="middle" fill="white" font-weight="900">${dotText}</text>`;
+        svg += `<text x="${x}" y="${y + 13}" font-size="7" text-anchor="middle" fill="#4b5563" font-weight="700" font-family="var(--mono)">${v.note}</text>`;
     }
 
     svg += '</svg>';
@@ -340,6 +396,16 @@ function renderHorizontalFretDiagram(voicing, data) {
         svg += `<line x1="${x}" y1="${TOP}" x2="${x}" y2="${BOTTOM}" stroke="${f === 0 ? 'var(--text)' : '#d1d5db'}" stroke-width="${f === 0 ? 4 : 1.5}" />`;
     }
 
+    const barres = getBarres(voicing);
+    for (const b of barres) {
+        if (b.fret > 0 && b.fret <= FRETS) {
+            const x = RIGHT - (b.fret - 0.5) * fretW;
+            const y1 = TOP + b.startStr * strH;
+            const y2 = TOP + b.endStr * strH;
+            svg += `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="#635bff" stroke-width="22" stroke-linecap="round" opacity="0.4"/>`;
+        }
+    }
+
     for (let i = 0; i < STRINGS; i++) {
         const y = TOP + i * strH;
         const thickness = 1 + (STRINGS - 1 - i) * 0.35;
@@ -358,9 +424,10 @@ function renderHorizontalFretDiagram(voicing, data) {
         if (!isMuted && v.fret > 0 && v.fret <= FRETS) {
             const cx = RIGHT - (v.fret - 0.5) * fretW;
             const color = intervalColor(v.interval);
-            const label = v.note || v.interval || '';
+            const label = v.finger || v.note || v.interval || '';
             svg += `<circle cx="${cx}" cy="${y}" r="11" fill="${color}" />`;
-            svg += `<text x="${cx}" y="${y + 4}" font-size="9" text-anchor="middle" fill="white" font-weight="700" font-family="var(--mono)">${label}</text>`;
+            svg += `<text x="${cx}" y="${y + 4}" font-size="10" text-anchor="middle" fill="white" font-weight="900" font-family="var(--mono)">${label}</text>`;
+            svg += `<text x="${cx}" y="${y + 17}" font-size="8" text-anchor="middle" fill="#374151" font-weight="700" font-family="var(--mono)">${v.note}</text>`;
         }
     }
 
@@ -530,6 +597,26 @@ function renderInteractiveFretboard() {
         if (el) currentFrets.push(el.value.trim());
     }
 
+    const numericFrets = currentFrets.map((val, i) => {
+        if (muteState[i] || val === 'x' || val === 'X') return 'x';
+        const parsed = parseInt(val);
+        return isNaN(parsed) ? 'x' : parsed;
+    });
+
+    const barres = getBarres(numericFrets);
+    for (const b of barres) {
+        if (b.fret > 0 && b.fret <= FRETS) {
+            const x = RIGHT - (b.fret - 0.5) * fretW;
+            const y1 = TOP + b.startStr * strH;
+            const y2 = TOP + b.endStr * strH;
+            svg += `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="var(--accent)" stroke-width="24" stroke-linecap="round" opacity="0.4" style="pointer-events:none;"/>`;
+        }
+    }
+
+    // Calculate fingers for interactive board
+    const tempVoicing = numericFrets.map(f => ({ fret: f }));
+    const dynamicFingers = GuitarTheory.calculateFingering(tempVoicing);
+
     for(let i = 0; i < STRINGS; i++) {
         const y = TOP + i * strH;
         // i=0 is 'E' (thickest string, top), i=5 is 'e' (thinnest string, bottom)
@@ -568,6 +655,11 @@ function renderInteractiveFretboard() {
             
             if (isActive) {
                 svg += `<circle cx="${cx}" cy="${y}" r="12" fill="var(--accent)" style="pointer-events:none;"/>`;
+                if (dynamicFingers[i]) {
+                    svg += `<text x="${cx}" y="${y + 4}" font-size="11" text-anchor="middle" fill="white" font-weight="900" style="pointer-events:none;">${dynamicFingers[i]}</text>`;
+                }
+                const noteName = GuitarTheory.noteAtFret(i, f);
+                svg += `<text x="${cx}" y="${y + 20}" font-size="10" text-anchor="middle" fill="var(--accent)" font-weight="700" style="pointer-events:none;">${noteName}</text>`;
             }
         }
     }
@@ -647,27 +739,38 @@ function toggleMute(strIdx) {
     renderInteractiveFretboard();
 }
 
-function setFrets(frets) {
+function setFretsSilent(frets) {
     for (let i = 0; i < 6; i++) {
         const input = document.getElementById('str' + i);
         const mute = document.getElementById('mute' + i);
         if (frets[i] === 'x' || frets[i] === -1) {
             muteState[i] = true;
-            input.value = 'x';
-            input.classList.add('muted');
-            mute.classList.add('active');
+            if(input) {
+                input.value = 'x';
+                input.classList.add('muted');
+            }
+            if(mute) mute.classList.add('active');
         } else {
             muteState[i] = false;
-            input.value = frets[i];
-            input.classList.remove('muted');
-            mute.classList.remove('active');
+            if(input) {
+                input.value = frets[i];
+                input.classList.remove('muted');
+            }
+            if(mute) mute.classList.remove('active');
         }
     }
-    identifyChord();
     renderInteractiveFretboard();
 }
 
+function setFrets(frets) {
+    setFretsSilent(frets);
+    identifyChord();
+}
+
 function clearIdentifier() {
+    const chordInput = document.getElementById('chordInput');
+    if(chordInput) chordInput.value = '';
+    
     for (let i = 0; i < 6; i++) {
         muteState[i] = false;
         const input = document.getElementById('str' + i);
@@ -676,10 +779,10 @@ function clearIdentifier() {
         input.classList.remove('muted');
         mute.classList.remove('active');
     }
-    document.getElementById('identifierResult').innerHTML = `
+    document.getElementById('unifiedResult').innerHTML = `
         <div class="card placeholder">
             <div class="icon">🔍</div>
-            <p>Ingresa las pisadas arriba para identificar el acorde</p>
+            <p>Ingresa un acorde o dibújalo en el diapasón para comenzar</p>
         </div>`;
     renderInteractiveFretboard();
 }
@@ -710,23 +813,39 @@ function identifyChord() {
 
     const played = frets.filter(f => f !== 'x');
     if (played.length < 2) {
-        document.getElementById('identifierResult').innerHTML =
-            `<div class="card"><p class="error-msg">⚠️ Necesitas al menos 2 cuerdas tocadas</p></div>`;
+        if (!isGeneratingLive) {
+            document.getElementById('unifiedResult').innerHTML =
+                `<div class="card"><p class="error-msg">⚠️ Necesitas al menos 2 cuerdas tocadas</p></div>`;
+        }
         return;
     }
 
     try {
         const result = GuitarTheory.identifyChord(frets);
-        renderIdentifierResult(result, frets);
+        
+        if (!isGeneratingLive && result.candidates.length > 0) {
+            const bestName = result.candidates[0].displayName;
+            document.getElementById('chordInput').value = bestName;
+            
+            const data = GuitarTheory.generateChord(bestName);
+            if (!data.error) {
+                currentChordData = data;
+                renderGeneratorResult(data);
+            } else {
+                renderIdentifierResult(result, frets);
+            }
+        } else {
+            renderIdentifierResult(result, frets);
+        }
     } catch (e) {
-        document.getElementById('identifierResult').innerHTML =
+        document.getElementById('unifiedResult').innerHTML =
             `<div class="card"><p class="error-msg">⚠️ Error: ${e.message}</p></div>`;
     }
 }
 
 function renderIdentifierResult(result, frets) {
     if (result.error) {
-        document.getElementById('identifierResult').innerHTML =
+        document.getElementById('unifiedResult').innerHTML =
             `<div class="card"><p class="error-msg">⚠️ ${result.error}</p></div>`;
         return;
     }
@@ -755,35 +874,17 @@ function renderIdentifierResult(result, frets) {
         </tr>`;
     }).join('');
 
-    // Voice diagram of played notes
-    const voicingForDiagram = frets.map((f, s) => {
-        if (f === 'x') return { fret: 'x', note: null, interval: null };
-        const baseNote = GuitarTheory.OPEN_NOTES[s];
-        const noteIdx = (GuitarTheory.noteToIndex(baseNote) + f) % 12;
-        return { fret: f, note: GuitarTheory.indexToNote(noteIdx), interval: null };
-    });
-
-    const diagram = renderHorizontalFretDiagram(voicingForDiagram, { root: result.candidates[0]?.root });
-
-    document.getElementById('identifierResult').innerHTML = `
+    document.getElementById('unifiedResult').innerHTML = `
         <div class="card">
-            <div class="two-col">
-                <div>
-                    <p class="section-subtitle">Acorde identificado</p>
-                    <div class="result-primary">
-                        ${result.primaryName}
-                        ${(() => { const sp = GuitarTheory.toSpanishDisplayName(result.primaryName); return sp !== result.primaryName ? `<span class="spanish-inline">(${sp})</span>` : ''; })()}
-                    </div>
-                    <p class="result-sub">Nombre principal más probable</p>
-                    <div class="alt-names">${altHTML}</div>
-                    ${result.harmonicFunction ? `<div class="harmonic-pill">⚡ ${result.harmonicFunction}</div>` : ''}
-                    <div class="chord-info" style="margin-top:16px">${noteInfo}</div>
-                </div>
-                <div>
-                    <p class="section-subtitle">Diagrama</p>
-                    ${diagram}
-                </div>
+            <p class="section-subtitle">Acorde identificado</p>
+            <div class="result-primary">
+                ${result.primaryName}
+                ${(() => { const sp = GuitarTheory.toSpanishDisplayName(result.primaryName); return sp !== result.primaryName ? `<span class="spanish-inline">(${sp})</span>` : ''; })()}
             </div>
+            <p class="result-sub">Nombre principal más probable</p>
+            <div class="alt-names">${altHTML}</div>
+            ${result.harmonicFunction ? `<div class="harmonic-pill">⚡ ${result.harmonicFunction}</div>` : ''}
+            <div class="chord-info" style="margin-top:16px">${noteInfo}</div>
         </div>
         ${result.candidates.length > 1 ? `
         <div class="card">
