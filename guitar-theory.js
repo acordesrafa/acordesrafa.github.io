@@ -180,15 +180,12 @@ const GuitarTheory = (() => {
     if (!opts) opts = {};
     const maxFret     = opts.maxFret     !== undefined ? opts.maxFret     : 12;
     const maxSpan     = opts.maxSpan     !== undefined ? opts.maxSpan     : 4;
-    const maxVoicings = opts.maxVoicings !== undefined ? opts.maxVoicings : 21;
+    const maxVoicings = opts.maxVoicings !== undefined ? opts.maxVoicings : 21; // Updated to 21
 
     const rootIdx = noteToIndex(root);
-
-    // chord note → Map(noteIdx mod12 → chordNote)
     const cnMap = new Map();
     chordNotes.forEach(cn => { cnMap.set(((noteToIndex(cn.note)) + 12) % 12, cn); });
 
-    // Essential intervals: root, 3rd, 7th variants
     const essSet = new Set();
     chordNotes.forEach(cn => {
       if (['1','3','b3','7','b7','bb7'].indexOf(cn.interval) !== -1) essSet.add(cn.interval);
@@ -198,10 +195,9 @@ const GuitarTheory = (() => {
     const seenKeys = new Set();
 
     for (let sf = 0; sf <= 9; sf++) {
-      if (voicings.length >= maxVoicings * 5) break;
+      if (voicings.length >= 1000) break; // Increased internal search limit
       const ef = sf + maxSpan;
 
-      // Per-string option list: chord tones in [sf..ef] window + null (mute)
       const strOpts = [];
       for (let s = 0; s < 6; s++) {
         const opts2 = [];
@@ -218,8 +214,7 @@ const GuitarTheory = (() => {
 
       const lens = [strOpts[0].length, strOpts[1].length, strOpts[2].length,
                     strOpts[3].length, strOpts[4].length, strOpts[5].length];
-      // Safe clamped product: stop multiplying once we exceed cap
-      const CAP = 20000;
+      const CAP = 30000;
       let total = 1;
       for (let li = 0; li < 6; li++) {
         total = total * lens[li];
@@ -236,24 +231,20 @@ const GuitarTheory = (() => {
         const a5 = strOpts[5][rem % lens[5]];
         const asgn = [a0, a1, a2, a3, a4, a5];
 
-        // At least 3 played
         let pc = 0;
         for (let s = 0; s < 6; s++) { if (asgn[s]) pc++; }
         if (pc < 3) continue;
 
-        // Essential intervals check
         const used = new Set();
         for (let s = 0; s < 6; s++) { if (asgn[s]) used.add(asgn[s].interval); }
         let fail = false;
         for (const e of essSet) { if (!used.has(e)) { fail = true; break; } }
         if (fail) continue;
 
-        // Root on lowest played string
         let low = -1;
         for (let s = 0; s < 6; s++) { if (asgn[s]) { low = s; break; } }
         if (low === -1 || asgn[low].noteIdx !== rootIdx) continue;
 
-        // Span check (non-open frets)
         let mn = 99, mx = 0;
         for (let s = 0; s < 6; s++) {
           if (asgn[s] && asgn[s].fret > 0) {
@@ -275,90 +266,50 @@ const GuitarTheory = (() => {
       }
     }
 
-    const scored = voicings.map(v => {
-      const sc = scoreVoicing(v, chordNotes);
-      // Fingering calculation
-      const fingers = calculateFingering(v);
-      v.forEach((str, i) => { str.finger = fingers[i]; });
+    // Helper to check if a voicing is a barre chord (cejilla)
+    function isBarre(v) {
+        const played = v.filter(f => f.fret !== 'x');
+        const hasOpen = played.some(f => f.fret === 0);
+        if (hasOpen) return false; 
 
-      // Determine if it has a barre for forcing logic
-      const frets = v.map(str => str.fret);
-      const fretCounts = {};
-      frets.forEach(f => { if (f !== 'x' && f > 0) { if (!fretCounts[f]) fretCounts[f] = { start: -1, end: -1, count: 0 }; fretCounts[f].count++; } });
-      let isBarre = false;
-      for (const fStr in fretCounts) {
-        const f = parseInt(fStr);
-        let start = -1, end = -1;
-        for (let s = 0; s < 6; s++) { if (frets[s] === f) { if (start === -1) start = s; end = s; } }
-        if (end - start >= 2) {
-          let valid = true;
-          for (let s = start + 1; s < end; s++) { if (frets[s] === 0 || (frets[s] !== 'x' && frets[s] > 0 && frets[s] < f)) { valid = false; break; } }
-          if (valid) { isBarre = true; break; }
-        }
-      }
-      return { v, sc, isBarre };
-    });
+        const counts = {};
+        played.forEach(f => {
+            counts[f.fret] = (counts[f.fret] || 0) + 1;
+        });
+        
+        // A real barre chord MUST have at least 2 strings on the lowest played fret
+        const minFret = Math.min(...played.map(f => f.fret));
+        return (counts[minFret] || 0) >= 2;
+    }
 
+    let scored = voicings.map(v => ({ v, sc: scoreVoicing(v, chordNotes), barre: isBarre(v) }));
     scored.sort((a, b) => b.sc - a.sc);
 
-    let top = scored.slice(0, maxVoicings);
+    // Rule: The 2nd result (index 1) must be a barre chord if possible.
+    const finalVoicings = [];
+    if (scored.length > 0) {
+        // 1st result: absolute best
+        finalVoicings.push(scored[0].v);
+        scored.splice(0, 1);
 
-    // Force best barre at second position (index 1) if possible
-    const barreCandidates = scored.filter((o, i) => o.isBarre);
-    
-    if (barreCandidates.length > 0 && top.length >= 2) {
-      let selectedBarre = barreCandidates[0];
-      if (top[0].isBarre && barreCandidates.length > 1) selectedBarre = barreCandidates[1];
-      const currentIdxInTop = top.findIndex(o => o.v === selectedBarre.v);
-      if (currentIdxInTop !== -1) top.splice(currentIdxInTop, 1);
-      else top.pop();
-      top.splice(1, 0, selectedBarre);
+        // 2nd result: best barre chord
+        const barreIdx = scored.findIndex(s => s.barre);
+        if (barreIdx !== -1) {
+            finalVoicings.push(scored[barreIdx].v);
+            scored.splice(barreIdx, 1);
+        } else if (scored.length > 0) {
+            finalVoicings.push(scored[0].v);
+            scored.splice(0, 1);
+        }
+
+        // Rest of results up to maxVoicings (21)
+        while (finalVoicings.length < maxVoicings && scored.length > 0) {
+            finalVoicings.push(scored[0].v);
+            scored.splice(0, 1);
+        }
     }
 
-    return top.map(o => o.v);
-  }
-
-  function calculateFingering(voicing) {
-    const frets = voicing.map(v => v.fret);
-    const fingers = Array(6).fill(null);
-    const played = [];
-    for (let s = 0; s < 6; s++) {
-      if (frets[s] !== 'x' && frets[s] > 0) played.push({ s, f: frets[s] });
-    }
-    if (played.length === 0) return fingers;
-
-    played.sort((a, b) => a.f - b.f || a.s - b.s);
-    const minF = played[0].f;
-
-    // Detect barre at minF
-    let start = -1, end = -1;
-    for (let s = 0; s < 6; s++) { if (frets[s] === minF) { if (start === -1) start = s; end = s; } }
-    let isBarre = false;
-    if (end - start >= 2) {
-      isBarre = true;
-      for (let s = start + 1; s < end; s++) {
-        if (frets[s] === 0 || (frets[s] !== 'x' && frets[s] > 0 && frets[s] < minF)) { isBarre = false; break; }
-      }
-    }
-
-    let currentFinger = 1;
-    if (isBarre) {
-      for (let s = start; s <= end; s++) { if (frets[s] === minF) fingers[s] = 1; }
-      currentFinger = 2;
-    }
-
-    const unassigned = played.filter(p => fingers[p.s] === null);
-    const fretGroups = {};
-    unassigned.forEach(p => { if (!fretGroups[p.f]) fretGroups[p.f] = []; fretGroups[p.f].push(p.s); });
-
-    Object.keys(fretGroups).sort((a, b) => a - b).forEach(f => {
-      fretGroups[f].forEach(s => {
-        fingers[s] = currentFinger;
-        if (currentFinger < 4) currentFinger++;
-      });
-    });
-
-    return fingers;
+    return finalVoicings;
   }
 
   function scoreVoicing(voicing, chordNotes) {
@@ -366,57 +317,41 @@ const GuitarTheory = (() => {
     const played = voicing.filter(f => f.fret !== 'x');
     if (!played.length) return 0;
 
-    score += played.length * 8;
-    const fretsOnly = played.map(f => f.fret);
-    const maxFretUsed = Math.max(...fretsOnly);
-    const avgFret = fretsOnly.reduce((s, f) => s + f, 0) / played.length;
-    score -= avgFret * 8;
+    // Favor more strings played
+    score += played.length * 10;
+    
+    // Penalize high frets
+    const avgFret = played.reduce((s, f) => s + f.fret, 0) / played.length;
+    score -= avgFret * 3;
 
-    const used = new Set(played.map(f => f.interval));
-    const all  = new Set(chordNotes.map(cn => cn.interval));
-    score += [...all].filter(i => used.has(i)).length * 15;
+    // Ensure all notes of the chord are present
+    const usedIntervals = new Set(played.map(f => f.interval));
+    const requiredIntervals = new Set(chordNotes.map(cn => cn.interval));
+    score += [...requiredIntervals].filter(i => usedIntervals.has(i)).length * 15;
 
-    // Penalise internal muted strings
+    // ERGONOMICS: Penalize large stretches
+    const frets = played.map(f => f.fret).filter(f => f > 0);
+    if (frets.length > 0) {
+        const span = Math.max(...frets) - Math.min(...frets);
+        if (span > 3) score -= 50; // Too hard
+        if (span > 2) score -= 20; 
+    }
+
+    // ERGONOMICS: Penalize "unnatural" gaps between fingers
+    // Standard shapes (E, A, C, G, D) are very compact.
+    const uniqueFrets = [...new Set(frets)].sort((a,b) => a-b);
+    for(let i=0; i < uniqueFrets.length - 1; i++) {
+        if (uniqueFrets[i+1] - uniqueFrets[i] > 2) score -= 40;
+    }
+
+    // Penalize internal muted strings
     const fi = voicing.findIndex(f => f.fret !== 'x');
     const li = 5 - [...voicing].reverse().findIndex(f => f.fret !== 'x');
-    for (let i = fi + 1; i < li; i++) { if (voicing[i] && voicing[i].fret === 'x') score -= 20; }
+    for (let i = fi + 1; i < li; i++) { if (voicing[i].fret === 'x') score -= 30; }
 
-    score += played.filter(f => f.fret === 0).length * 25;
-
-    // First position bonus: Very high priority for chords in the first 4 frets
-    if (maxFretUsed <= 4) score += 40;
-
-    // Reward barre chords (same fret played on multiple strings)
-    const fretCounts = {};
-    for (let s = 0; s < 6; s++) {
-      const f = voicing[s] ? voicing[s].fret : 'x';
-      if (f !== 'x' && f > 0) {
-        if (!fretCounts[f]) fretCounts[f] = { start: s, end: s };
-        fretCounts[f].end = s;
-      }
-    }
-
-    for (const fStr in fretCounts) {
-      const f = parseInt(fStr);
-      const data = fretCounts[f];
-      if (data.end - data.start >= 2) {
-        let valid = true;
-        for (let s = data.start + 1; s < data.end; s++) {
-          const midFret = voicing[s] ? voicing[s].fret : 'x';
-          if (midFret === 0) {
-            valid = false; break;
-          }
-          if (midFret !== 'x' && midFret > 0 && midFret < f) {
-            valid = false; break;
-          }
-        }
-        if (valid) {
-          if (data.end - data.start >= 4) score += 20; // Standard E or A shape barre
-          else score += 10; // Smaller barre
-        }
-      }
-    }
-
+    // Favor open strings slightly for beginner comfort
+    score += played.filter(f => f.fret === 0).length * 5;
+    
     return score;
   }
 
@@ -644,7 +579,6 @@ const GuitarTheory = (() => {
     parseChordName, getChordNotes, generateChord,
     mapChordToFretboard, noteAtFret,
     identifyChord,
-    calculateFingering,
     listQualities, chromaticScale, getScale,
     spanishToEnglish, toSpanishDisplayName,
     ENG_TO_SPANISH,

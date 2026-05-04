@@ -6,7 +6,7 @@ Genera además páginas HTML estáticas por cada canción para mejorar el SEO (A
 
 Uso: python pdf_to_html.py
 Genera: 
-1. songs_data.js  (se incluye en guitar-tool.html)
+1. songs_data.js  (se incluye en acordes.html)
 2. Carpeta canciones/ con archivos HTML individuales
 3. Actualiza sitemap.xml automáticamente
 """
@@ -71,8 +71,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             </a>
             <ul class="nav-links">
                 <li><a href="../index.html">Inicio</a></li>
-                <li><a href="../guitar-tool.html" class="active">Letras con Acordes</a></li>
-                <li><a href="../guitar-tool.html">🎸 Herramienta</a></li>
+                <li><a href="../acordes.html" class="active">Herramienta de Acordes</a></li>
+                <li><a href="../guitar-tool.html">🎸 Generador</a></li>
             </ul>
         </nav>
     </header>
@@ -80,7 +80,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <main>
     <div class="song-container">
         <h1 style="font-family: 'Outfit', sans-serif; color: var(--stripe-blue); margin-bottom: 10px; text-align: center;">{title}</h1>
-        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 0.9rem;">Categoría: {category_name} · <strong><a href="../guitar-tool.html" style="color: var(--stripe-blue);">Visor Interactivo y PDF</a></strong></p>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 0.9rem;">Categoría: {category_name} · <strong><a href="../acordes.html" style="color: var(--stripe-blue);">Visor Interactivo y PDF</a></strong></p>
         
         {video_embed}
 
@@ -93,7 +93,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         {html_content}
 
         <div style="text-align: center; margin-top: 40px;">
-            <a href="../guitar-tool.html" class="btn-back">⬅ Volver al Cancionero Principal</a>
+            <a href="../acordes.html" class="btn-back">⬅ Volver al Cancionero Principal</a>
         </div>
     </div>
     </main>
@@ -102,24 +102,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <div class="container" style="text-align: center; padding: 20px;">
             <p>&copy; 2026 Acordes Rafa. Todos los derechos reservados.</p>
             <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.8;">
-                <span id="visitas-count">Cargando visitas...</span>
+                <span id="visitas-count"></span>
             </div>
         </div>
     </footer>
 
+    <script src="../site-performance.js"></script>
     <script>
-        fetch('https://api.counterapi.dev/v1/acordesrafa/letras-{safe_name}/up')
-            .then(res => {{
-                if (!res.ok) throw new Error('Servicio no disponible');
-                return res.json();
-            }})
-            .then(data => {{
-                document.getElementById('visitas-count').innerHTML = `<strong>${{data.count.toLocaleString()}}</strong> visitas desde 2026`;
-            }})
-            .catch(err => {{
-                console.error('Error al cargar visitas:', err);
-                document.getElementById('visitas-count').innerHTML = 'Contador temporalmente fuera de línea';
-            }});
+        loadVisitCounter('letras-{safe_name}');
     </script>
 </body>
 </html>"""
@@ -231,7 +221,7 @@ def update_sitemap(new_urls):
         print(f"Sitemap actualizado: {added} nuevas URLs añadidas.")
 
 def load_metadata():
-    """Carga los metadatos (descripciones y tutoriales) desde guitar-tool.html"""
+    """Carga los metadatos (descripciones y tutoriales) desde acordes.html"""
     metadata = {"populares": {}, "dios": {}}
     raw_path = os.path.join(BASE_DIR, "cancionero_raw.txt")
     if not os.path.exists(raw_path):

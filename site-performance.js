@@ -22,7 +22,9 @@ function loadVisitCounter(path) {
                 })
                 .catch(err => {
                     console.error('Error al cargar visitas:', err);
-                    target.innerHTML = 'Contador temporalmente fuera de linea';
+                    // Hide container if it fails to avoid showing "Cargando..." or error
+                    const container = document.getElementById('visitas-container');
+                    if (container) container.style.display = 'none';
                 });
         });
     });
@@ -39,3 +41,53 @@ function loadAdsense() {
         });
     });
 }
+
+function initCookieBanner() {
+    if (localStorage.getItem('cookies-accepted') === 'true') return;
+
+    const banner = document.createElement('div');
+    banner.id = 'cookie-banner';
+    banner.style.cssText = `
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #1a1a1a;
+        color: #fff;
+        padding: 14px 20px;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        z-index: 9999;
+        flex-wrap: wrap;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+        font-family: sans-serif;
+    `;
+
+    banner.innerHTML = `
+        <span>Usamos cookies para mejorar tu experiencia y mostrar anuncios relevantes. 
+        <a href="privacidad.html" style="color: #f0a500; text-decoration: underline;">Política de privacidad</a></span>
+        <button id="accept-cookies" style="
+            background: #f0a500;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #000;
+            transition: background 0.2s;
+        ">Aceptar</button>
+    `;
+
+    document.body.appendChild(banner);
+
+    document.getElementById('accept-cookies').addEventListener('click', () => {
+        banner.style.display = 'none';
+        localStorage.setItem('cookies-accepted', 'true');
+    });
+}
+
+// Auto-init cookie banner
+window.addEventListener('DOMContentLoaded', initCookieBanner);

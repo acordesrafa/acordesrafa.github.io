@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador, Buscador o Identificador de Acordes | Acordes Rafa</title>
+    <title>Herramienta de Acordes | Acordes Rafa</title>
     <meta name="description" content="Generador e identificador interactivo de acordes de guitarra. Basado en teoría musical formal.">
 
     <link rel="stylesheet" href="styles.css">
@@ -49,18 +49,11 @@
         .tool-header h1 {
             font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             font-size: 2.2rem;
-            margin-bottom: 8px;
-            line-height: 1.4;
-            padding-top: 5px;
-            padding-bottom: 5px;
-        }
-
-        .gradient-text {
             background: linear-gradient(135deg, var(--accent), var(--accent2));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            display: inline-block;
+            margin-bottom: 8px;
         }
 
         .tool-header p {
@@ -100,7 +93,10 @@
             color: var(--accent);
         }
 
-        .tool-panel { display: block; margin-bottom: 40px; }
+        .tool-panel { display: none; }
+        .tool-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 
         /* ── Card ── */
         .card {
@@ -498,8 +494,8 @@
             </a>
             <ul class="nav-links">
                 <li><a href="index.html#inicio">Inicio</a></li>
-                <li><a href="guitar-tool.html">Letras con Acordes</a></li>
-                <li><a href="guitar-tool.html" class="active">🎸 Herramienta</a></li>
+                <li><a href="acordes.html">Herramienta de Acordes</a></li>
+                <li><a href="guitar-tool.html" class="active">🎸 Generador</a></li>
                 <li><a href="index.html#apps">Apps</a></li>
                 <li><a href="index.html#lecciones">Lecciones</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
@@ -516,92 +512,81 @@
     <main class="tool-container">
 
         <div class="tool-header">
-            <h1>🎸 <span class="gradient-text">Generador, Buscador o Identificador de Acordes</span></h1>
+            <h1>🎸 Herramienta de Acordes</h1>
             <p>Genera digitaciones desde un nombre o identifica un acorde desde las pisadas — basado en teoría musical formal</p>
         </div>
 
-        <!-- ═══════════════════════════════════════════════ -->
-        <!-- HERRAMIENTA UNIFICADA -->
-        <!-- ═══════════════════════════════════════════════ -->
-        <div class="card unified-card">
-            <p class="section-subtitle">Escribe un acorde o interactúa con el diapasón</p>
-            <div class="input-row" style="margin-bottom: 20px;">
-                <input type="text" id="chordInput" class="chord-input"
-                    placeholder="Ej: Cmaj7 · DOmaj7 · G7 · SOL7 · MIm7b5 · SIb13"
-                    autocomplete="off" spellcheck="false"
-                    oninput="liveGenerate()"
-                    onkeydown="if(event.key==='Enter') generateChord()">
-                <button class="btn-generate" onclick="generateChord()">Generar</button>
-                <button class="btn-generate" style="background:var(--surface);color:var(--muted);box-shadow:none;border:2px solid var(--border);" onclick="clearIdentifier()">Limpiar</button>
-            </div>
+        <div class="card" style="margin-bottom: 30px; line-height: 1.8; color: var(--muted);">
+            <p style="margin-bottom: 15px;">Bienvenido a la <strong>Herramienta de Acordes de Acordes Rafa</strong>, una aplicación interactiva diseñada para ayudar a guitarristas de todos los niveles a comprender y visualizar la armonía en el mástil. Ya sea que estés componiendo una canción y necesites una digitación específica, o que hayas encontrado una posición interesante en tu guitarra y quieras saber cómo se llama el acorde, esta herramienta es tu compañera ideal.</p>
             
-            <div class="presets-row" style="margin-bottom: 30px;">
-                <span style="font-size:0.75rem;color:var(--muted);align-self:center;">Ejemplos:</span>
-                <button class="preset-btn" onclick="setChord('Cmaj7')">Cmaj7</button>
-                <button class="preset-btn" onclick="setChord('Am7')">Am7</button>
-                <button class="preset-btn" onclick="setChord('G7')">G7</button>
-                <button class="preset-btn" onclick="setChord('F#m7b5')">F#m7b5</button>
-                <button class="preset-btn" onclick="setChord('Bdim7')">Bdim7</button>
-                <button class="preset-btn" onclick="setChord('Bb13')">Bb13</button>
-                <button class="preset-btn" onclick="setChord('Esus4')">Esus4</button>
-            </div>
+            <p style="margin-bottom: 15px;">Nuestra plataforma cuenta con dos modos principales: el <strong>Generador de Acordes</strong>, que utiliza algoritmos basados en teoría musical para mostrarte las mejores formas de tocar cualquier acorde (desde tríadas básicas hasta complejas extensiones de jazz), y el <strong>Identificador de Acordes</strong>, que analiza las notas que coloques en el diapasón virtual para darte el nombre exacto y sus posibles variantes armónicas.</p>
 
-            <p class="section-subtitle" style="text-align: center;">Diapasón Interactivo</p>
-            <div class="fretboard-interactive-wrap" id="interactiveFretboardContainer" style="margin-bottom: 20px;">
-                <!-- SVG gets generated here -->
-            </div>
+            <p style="margin-bottom: 15px;">Para usar el generador, simplemente escribe el nombre del acorde en el buscador (por ejemplo, "Cmaj7" o "LAm7") y presiona Enter. Verás diagramas claros con la posición de los dedos y las notas que componen el acorde. En el identificador, haz clic sobre los trastes en el mástil interactivo para marcar tus dedos; el sistema calculará instantáneamente la estructura interválica y te sugerirá el nombre más apropiado según la teoría musical moderna.</p>
 
-            <div class="string-controls">
-                <!-- 6 string inputs, low E → high E -->
-                <div class="string-col">
-                    <div class="string-label">E₂ (MI)</div>
-                    <input type="text" class="fret-input" id="str0" placeholder="0" maxlength="2" oninput="onFretInput(0,this)">
-                    <button class="btn-mute" id="mute0" onclick="toggleMute(0)">✕ Mute</button>
+            <p>Esta herramienta es totalmente gratuita y ha sido optimizada para funcionar tanto en computadoras como en dispositivos móviles. Esperamos que te sea de gran utilidad en tu camino de aprendizaje y que te ayude a desbloquear nuevas posibilidades sonoras en tu guitarra.</p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- UNIFIED CHORD TOOL -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="card">
+            <p class="section-subtitle">Generar, Buscar o Identificar Acordes</p>
+            
+            <div class="two-col" style="margin-bottom: 24px; align-items: start;">
+                <!-- Left: Text Search -->
+                <div>
+                    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 10px;">Escribe el nombre del acorde:</p>
+                    <div class="input-row">
+                        <input type="text" id="chordInput" class="chord-input"
+                            placeholder="Ej: Cmaj7, LAm7, SOL7..."
+                            autocomplete="off" spellcheck="false"
+                            oninput="liveGenerate()"
+                            onkeydown="if(event.key==='Enter') generateChord()">
+                        <button class="btn-generate" onclick="generateChord()">Generar</button>
+                    </div>
+                    <div class="presets-row" style="margin-top: 15px;">
+                        <button class="preset-btn" onclick="setChord('Cmaj7')">Cmaj7</button>
+                        <button class="preset-btn" onclick="setChord('Am7')">Am7</button>
+                        <button class="preset-btn" onclick="setChord('G7')">G7</button>
+                        <button class="preset-btn" onclick="setChord('F#m7b5')">F#m7b5</button>
+                    </div>
                 </div>
-                <div class="string-col">
-                    <div class="string-label">A₂ (LA)</div>
-                    <input type="text" class="fret-input" id="str1" placeholder="0" maxlength="2" oninput="onFretInput(1,this)">
-                    <button class="btn-mute" id="mute1" onclick="toggleMute(1)">✕ Mute</button>
-                </div>
-                <div class="string-col">
-                    <div class="string-label">D₃ (RE)</div>
-                    <input type="text" class="fret-input" id="str2" placeholder="0" maxlength="2" oninput="onFretInput(2,this)">
-                    <button class="btn-mute" id="mute2" onclick="toggleMute(2)">✕ Mute</button>
-                </div>
-                <div class="string-col">
-                    <div class="string-label">G₃ (SOL)</div>
-                    <input type="text" class="fret-input" id="str3" placeholder="0" maxlength="2" oninput="onFretInput(3,this)">
-                    <button class="btn-mute" id="mute3" onclick="toggleMute(3)">✕ Mute</button>
-                </div>
-                <div class="string-col">
-                    <div class="string-label">B₃ (SI)</div>
-                    <input type="text" class="fret-input" id="str4" placeholder="0" maxlength="2" oninput="onFretInput(4,this)">
-                    <button class="btn-mute" id="mute4" onclick="toggleMute(4)">✕ Mute</button>
-                </div>
-                <div class="string-col">
-                    <div class="string-label">E₄ (MI)</div>
-                    <input type="text" class="fret-input" id="str5" placeholder="0" maxlength="2" oninput="onFretInput(5,this)">
-                    <button class="btn-mute" id="mute5" onclick="toggleMute(5)">✕ Mute</button>
+
+                <!-- Right: Quick Controls -->
+                <div>
+                    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 10px;">O marca las pisadas en el mástil abajo:</p>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn-generate" style="background:var(--surface); color:var(--muted); border:2px solid var(--border); box-shadow:none; flex:1;" onclick="clearUnified()">Limpiar Todo</button>
+                        <button class="btn-generate" style="background:var(--success); flex:1;" onclick="identifyChord()">Identificar</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="presets-row" style="justify-content:center; margin-top: 20px;">
-                <span style="font-size:0.75rem;color:var(--muted);align-self:center;">Probar formas:</span>
-                <button class="preset-btn" onclick="setFrets([0,2,2,0,0,0])">Em</button>
-                <button class="preset-btn" onclick="setFrets(['x',0,2,2,1,0])">Am</button>
-                <button class="preset-btn" onclick="setFrets([3,2,0,0,0,3])">G</button>
-                <button class="preset-btn" onclick="setFrets(['x',0,2,2,2,0])">A</button>
-                <button class="preset-btn" onclick="setFrets([0,2,0,1,0,0])">E7</button>
-                <button class="preset-btn" onclick="setFrets(['x',0,2,0,1,0])">Am7</button>
-                <button class="preset-btn" onclick="setFrets([3,2,0,0,0,1])">G7</button>
+            <!-- Unified Interactive Fretboard & Guide -->
+            <div style="display: flex; gap: 20px; align-items: center; justify-content: center; flex-wrap: wrap;">
+                <div class="fretboard-interactive-wrap" id="unifiedFretboardContainer" style="flex: 1; min-width: 300px;">
+                    <!-- SVG generated here -->
+                </div>
+                <div style="text-align: center; min-width: 200px;">
+                    <p style="font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-bottom: 10px; text-transform: uppercase;">Guía de Dedos</p>
+                    <img src="fingering-guide.png" alt="Guía de dedos guitarra" style="width: 100%; max-width: 180px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                </div>
+            </div>
+
+            <!-- Hidden inputs for identifying (used by JS) -->
+            <div id="hiddenInputs" style="display:none;">
+                <input type="text" id="str0"><input type="text" id="str1"><input type="text" id="str2">
+                <input type="text" id="str3"><input type="text" id="str4"><input type="text" id="str5">
+                <button id="mute0"></button><button id="mute1"></button><button id="mute2"></button>
+                <button id="mute3"></button><button id="mute4"></button><button id="mute5"></button>
             </div>
         </div>
 
-        <!-- RESULT AREA -->
+        <!-- Result area -->
         <div id="unifiedResult">
             <div class="card placeholder">
-                <div class="icon">🔍</div>
-                <p>Ingresa un acorde o dibújalo en el diapasón para comenzar</p>
+                <div class="icon">🎸</div>
+                <p>Usa el buscador o haz clic en el mástil para comenzar</p>
             </div>
         </div>
 
