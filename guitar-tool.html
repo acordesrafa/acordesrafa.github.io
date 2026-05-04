@@ -481,6 +481,49 @@
             gap: 10px;
         }
         .placeholder .icon { font-size: 3rem; opacity: 0.3; }
+        /* Modal Zoom */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 24px;
+            max-width: 90%;
+            max-height: 90vh;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 32px;
+            color: var(--muted);
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: color 0.2s;
+        }
+        .modal-close:hover { color: var(--accent); }
+
+        .modal-zoom-svg-wrap {
+            width: 100%;
+            max-width: 700px;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -587,6 +630,17 @@
             <div class="card placeholder">
                 <div class="icon">🎸</div>
                 <p>Usa el buscador o haz clic en el mástil para comenzar</p>
+            </div>
+        </div>
+
+        <!-- Zoom Modal -->
+        <div id="zoomModal" class="modal-overlay" onclick="closeZoomModal()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <button class="modal-close" onclick="closeZoomModal()">&times;</button>
+                <div id="zoomModalBody" class="modal-zoom-svg-wrap"></div>
+                <div style="text-align:center; margin-top:10px; width: 100%;">
+                    <button class="btn-generate" id="zoomSelectBtn" style="width: 100%; max-width: 300px;">Seleccionar este acorde</button>
+                </div>
             </div>
         </div>
 

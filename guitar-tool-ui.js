@@ -184,7 +184,40 @@ function selectVoicing(idx) {
 function buildVoicingCard(voicing, data, idx) {
     const svgMini = renderHorizontalFretDiagram(voicing, data, "mini-diag", true);
     const fretsStr = voicing.map(f => f.fret === 'x' ? 'x' : f.fret).join('-');
-    return `<div class="voicing-card ${idx === selectedVoicingIdx ? 'selected' : ''}" onclick="selectVoicing(${idx})" id="voicing-${idx}" title="${fretsStr}" style="position:relative;">${svgMini}<div class="voicing-label">${fretsStr}</div></div>`;
+    return `
+        <div class="voicing-card ${idx === selectedVoicingIdx ? 'selected' : ''}" id="voicing-${idx}" title="Click para zoom, etiqueta para seleccionar" style="position:relative;">
+            <div onclick="openZoomModal(${idx})" style="cursor:zoom-in;">${svgMini}</div>
+            <div class="voicing-label" onclick="selectVoicing(${idx})" style="cursor:pointer; background:var(--surface); border-radius:8px; padding:4px; margin-top:8px; border:1px solid var(--border);">${fretsStr}</div>
+        </div>`;
+}
+
+// ── Zoom Modal ──
+
+function openZoomModal(idx) {
+    if (!currentChordData || !currentChordData.voicings[idx]) return;
+    const voicing = currentChordData.voicings[idx];
+    const modal = document.getElementById('zoomModal');
+    const body = document.getElementById('zoomModalBody');
+    const btn = document.getElementById('zoomSelectBtn');
+
+    if (!modal || !body) return;
+
+    // Render large version
+    body.innerHTML = renderHorizontalFretDiagram(voicing, currentChordData, "zoom-diag", false);
+    
+    btn.onclick = () => {
+        selectVoicing(idx);
+        closeZoomModal();
+    };
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // Prevent scroll
+}
+
+function closeZoomModal() {
+    const modal = document.getElementById('zoomModal');
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
 }
 
 // ── SVG Renderers ──
@@ -273,8 +306,9 @@ function renderInteractiveFretboard() {
         const y = TOP + i * strH;
         const v = vF[i], isMuted = muteState[i], isOpen = !isMuted && v.fret === 0;
         svg += `<line x1="${LEFT}" y1="${y}" x2="${RIGHT}" y2="${y}" stroke="#9ca3af" stroke-width="${1 + (5-i)*0.5}" />`;
-        svg += `<g class="fret-cell" style="cursor:pointer" onclick="handleFretClick(${i}, 0)"><rect x="${RIGHT}" y="${y - strH/2}" width="40" height="${strH}" fill="transparent" /><text x="${RIGHT + 25}" y="${y + 4}" font-size="14" fill="${isMuted ? 'var(--muted)' : 'var(--accent)'}" font-weight="700" text-anchor="middle" font-family="var(--mono)">${stringNames[i]}</text></g>`;
-        svg += `<g class="fret-cell" style="cursor:pointer" onclick="handleFretClick(${i}, 'x')"><rect x="${RIGHT + 40}" y="${y - strH/2}" width="30" height="${strH}" fill="transparent" /><text x="${RIGHT + 55}" y="${y + 5}" font-size="14" fill="${isMuted ? '#ef4444' : 'var(--muted)'}" font-weight="700" text-anchor="middle" font-family="var(--mono)">✕</text></g>`;
+        // Open string/Mute area
+        svg += `<g class="fret-cell" style="cursor:pointer" onclick="handleFretClick(${i}, 0)" ondblclick="handleFretDblClick(${i})"><rect x="${RIGHT}" y="${y - strH/2}" width="40" height="${strH}" fill="transparent" /><text x="${RIGHT + 25}" y="${y + 4}" font-size="14" fill="${isMuted ? 'var(--muted)' : 'var(--accent)'}" font-weight="700" text-anchor="middle" font-family="var(--mono)">${stringNames[i]}</text></g>`;
+        svg += `<g class="fret-cell" style="cursor:pointer" onclick="handleFretClick(${i}, 'x')" ondblclick="handleFretDblClick(${i})"><rect x="${RIGHT + 40}" y="${y - strH/2}" width="30" height="${strH}" fill="transparent" /><text x="${RIGHT + 55}" y="${y + 5}" font-size="14" fill="${isMuted ? '#ef4444' : 'var(--muted)'}" font-weight="700" text-anchor="middle" font-family="var(--mono)">✕</text></g>`;
         if(isOpen) {
             svg += `<circle cx="${RIGHT + 25}" cy="${y - 1}" r="10" fill="transparent" stroke="var(--accent)" stroke-width="2" style="pointer-events:none;" />`;
             const spanNote = GuitarTheory.ENG_TO_SPANISH[v.note] || v.note;
@@ -283,7 +317,7 @@ function renderInteractiveFretboard() {
         for(let f = 1; f <= FRETS; f++) {
             const cx = RIGHT - (f - 0.5) * fretW;
             const isActive = !isMuted && v.fret === f;
-            svg += `<g class="fret-cell" style="cursor:pointer" onclick="handleFretClick(${i}, ${f})"><rect x="${RIGHT - f * fretW}" y="${y - strH/2}" width="${fretW}" height="${strH}" fill="transparent" /></g>`;
+            svg += `<g class="fret-cell" style="cursor:pointer" onclick="handleFretClick(${i}, ${f})" ondblclick="handleFretDblClick(${i})"><rect x="${RIGHT - f * fretW}" y="${y - strH/2}" width="${fretW}" height="${strH}" fill="transparent" /></g>`;
             if (isActive) {
                 svg += `<circle cx="${cx}" cy="${y}" r="13" fill="var(--accent)" style="pointer-events:none;"/><text x="${cx}" y="${y + 4}" font-size="12" text-anchor="middle" fill="white" font-weight="700" style="pointer-events:none;">${v.finger || ''}</text>`;
                 const spanNote = GuitarTheory.ENG_TO_SPANISH[v.note] || v.note;
@@ -299,8 +333,29 @@ function handleFretClick(strIdx, fretVal) {
     isManualInput = true;
     const input = document.getElementById('str' + strIdx);
     if(!input) return;
-    muteState[strIdx] = (fretVal === 'x');
-    input.value = fretVal;
+    
+    // Toggle logic: if clicking same fret, mute it
+    if (input.value == fretVal && !muteState[strIdx]) {
+        muteState[strIdx] = true;
+        input.value = 'x';
+    } else {
+        muteState[strIdx] = (fretVal === 'x');
+        input.value = fretVal;
+    }
+    
+    renderInteractiveFretboard();
+    identifyChord(true);
+}
+
+function handleFretDblClick(strIdx) {
+    isManualInput = true;
+    const input = document.getElementById('str' + strIdx);
+    if(!input) return;
+    
+    // Force mute/clear on double click
+    muteState[strIdx] = true;
+    input.value = 'x';
+    
     renderInteractiveFretboard();
     identifyChord(true);
 }
