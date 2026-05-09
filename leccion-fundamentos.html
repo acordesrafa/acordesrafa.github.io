@@ -12,52 +12,59 @@
     <link rel="icon" href="Fondoapp-420.webp">
     <style>
         .lesson-header {
-            padding: 150px 20px 50px;
-            background: linear-gradient(135deg, rgba(99, 91, 255, 0.05) 0%, rgba(255, 56, 92, 0.05) 100%);
+            padding: 140px 24px 50px;
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.06) 0%, rgba(255, 107, 138, 0.04) 100%);
             text-align: center;
         }
         .lesson-header h1 {
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            font-size: 3rem;
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
             color: var(--text-dark);
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+        .lesson-header p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
         }
         .lesson-content {
             max-width: 900px;
             margin: 0 auto;
-            padding: 50px 20px 100px;
+            padding: 50px 24px 100px;
         }
         .lesson-content h2 {
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            font-size: 2rem;
-            color: var(--stripe-blue);
-            margin-top: 40px;
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-top: 48px;
             margin-bottom: 20px;
+            letter-spacing: -0.3px;
         }
         .lesson-content p {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             color: var(--text-muted);
-            line-height: 1.8;
+            line-height: 1.9;
             margin-bottom: 20px;
         }
         .lesson-content ul, .lesson-content ol {
-            margin-left: 30px;
-            margin-bottom: 30px;
+            margin-left: 28px;
+            margin-bottom: 28px;
         }
         .lesson-content li {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--text-muted);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            line-height: 1.7;
         }
         .tip-box {
             background-color: var(--bg-secondary);
-            border-left: 5px solid var(--stripe-blue);
-            padding: 25px;
-            border-radius: 8px;
+            border-left: 5px solid var(--primary);
+            padding: 28px;
+            border-radius: var(--radius-md);
             margin: 40px 0;
         }
         .tip-box h4 {
-            color: var(--stripe-blue);
+            color: var(--primary);
             margin-bottom: 10px;
             font-size: 1.2rem;
         }
@@ -65,21 +72,28 @@
             display: inline-flex;
             align-items: center;
             margin-bottom: 30px;
-            color: var(--stripe-blue);
+            color: var(--primary);
             text-decoration: none;
             font-weight: 600;
+            transition: var(--transition);
+            gap: 6px;
+        }
+        .back-btn:hover {
+            color: var(--primary-dark);
+            transform: translateX(-4px);
         }
         .lesson-image-placeholder {
             width: 100%;
             height: 400px;
-            background: #eee;
-            border-radius: 12px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
             margin: 30px 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #999;
+            color: var(--text-light);
             font-style: italic;
+            border: 1px solid var(--border);
         }
     </style>
 </head>
@@ -93,8 +107,8 @@
             </a>
             <ul class="nav-links">
                 <li><a href="index.html#inicio">Inicio</a></li>
-                <li><a href="acordes.html">Herramienta de Acordes</a></li>
-                <li><a href="guitar-tool.html">🎸 Generador</a></li>
+                <li><a href="acordes.html">Tutoriales y Acordes</a></li>
+                <li><a href="guitar-tool.html">Herramienta de Acordes</a></li>
                 <li><a href="index.html#apps">Apps</a></li>
                 <li><a href="index.html#lecciones">Lecciones</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
@@ -165,7 +179,7 @@
         <p>Ya conoces tu herramienta de trabajo. Ahora estás listo para el siguiente paso: aprender tus primeros acordes y ritmos. Recuerda que todos los grandes guitarristas empezaron exactamente donde estás tú hoy. ¡Mucha paciencia y a disfrutar del proceso!</p>
 
         <div style="margin-top: 50px; text-align: center;">
-            <a href="index.html#lecciones" class="back-btn" style="background: var(--bg-secondary); padding: 10px 20px; border-radius: 8px; border: 1px solid var(--stripe-blue);">
+            <a href="index.html#lecciones" class="back-btn" style="background: var(--primary-light); padding: 12px 24px; border-radius: var(--radius-full); border: none;">
                 ← Volver a todas las Lecciones
             </a>
         </div>

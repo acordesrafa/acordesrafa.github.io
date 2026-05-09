@@ -73,8 +73,8 @@
             </a>
             <ul class="nav-links">
                 <li><a href="index.html#inicio">Inicio</a></li>
-                <li><a href="acordes.html">Herramienta de Acordes</a></li>
-                <li><a href="guitar-tool.html">🎸 Generador</a></li>
+                <li><a href="acordes.html">Tutoriales y Acordes</a></li>
+                <li><a href="guitar-tool.html">Herramienta de Acordes</a></li>
                 <li><a href="index.html#apps">Apps</a></li>
                 <li><a href="index.html#lecciones">Lecciones</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
@@ -293,18 +293,19 @@ Ya sea que seas principiante absoluto o busques pulir tus habilidades intermedia
             });
         });
 
-        // Tabbed navigation handling
+        // Tabbed navigation handling — now all sections are always visible
         function showSection(targetId) {
             const section = document.getElementById(targetId);
             if (section) {
-                // Hide all sections
+                // Remove active class from all, add to target for highlight
                 document.querySelectorAll('section').forEach(s => {
                     s.classList.remove('active-section');
                 });
-                // Show target section
                 section.classList.add('active-section');
-                // Smooth scroll to top
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // Smooth scroll to the section
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const targetPos = section.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
+                window.scrollTo({ top: targetPos, behavior: 'smooth' });
             }
         }
 

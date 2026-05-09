@@ -486,25 +486,38 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 2000;
+            animation: modalFadeIn 0.2s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-content {
             background: white;
-            padding: 30px;
-            border-radius: 24px;
-            max-width: 90%;
-            max-height: 90vh;
+            padding: 40px;
+            border-radius: 28px;
+            max-width: 95%;
+            max-height: 92vh;
+            width: auto;
             position: relative;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
             align-items: center;
+            animation: modalScaleIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes modalScaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         .modal-close {
@@ -521,8 +534,14 @@
 
         .modal-zoom-svg-wrap {
             width: 100%;
-            max-width: 700px;
+            max-width: 900px;
+            min-width: 500px;
             margin: 20px 0;
+        }
+        @media (max-width: 600px) {
+            .modal-zoom-svg-wrap {
+                min-width: unset;
+            }
         }
     </style>
 </head>
@@ -537,8 +556,8 @@
             </a>
             <ul class="nav-links">
                 <li><a href="index.html#inicio">Inicio</a></li>
-                <li><a href="acordes.html">Herramienta de Acordes</a></li>
-                <li><a href="guitar-tool.html" class="active">🎸 Generador</a></li>
+                <li><a href="acordes.html">Tutoriales y Acordes</a></li>
+                <li><a href="guitar-tool.html" class="active">Herramienta de Acordes</a></li>
                 <li><a href="index.html#apps">Apps</a></li>
                 <li><a href="index.html#lecciones">Lecciones</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
@@ -560,13 +579,7 @@
         </div>
 
         <div class="card" style="margin-bottom: 30px; line-height: 1.8; color: var(--muted);">
-            <p style="margin-bottom: 15px;">Bienvenido a la <strong>Herramienta de Acordes de Acordes Rafa</strong>, una aplicación interactiva diseñada para ayudar a guitarristas de todos los niveles a comprender y visualizar la armonía en el mástil. Ya sea que estés componiendo una canción y necesites una digitación específica, o que hayas encontrado una posición interesante en tu guitarra y quieras saber cómo se llama el acorde, esta herramienta es tu compañera ideal.</p>
-            
-            <p style="margin-bottom: 15px;">Nuestra plataforma cuenta con dos modos principales: el <strong>Generador de Acordes</strong>, que utiliza algoritmos basados en teoría musical para mostrarte las mejores formas de tocar cualquier acorde (desde tríadas básicas hasta complejas extensiones de jazz), y el <strong>Identificador de Acordes</strong>, que analiza las notas que coloques en el diapasón virtual para darte el nombre exacto y sus posibles variantes armónicas.</p>
-
-            <p style="margin-bottom: 15px;">Para usar el generador, simplemente escribe el nombre del acorde en el buscador (por ejemplo, "Cmaj7" o "LAm7") y presiona Enter. Verás diagramas claros con la posición de los dedos y las notas que componen el acorde. En el identificador, haz clic sobre los trastes en el mástil interactivo para marcar tus dedos; el sistema calculará instantáneamente la estructura interválica y te sugerirá el nombre más apropiado según la teoría musical moderna.</p>
-
-            <p>Esta herramienta es totalmente gratuita y ha sido optimizada para funcionar tanto en computadoras como en dispositivos móviles. Esperamos que te sea de gran utilidad en tu camino de aprendizaje y que te ayude a desbloquear nuevas posibilidades sonoras en tu guitarra.</p>
+            <p style="margin-bottom: 0;">Bienvenido a la <strong>Herramienta de Acordes de Acordes Rafa</strong>, una aplicación interactiva diseñada para ayudar a guitarristas de todos los niveles a comprender y visualizar la armonía en el mástil. Ya sea que estés componiendo una canción y necesites una digitación específica, o que hayas encontrado una posición interesante en tu guitarra y quieras saber cómo se llama el acorde, esta herramienta es tu compañera ideal.</p>
         </div>
 
         <!-- ═══════════════════════════════════════════════ -->
@@ -642,6 +655,15 @@
                     <button class="btn-generate" id="zoomSelectBtn" style="width: 100%; max-width: 300px;">Seleccionar este acorde</button>
                 </div>
             </div>
+        </div>
+
+        <!-- Descriptive info -->
+        <div class="card" style="line-height: 1.8; color: var(--muted);">
+            <p style="margin-bottom: 15px;">Nuestra plataforma cuenta con dos modos principales: el <strong>Generador de Acordes</strong>, que utiliza algoritmos basados en teoría musical para mostrarte las mejores formas de tocar cualquier acorde (desde tríadas básicas hasta complejas extensiones de jazz), y el <strong>Identificador de Acordes</strong>, que analiza las notas que coloques en el diapasón virtual para darte el nombre exacto y sus posibles variantes armónicas.</p>
+
+            <p style="margin-bottom: 15px;">Para usar el generador, simplemente escribe el nombre del acorde en el buscador (por ejemplo, "Cmaj7" o "LAm7") y presiona Enter. Verás diagramas claros con la posición de los dedos y las notas que componen el acorde. En el identificador, haz clic sobre los trastes en el mástil interactivo para marcar tus dedos; el sistema calculará instantáneamente la estructura interválica y te sugerirá el nombre más apropiado según la teoría musical moderna.</p>
+
+            <p>Esta herramienta es totalmente gratuita y ha sido optimizada para funcionar tanto en computadoras como en dispositivos móviles. Esperamos que te sea de gran utilidad en tu camino de aprendizaje y que te ayude a desbloquear nuevas posibilidades sonoras en tu guitarra.</p>
         </div>
 
     </main>

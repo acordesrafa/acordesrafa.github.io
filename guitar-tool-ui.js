@@ -185,9 +185,9 @@ function buildVoicingCard(voicing, data, idx) {
     const svgMini = renderHorizontalFretDiagram(voicing, data, "mini-diag", true);
     const fretsStr = voicing.map(f => f.fret === 'x' ? 'x' : f.fret).join('-');
     return `
-        <div class="voicing-card ${idx === selectedVoicingIdx ? 'selected' : ''}" id="voicing-${idx}" title="Click para zoom, etiqueta para seleccionar" style="position:relative;">
-            <div onclick="openZoomModal(${idx})" style="cursor:zoom-in;">${svgMini}</div>
-            <div class="voicing-label" onclick="selectVoicing(${idx})" style="cursor:pointer; background:var(--surface); border-radius:8px; padding:4px; margin-top:8px; border:1px solid var(--border);">${fretsStr}</div>
+        <div class="voicing-card ${idx === selectedVoicingIdx ? 'selected' : ''}" id="voicing-${idx}" onclick="selectVoicing(${idx}); setTimeout(() => openZoomModal(${idx}), 50);" style="cursor:pointer;">
+            ${svgMini}
+            <div class="voicing-label">${fretsStr}</div>
         </div>`;
 }
 
@@ -224,41 +224,46 @@ function closeZoomModal() {
 
 function renderHorizontalFretDiagram(voicing, data, cssClass, isMini = false) {
     const STRINGS = 6, FRETS = 14;
-    const W = isMini ? 320 : 560, H = isMini ? 150 : 210;
-    const LEFT = isMini ? 15 : 20, RIGHT = isMini ? W - 40 : W - 56, TOP = isMini ? 25 : 40, BOTTOM = isMini ? H - 35 : H - 55;
+    const isZoom = cssClass === 'zoom-diag';
+    const W = isZoom ? 800 : isMini ? 320 : 560;
+    const H = isZoom ? 300 : isMini ? 150 : 210;
+    const LEFT = isZoom ? 30 : isMini ? 15 : 20;
+    const RIGHT = isZoom ? W - 60 : isMini ? W - 40 : W - 56;
+    const TOP = isZoom ? 50 : isMini ? 25 : 40;
+    const BOTTOM = isZoom ? H - 70 : isMini ? H - 35 : H - 55;
     const strH = (BOTTOM - TOP) / (STRINGS - 1), fretW = (RIGHT - LEFT) / FRETS;
     const stringNames = ['E', 'A', 'D', 'G', 'B', 'e'];
     const voicingWithFingers = calculateFingerings(voicing);
     let svg = `<svg width="100%" viewBox="0 0 ${W} ${H}" class="fretboard-svg ${cssClass}" preserveAspectRatio="xMidYMid meet">`;
 
+    const fretNumSize = isZoom ? 14 : isMini ? 8 : 11;
     for (let f = 1; f <= FRETS; f++) {
         const x = RIGHT - (f - 0.5) * fretW;
-        svg += `<text x="${x}" y="${TOP - (isMini ? 10 : 16)}" font-size="${isMini ? 8 : 11}" fill="var(--muted)" font-weight="700" text-anchor="middle" font-family="var(--mono)">${f}</text>`;
+        svg += `<text x="${x}" y="${TOP - (isMini ? 10 : (isZoom ? 20 : 16))}" font-size="${fretNumSize}" fill="var(--muted)" font-weight="700" text-anchor="middle" font-family="var(--mono)">${f}</text>`;
     }
     for (let f = 0; f <= FRETS; f++) {
         const x = RIGHT - f * fretW;
-        svg += `<line x1="${x}" y1="${TOP}" x2="${x}" y2="${BOTTOM}" stroke="${f === 0 ? 'var(--text)' : '#d1d5db'}" stroke-width="${f === 0 ? (isMini ? 2 : 4) : 1}" />`;
+        svg += `<line x1="${x}" y1="${TOP}" x2="${x}" y2="${BOTTOM}" stroke="${f === 0 ? 'var(--text)' : '#d1d5db'}" stroke-width="${f === 0 ? (isZoom ? 5 : isMini ? 2 : 4) : (isZoom ? 2 : 1)}" />`;
     }
     for (let i = 0; i < STRINGS; i++) {
         const y = TOP + i * strH;
         const v = voicingWithFingers[i];
         const isMuted = v.fret === 'x';
         const isOpen = !isMuted && v.fret === 0;
-        svg += `<line x1="${LEFT}" y1="${y}" x2="${RIGHT}" y2="${y}" stroke="#9ca3af" stroke-width="${1 + (5-i)*(isMini ? 0.2 : 0.4)}" />`;
-        if (isMuted) svg += `<text x="${RIGHT + (isMini ? 15 : 42)}" y="${y + 4}" font-size="${isMini ? 10 : 12}" fill="#ef4444" font-weight="700" text-anchor="middle" font-family="var(--mono)">✕</text>`;
+        svg += `<line x1="${LEFT}" y1="${y}" x2="${RIGHT}" y2="${y}" stroke="#9ca3af" stroke-width="${1 + (5-i)*(isMini ? 0.2 : (isZoom ? 0.6 : 0.4))}" />`;
+        if (isMuted) svg += `<text x="${RIGHT + (isMini ? 15 : (isZoom ? 50 : 42))}" y="${y + 4}" font-size="${isZoom ? 16 : isMini ? 10 : 12}" fill="#ef4444" font-weight="700" text-anchor="middle" font-family="var(--mono)">✕</text>`;
         if (isOpen) {
-            svg += `<circle cx="${RIGHT + (isMini ? 15 : 21)}" cy="${y}" r="${isMini ? 5 : 8}" fill="transparent" stroke="var(--accent)" stroke-width="${isMini ? 1 : 2}" />`;
+            svg += `<circle cx="${RIGHT + (isMini ? 15 : (isZoom ? 25 : 21))}" cy="${y}" r="${isZoom ? 12 : isMini ? 5 : 8}" fill="transparent" stroke="var(--accent)" stroke-width="${isZoom ? 3 : isMini ? 1 : 2}" />`;
             const spanNote = GuitarTheory.ENG_TO_SPANISH[v.note] || v.note;
-            svg += `<text x="${RIGHT + (isMini ? 15 : 21) + 6}" y="${y + 10}" font-size="${isMini ? 6 : 7.5}" text-anchor="start" fill="#ef4444" font-weight="700">${spanNote || ''}</text>`;
+            svg += `<text x="${RIGHT + (isMini ? 15 : (isZoom ? 25 : 21)) + 8}" y="${y + (isZoom ? 14 : 10)}" font-size="${isZoom ? 10 : isMini ? 6 : 7.5}" text-anchor="start" fill="#ef4444" font-weight="700">${spanNote || ''}</text>`;
         }
         if (!isMuted && v.fret > 0) {
             const cx = RIGHT - (v.fret - 0.5) * fretW;
             const color = intervalColor(v.interval);
-            svg += `<circle cx="${cx}" cy="${y}" r="${isMini ? 8 : 12}" fill="${color}" />`;
-            svg += `<text x="${cx}" y="${y + (isMini ? 3 : 4)}" font-size="${isMini ? 8 : 11}" text-anchor="middle" fill="white" font-weight="700">${v.finger || ''}</text>`;
+            svg += `<circle cx="${cx}" cy="${y}" r="${isZoom ? 18 : isMini ? 8 : 12}" fill="${color}" />`;
+            svg += `<text x="${cx}" y="${y + (isZoom ? 6 : isMini ? 3 : 4)}" font-size="${isZoom ? 16 : isMini ? 8 : 11}" text-anchor="middle" fill="white" font-weight="700">${v.finger || ''}</text>`;
             const spanNote = GuitarTheory.ENG_TO_SPANISH[v.note] || v.note;
-            // Move note to bottom-right, smaller and red
-            svg += `<text x="${cx + (isMini ? 6 : 9)}" y="${y + (isMini ? 8 : 11)}" font-size="${isMini ? 6 : 7.5}" text-anchor="start" fill="#ef4444" font-weight="700">${spanNote || ''}</text>`;
+            svg += `<text x="${cx + (isZoom ? 13 : isMini ? 6 : 9)}" y="${y + (isZoom ? 16 : isMini ? 8 : 11)}" font-size="${isZoom ? 10 : isMini ? 6 : 7.5}" text-anchor="start" fill="#ef4444" font-weight="700">${spanNote || ''}</text>`;
         }
     }
     svg += '</svg>';

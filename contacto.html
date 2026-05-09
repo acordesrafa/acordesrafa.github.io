@@ -10,52 +10,66 @@
     <link rel="icon" href="Fondoapp-420.webp">
     <style>
         .contact-content {
-            padding: 150px 20px 100px;
+            padding: 140px 24px 100px;
             max-width: 800px;
             margin: 0 auto;
             text-align: center;
         }
         .contact-content h1 {
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-family: var(--font-heading);
             font-size: 2.5rem;
             color: var(--text-dark);
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
         }
         .contact-content p {
             font-size: 1.1rem;
             color: var(--text-muted);
             margin-bottom: 30px;
+            line-height: 1.7;
         }
         .contact-methods {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
             margin-top: 40px;
         }
         .contact-card {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: var(--shadow-soft);
+            background: var(--bg-card);
+            padding: 32px 28px;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
             text-decoration: none;
             color: var(--text-dark);
             transition: var(--transition);
+            border: 1px solid var(--border);
         }
         .contact-card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(108, 99, 255, 0.2);
         }
         .contact-card i, .contact-card span {
-            font-size: 2rem;
+            font-size: 2.2rem;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+        }
+        .contact-card h3 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            margin-bottom: 6px;
         }
         .back-link {
             display: inline-block;
             margin-top: 40px;
-            color: var(--stripe-blue);
+            color: var(--primary);
             text-decoration: none;
             font-weight: 600;
+            transition: var(--transition);
+        }
+        .back-link:hover {
+            color: var(--primary-dark);
+            transform: translateX(-4px);
         }
     </style>
 </head>
@@ -69,8 +83,8 @@
             </a>
             <ul class="nav-links">
                 <li><a href="index.html#inicio">Inicio</a></li>
-                <li><a href="acordes.html">Herramienta de Acordes</a></li>
-                <li><a href="guitar-tool.html">🎸 Generador</a></li>
+                <li><a href="acordes.html">Tutoriales y Acordes</a></li>
+                <li><a href="guitar-tool.html">Herramienta de Acordes</a></li>
                 <li><a href="index.html#apps">Apps</a></li>
                 <li><a href="index.html#lecciones">Lecciones</a></li>
                 <li><a href="contacto.html" class="active">Contacto</a></li>
