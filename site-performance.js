@@ -19,6 +19,8 @@ function loadVisitCounter(path) {
                 })
                 .then(data => {
                     target.innerHTML = `<strong>${data.count.toLocaleString()}</strong> visitas desde 2026`;
+                    const container = document.getElementById('visitas-container');
+                    if (container) container.style.display = 'block';
                 })
                 .catch(err => {
                     console.error('Error al cargar visitas:', err);

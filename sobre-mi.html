@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Mí | Acordes Rafa</title>
+    <meta name="description" content="Conoce la historia detrás de Acordes Rafa, la metodología de enseñanza y la pasión de Rafael por la guitarra.">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="Fondoapp-420.webp">
+    
+    <style>
+        .about-content {
+            padding: 140px 24px 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        .about-image {
+            width: 100%;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 100px;
+        }
+        .about-text h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            letter-spacing: -1px;
+        }
+        .about-text p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .about-text h2 {
+            font-size: 1.8rem;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-image {
+                position: static;
+                width: 200px;
+                margin: 0 auto 30px;
+                display: block;
+            }
+            .about-text h1 {
+                font-size: 2.2rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Global Background Logo -->
+    <div class="fixed-background">
+        <img src="Fondoapp-900.webp" srcset="Fondoapp-420.webp 420w, Fondoapp-900.webp 900w" sizes="(max-width: 768px) 420px, 900px" alt="Fondo Decorativo" width="900" height="883" loading="eager" fetchpriority="high" decoding="async">
+    </div>
+
+    <!-- Global Floating Guitar -->
+    <div class="fixed-guitar">
+        <picture>
+            <source srcset="Guitarra_Ibanez-220.webp 220w, Guitarra_Ibanez-320.webp 320w" sizes="220px" type="image/webp">
+            <img src="Guitarra_Ibanez-320.webp" alt="Guitarra Ibanez Acordes Rafa" width="320" height="320" loading="eager" fetchpriority="low" decoding="async">
+        </picture>
+    </div>
+
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <img src="Fondoapp-420.webp" alt="Logo de Acordes Rafa" width="35" height="35" decoding="async">
+                Acordes Rafa
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="acordes.html">Tutoriales y Acordes</a></li>
+                <li><a href="guitar-tool.html">Herramienta de Acordes</a></li>
+                <li><a href="index.html#lecciones">Lecciones</a></li>
+                <li><a href="index.html#apps">Apps</a></li>
+                <li><a href="sobre-mi.html" class="active">Sobre mí</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="about-content">
+        <div class="about-grid">
+            <img src="Iconogrande.jpg" alt="Rafa Acordes" class="about-image">
+            <div class="about-text">
+                <h1>Hola, soy Rafa</h1>
+                <p>¡Bienvenido a mi rincón musical! Soy Rafael, el creador y alma detrás de <strong>Acordes Rafa</strong>. Mi viaje con la guitarra no comenzó en un conservatorio prestigioso ni bajo la tutela de grandes maestros desde los cinco años. Como muchos de ustedes, mi historia empezó con una vieja guitarra de cuerdas de nylon, mucha curiosidad y las ganas inmensas de tocar esas canciones que escuchaba en la radio.</p>
+                
+                <h2>Mi Historia con la Guitarra</h2>
+                <p>Recuerdo perfectamente la frustración de los primeros días: los dedos que no llegaban a las cuerdas, el dolor en las yemas y esa sensación de que "esto es demasiado difícil para mí". Sin embargo, hubo un momento de revelación cuando logré que mi primer acorde de Do mayor sonara limpio. En ese instante, comprendí que la música no es un don reservado para unos pocos elegidos, sino una habilidad que se construye paso a paso, con paciencia y, sobre todo, con la guía adecuada.</p>
+                <p>A lo largo de los años, pasé de ser un principiante confundido a un apasionado del instrumento, explorando desde el folklore y la música popular hasta los matices del rock y la armonía moderna. Mi aprendizaje fue autodidacta en gran parte, lo que me permitió identificar exactamente dónde están los "muros" que detienen a la mayoría de los estudiantes y cómo derribarlos de forma sencilla.</p>
+
+                <h2>La Metodología Acordes Rafa</h2>
+                <p>En este sitio, mi objetivo es claro: <strong>democratizar el aprendizaje de la guitarra</strong>. He visto demasiados métodos que se pierden en teorías complejas antes de dejarte tocar una sola nota. Mi enfoque es radicalmente distinto. Aquí priorizamos lo práctico y lo emocional. Creo firmemente que la mejor manera de aprender teoría es aplicándola inmediatamente a una canción que te apasione.</p>
+                <p>Nuestra metodología se basa en tres pilares fundamentales:</p>
+                <ul>
+                    <li><strong style="color: var(--text-dark);">Simplificación Inteligente:</strong> No necesitas saber todas las escalas para sonar bien. Te enseño los acordes esenciales y los ritmos que desbloquean el 80% de la música popular.</li>
+                    <li><strong style="color: var(--text-dark);">Progresión Motivadora:</strong> Cada lección está diseñada para que sientas un avance real. Si hoy aprendes un rasgueo, mañana estarás acompañando tu primera letra.</li>
+                    <li><strong style="color: var(--text-dark);">Conexión Emocional:</strong> La técnica es importante, pero transmitir emoción es lo que realmente nos hace guitarristas. En Acordes Rafa, te ayudo a que tu música respire y cuente una historia.</li>
+                </ul>
+
+                <h2>¿Qué ofrece este sitio?</h2>
+                <p>Acordes Rafa no es solo una página de acordes; es un ecosistema para el guitarrista moderno. Aquí encontrarás desde un <strong>generador interactivo de acordes</strong> único en su clase, diseñado para ayudarte a identificar pisadas complejas, hasta lecciones estructuradas sobre fundamentos, ritmo y armonía. También he desarrollado aplicaciones móviles para que puedas llevar tu cancionero siempre contigo, ya sea música popular o temas para momentos de reflexión y fe.</p>
+                <p>Lo que nos hace diferentes es la cercanía. No soy una gran corporación de educación musical; soy un guitarrista que disfruta compartiendo lo que sabe. Cada tutorial, cada diagrama y cada línea de código en este sitio ha sido pensada para facilitar tu camino.</p>
+
+                <h2>Miremos hacia el futuro</h2>
+                <p>El aprendizaje de la guitarra es un camino que nunca termina, y me siento honrado de poder acompañarte en una parte del tuyo. Ya sea que tengas una guitarra eléctrica, acústica o electroacústica, el lenguaje de las seis cuerdas es universal. Mi compromiso contigo es seguir actualizando este espacio con contenido de calidad, herramientas útiles y esa motivación extra que a veces todos necesitamos para no dejar la guitarra en el estuche.</p>
+                <p>¡Gracias por ser parte de esta comunidad! Toma tu guitarra, afínala bien y empecemos a tocar.</p>
+                
+                <p style="margin-top: 30px;"><em>— Rafa</em></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Acordes Rafa. Todos los derechos reservados.</p>
+            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 5px;">
+                <a href="privacidad.html" style="color: var(--text-muted); text-decoration: none;">Privacidad</a>
+                <a href="terminos.html" style="color: var(--text-muted); text-decoration: none;">Términos</a>
+                <a href="contacto.html" style="color: var(--text-muted); text-decoration: none;">Contacto</a>
+                <a href="https://www.youtube.com/@AcordesRafa" target="_blank" style="color: var(--text-muted); text-decoration: none;">YouTube</a>
+            </div>
+            <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.8; display: none;">
+                <span id="visitas-count"></span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="site-performance.js"></script>
+    <script src="cookie-banner.js"></script>
+    <script>
+        loadVisitCounter('sobre-mi');
+        loadAdsense();
+
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

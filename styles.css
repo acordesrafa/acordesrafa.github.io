@@ -269,7 +269,7 @@ nav {
     overflow: visible;
     background: radial-gradient(circle at 100% 0%, rgba(108, 99, 255, 0.06), transparent 50%),
                 radial-gradient(circle at 0% 100%, rgba(255, 107, 138, 0.04), transparent 50%);
-    padding-top: 110px;
+    padding-top: 140px;
 }
 
 /* Global Background Logo */
@@ -347,11 +347,11 @@ nav {
 
 .hero h1 {
     font-family: var(--font-heading);
-    font-size: 2.6rem;
-    line-height: 1.15;
-    margin-bottom: 16px;
+    font-size: 2.8rem;
+    line-height: 1.2;
+    margin-bottom: 20px;
     color: var(--text-dark);
-    letter-spacing: -0.5px;
+    letter-spacing: -1px;
 }
 
 .hero p {
@@ -731,4 +731,73 @@ footer a:hover {
     .container {
         padding: 0 16px;
     }
+}
+/* ── Page Header (Shared) ── */
+.page-header {
+    padding: 140px 24px 60px !important;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-header h1 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+    font-family: var(--font-heading);
+    letter-spacing: -1px;
+}
+
+.page-header p {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+}
+
+/* ── SEO Section (acordes.html) ── */
+.seo-intro {
+    padding-top: 140px !important;
+    padding-bottom: 40px !important;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: left;
+    line-height: 1.8;
+}
+
+.seo-intro h1 {
+    font-size: 2.8rem;
+    margin-bottom: 24px;
+    color: var(--text-dark);
+    font-family: var(--font-heading);
+    letter-spacing: -1px;
+}
+
+.seo-intro h2 {
+    font-size: 1.8rem;
+    margin-top: 40px;
+    margin-bottom: 16px;
+    color: var(--primary);
+    font-family: var(--font-heading);
+}
+
+.seo-intro p {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.seo-intro .note {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    font-style: italic;
+    margin-top: 30px;
+}
+
+/* ── Lecciones ── */
+.leccion-fecha {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: -10px;
+    margin-bottom: 25px;
+    font-style: italic;
 }

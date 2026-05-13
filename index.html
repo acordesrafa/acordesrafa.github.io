@@ -72,13 +72,13 @@
                 Acordes Rafa
             </a>
             <ul class="nav-links">
-                <li><a href="index.html#inicio">Inicio</a></li>
+                <li><a href="index.html">Inicio</a></li>
                 <li><a href="acordes.html">Tutoriales y Acordes</a></li>
                 <li><a href="guitar-tool.html">Herramienta de Acordes</a></li>
-                <li><a href="index.html#apps">Apps</a></li>
                 <li><a href="index.html#lecciones">Lecciones</a></li>
+                <li><a href="index.html#apps">Apps</a></li>
+                <li><a href="sobre-mi.html">Sobre mí</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="index.html#sobre-mi">Sobre mí</a></li>
             </ul>
             <button class="hamburger" id="hamburger" aria-label="Abrir menú">
                 <span></span>
@@ -246,6 +246,7 @@ En Acordes Rafa, priorizamos un método práctico y motivador: lecciones paso a 
 Ya sea que seas principiante absoluto o busques pulir tus habilidades intermedias, te guiaré para que disfrutes de este maravilloso instrumento y toques tus favoritas con fluidez. ¡Únete y transforma tu pasión en realidad!</p>
                     <br>
                     <p style="color: var(--text-muted); font-size: 1.1rem;">Independientemente del tipo de guitarra, eléctrica, acústica o electroacústica, el objetivo es que disfrutes el proceso de aprendizaje mediante canciones que te apasionen, transmitiendo emoción y fluidez en cada lección..</p>
+                    <a href="sobre-mi.html" style="display: inline-block; margin-top: 15px; color: var(--primary); font-weight: 600; text-decoration: none;">Conoce más sobre mí →</a>
                 </div>
             </div>
         </div>
@@ -263,13 +264,14 @@ Ya sea que seas principiante absoluto o busques pulir tus habilidades intermedia
                 <a href="https://www.youtube.com/@AcordesRafa" target="_blank" style="color: var(--text-muted); text-decoration: none;">YouTube</a>
             </div>
             <!-- Contador de Visitas -->
-            <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted);">
-                <span id="visitas-count">Cargando visitas...</span>
+            <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); display: none;">
+                <span id="visitas-count"></span>
             </div>
         </div>
     </footer>
 
     <script src="site-performance.js"></script>
+    <script src="cookie-banner.js"></script>
     <script>
         loadVisitCounter('index');
         loadAdsense();
