@@ -1,14 +1,25 @@
 (function() {
-    // Check if the user has already accepted cookies
+    try {
+        if (localStorage.getItem('cookies-accepted') === 'true' && localStorage.getItem('cookies_aceptadas') !== 'true') {
+            localStorage.setItem('cookies_aceptadas', 'true');
+        }
+    } catch (e) { /* noop */ }
+
+    var privacyHref = 'privacidad.html';
+    try {
+        if ((window.location.pathname || '').indexOf('/letras/') !== -1) {
+            privacyHref = '../privacidad.html';
+        }
+    } catch (e) { /* noop */ }
+
     if (localStorage.getItem('cookies_aceptadas') === 'true') {
+        if (typeof loadAdsense === 'function') loadAdsense();
         return;
     }
 
-    // Create the banner container
     const banner = document.createElement('div');
     banner.id = 'cookie-banner';
-    
-    // Inline styles for the banner
+
     const styles = `
         #cookie-banner {
             position: fixed;
@@ -87,28 +98,27 @@
         }
     `;
 
-    // Add styles to head
     const styleSheet = document.createElement('style');
     styleSheet.innerText = styles;
     document.head.appendChild(styleSheet);
 
-    // Set banner content
     banner.innerHTML = `
         <div class="cookie-content">
-            Usamos cookies propias y de terceros (incluyendo Google AdSense) para mejorar tu experiencia y mostrar publicidad personalizada. Consulta nuestra <a href="privacidad.html" style="color: #8B83FF; text-decoration: underline;">Política de Privacidad</a>.
+            Usamos cookies propias y de terceros (incluyendo Google AdSense) para mejorar tu experiencia y mostrar publicidad personalizada cuando aceptas. Consulta nuestra <a href="${privacyHref}" style="color: #8B83FF; text-decoration: underline;">Política de Privacidad</a>.
         </div>
         <div class="cookie-buttons">
-            <button id="accept-cookies" class="cookie-btn btn-accept">Aceptar</button>
-            <a href="privacidad.html" class="cookie-btn btn-info">Más información</a>
+            <button type="button" id="accept-cookies" class="cookie-btn btn-accept">Aceptar</button>
+            <a href="${privacyHref}" class="cookie-btn btn-info">Más información</a>
         </div>
     `;
 
-    // Append banner to body
     document.body.appendChild(banner);
 
-    // Event listener for the accept button
     document.getElementById('accept-cookies').addEventListener('click', function() {
-        localStorage.setItem('cookies_aceptadas', 'true');
+        try {
+            localStorage.setItem('cookies_aceptadas', 'true');
+        } catch (e) { /* noop */ }
         banner.style.display = 'none';
+        if (typeof loadAdsense === 'function') loadAdsense();
     });
 })();

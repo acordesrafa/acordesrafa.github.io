@@ -1,3 +1,87 @@
+(function migrateLegacyCookieConsent() {
+    try {
+        if (localStorage.getItem('cookies-accepted') === 'true' && localStorage.getItem('cookies_aceptadas') !== 'true') {
+            localStorage.setItem('cookies_aceptadas', 'true');
+        }
+    } catch (e) { /* private mode / blocked storage */ }
+})();
+
+/**
+ * Consent Mode v2 + Google tag (gtag.js). ID de medición GA4 (G-…) desde Google Analytics / etiqueta del sitio.
+ */
+var ACORDESRAFA_GOOGLE_TAG_ID = 'G-QCXGHBB63Y';
+
+(function initConsentModeV2() {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function gtag() {
+        window.dataLayer.push(arguments);
+    };
+
+    var deniedBase = {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        functionality_storage: 'granted',
+        security_storage: 'granted'
+    };
+
+    var eeaUkCh = [
+        'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IS', 'IE',
+        'IT', 'LV', 'LI', 'LT', 'LU', 'MT', 'NL', 'NO', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE',
+        'GB', 'CH'
+    ];
+
+    window.gtag('consent', 'default', Object.assign({}, deniedBase, { region: eeaUkCh, wait_for_update: 500 }));
+    window.gtag('consent', 'default', Object.assign({}, deniedBase));
+
+    var stored = false;
+    try {
+        stored = localStorage.getItem('cookies_aceptadas') === 'true';
+    } catch (err) { /* noop */ }
+
+    if (stored) {
+        acordesRafaGrantAdsConsentUpdate();
+    }
+})();
+
+var consentGtagScriptRequested = false;
+
+function ensureGtagJsLoaded() {
+    if (!ACORDESRAFA_GOOGLE_TAG_ID) return;
+    if (consentGtagScriptRequested) return;
+    if (document.querySelector('script[data-acordesrafa-gtag]')) return;
+    consentGtagScriptRequested = true;
+    var s = document.createElement('script');
+    s.async = true;
+    s.setAttribute('data-acordesrafa-gtag', '');
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(ACORDESRAFA_GOOGLE_TAG_ID);
+    s.onload = function() {
+        window.gtag('js', new Date());
+        if (/^G-/.test(ACORDESRAFA_GOOGLE_TAG_ID)) {
+            window.gtag('config', ACORDESRAFA_GOOGLE_TAG_ID);
+        } else {
+            window.gtag('config', ACORDESRAFA_GOOGLE_TAG_ID, { send_page_view: false });
+        }
+    };
+    document.head.appendChild(s);
+}
+
+function acordesRafaGrantAdsConsentUpdate() {
+    if (typeof window.gtag !== 'function') return;
+    var consentUpdate = {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        analytics_storage: 'denied'
+    };
+    if (/^G-/.test(ACORDESRAFA_GOOGLE_TAG_ID || '')) {
+        consentUpdate.analytics_storage = 'granted';
+    }
+    window.gtag('consent', 'update', consentUpdate);
+    ensureGtagJsLoaded();
+}
+
 function runWhenIdle(callback) {
     if ('requestIdleCallback' in window) {
         requestIdleCallback(callback, { timeout: 2500 });
@@ -24,7 +108,6 @@ function loadVisitCounter(path) {
                 })
                 .catch(err => {
                     console.error('Error al cargar visitas:', err);
-                    // Hide container if it fails to avoid showing "Cargando..." or error
                     const container = document.getElementById('visitas-container');
                     if (container) container.style.display = 'none';
                 });
@@ -32,64 +115,37 @@ function loadVisitCounter(path) {
     });
 }
 
-function loadAdsense() {
-    window.addEventListener('load', () => {
-        runWhenIdle(() => {
-            const ads = document.createElement('script');
-            ads.async = true;
-            ads.crossOrigin = 'anonymous';
-            ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2394918736393015';
-            document.head.appendChild(ads);
+var ADSENSE_SCRIPT_SEL = 'script[data-acordesrafa-adsense]';
+
+function injectAdsenseScript() {
+    if (document.querySelector(ADSENSE_SCRIPT_SEL)) return;
+
+    function append() {
+        if (document.querySelector(ADSENSE_SCRIPT_SEL)) return;
+        const ads = document.createElement('script');
+        ads.async = true;
+        ads.crossOrigin = 'anonymous';
+        ads.setAttribute('data-acordesrafa-adsense', '');
+        ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2394918736393015';
+        document.head.appendChild(ads);
+    }
+
+    if (document.readyState === 'complete') {
+        runWhenIdle(append);
+    } else {
+        window.addEventListener('load', function onAdsLoad() {
+            window.removeEventListener('load', onAdsLoad);
+            runWhenIdle(append);
         });
-    });
+    }
 }
 
-function initCookieBanner() {
-    if (localStorage.getItem('cookies-accepted') === 'true') return;
-
-    const banner = document.createElement('div');
-    banner.id = 'cookie-banner';
-    banner.style.cssText = `
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: #1a1a1a;
-        color: #fff;
-        padding: 14px 20px;
-        font-size: 13px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        z-index: 9999;
-        flex-wrap: wrap;
-        box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
-        font-family: sans-serif;
-    `;
-
-    banner.innerHTML = `
-        <span>Usamos cookies para mejorar tu experiencia y mostrar anuncios relevantes. 
-        <a href="privacidad.html" style="color: #f0a500; text-decoration: underline;">Política de privacidad</a></span>
-        <button id="accept-cookies" style="
-            background: #f0a500;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            color: #000;
-            transition: background 0.2s;
-        ">Aceptar</button>
-    `;
-
-    document.body.appendChild(banner);
-
-    document.getElementById('accept-cookies').addEventListener('click', () => {
-        banner.style.display = 'none';
-        localStorage.setItem('cookies-accepted', 'true');
-    });
+function loadAdsense() {
+    try {
+        if (localStorage.getItem('cookies_aceptadas') !== 'true') return;
+    } catch (e) {
+        return;
+    }
+    acordesRafaGrantAdsConsentUpdate();
+    injectAdsenseScript();
 }
-
-// Auto-init cookie banner
-window.addEventListener('DOMContentLoaded', initCookieBanner);
