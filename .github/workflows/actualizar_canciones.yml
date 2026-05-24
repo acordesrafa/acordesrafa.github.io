@@ -1,1 +1,38 @@
+name: Actualizar Textos de Canciones (PDF a HTML)
 
+on:
+  push:
+    paths:
+      - 'Cancionero Popular/**'
+      - 'Canciones para Dios Word/**'
+      - 'pdf_to_html.py'
+      - 'cancionero_raw.txt'
+  workflow_dispatch:
+
+jobs:
+  update-songs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Da permisos al bot para guardar cambios en tu repositorio
+
+    steps:
+      - name: 📥 Descargar código
+        uses: actions/checkout@v4
+
+      - name: 🐍 Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Instalar dependencias
+        run: pip install pdfplumber
+
+      - name: ⚙️ Ejecutar conversión automática
+        run: python pdf_to_html.py
+
+      - name: 💾 Guardar cambios automáticos
+        run: |
+          git config --global user.name "Bot de Acordes Rafa"
+          git config --global user.email "bot@acordesrafa.com"
+          git add songs_data.js letras/ sitemap.xml
+          git diff --quiet && git diff --staged --quiet || (git commit -m "🤖 Actualización automática: PDFs recientes convertidos a texto SEO" && git push)
