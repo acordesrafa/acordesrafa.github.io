@@ -371,6 +371,112 @@
             font-weight: 700;
             box-shadow: 0 4px 14px rgba(108, 99, 255, 0.3);
         }
+
+        /* Chord Diagrams */
+        .chord-diagrams-section {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .chord-diagrams-section h3 {
+            font-family: var(--font-heading);
+            color: var(--stripe-blue);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .chord-diagrams-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .chord-diagram-box {
+            background: #fafcff;
+            border: 1px solid #e0e7f0;
+            border-radius: 12px;
+            padding: 10px 6px 6px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            width: 96px;
+        }
+
+        .chord-diagram-box .chord-name {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+            font-family: var(--font-body);
+        }
+
+        .chord-diagram-box svg {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .chord-diagram-box .chord-frets {
+            font-size: 0.65rem;
+            color: var(--text-light);
+            margin-top: 3px;
+            font-family: var(--font-body);
+        }
+
+        .pdf-toggle-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            width: 100%;
+        }
+
+        .btn-pdf-toggle {
+            padding: 8px 20px;
+            border-radius: var(--radius-full);
+            border: 1.5px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-body);
+        }
+
+        .btn-pdf-toggle:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-pdf-toggle.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        #pdfContainer {
+            width: 100%;
+            height: 650px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: #eee;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        #pdfContainer iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .chord-diagrams-grid {
+                gap: 8px;
+            }
+            .chord-diagram-box {
+                width: 82px;
+                padding: 8px 4px 4px;
+            }
+        }
     </style>
 </head>
 
@@ -453,14 +559,23 @@
                     </div>
 
                     <div id="chordContent" class="protected-content">
-                        <!-- Eliminada capa de protección para permitir scroll -->
                         <div id="actionButtons"></div>
                         <h2 id="songTitleDisplay" class="song-title-display"></h2>
                         <div id="songDescription"
                             style="margin-bottom: 25px; color: var(--text-muted); line-height: 1.6; font-size: 1.05rem; padding: 0 10px;">
                         </div>
-                        <div id="textTarget">
-                            <!-- El contenido del PDF aparecerá aquí -->
+                        <div id="chordDiagramsSection" class="chord-diagrams-section" style="display:none;">
+                            <h3>Diagramas de Acordes</h3>
+                            <div id="chordDiagramsGrid" class="chord-diagrams-grid"></div>
+                        </div>
+                        <div id="lyricsContent">
+                            <!-- Letra con acordes aparecerá aquí -->
+                        </div>
+                        <div class="pdf-toggle-container">
+                            <button id="btnPdfToggle" class="btn-pdf-toggle" onclick="togglePdf()">📄 Mostrar PDF Original</button>
+                        </div>
+                        <div id="pdfContainer">
+                            <iframe id="pdfIframe" src="about:blank"></iframe>
                         </div>
                     </div>
                 </div>
@@ -637,6 +752,7 @@
                 "Llorona": { pdf: "Llorona(Angela Aguilar)10021.pdf", tutorial: "https://youtu.be/IGqptlXgtHM", cover: "" },
                 "Luz de Día": { pdf: "Luz de Día(Enanitos Verdes)10066.pdf", tutorial: "", cover: "https://youtu.be/4brIpI8-enQ" },
                 "Mariposa Traicionera": { pdf: "Mariposa Traicionera(Maná)10041.pdf", tutorial: "https://youtu.be/H1MiFwQ5Q5o", cover: "https://youtu.be/nBTGA_Eo4UU" },
+                "Me basta": { pdf: "Me basta(José José)10075.pdf", tutorial: "https://youtu.be/ham_mIQyFcg", cover: "" },
                 "Mi Novia Se Me Está Poniendo Vieja": { pdf: "Mi Novia Se Me Está Poniendo Vieja(Ricardo Arjona)10048.pdf", tutorial: "https://youtu.be/uju1oqcNsBs", cover: "https://youtu.be/6Pz1qDvHXDs" },
                 "Mi Verdad": { pdf: "Mi Verdad (Maná &Shakira)10003.pdf", tutorial: "https://youtu.be/y7B1JWhArNk", cover: "https://youtu.be/fkopb9erZg8" },
                 "Nada": { pdf: "Nada(Zoé)10050.pdf", tutorial: "https://youtu.be/jPsInIIRfBo", cover: "https://youtu.be/uBSWrcjSgbY" },
@@ -674,7 +790,7 @@
                 "5 panes y 2 peces": { pdf: "5 panes y 2 peces10006.pdf", tutorial: "", cover: "" },
                 "A edificar la iglesia": { pdf: "A edificar la iglesia10000.pdf", tutorial: "", cover: "" },
                 "A tu lado Señor": { pdf: "A tu lado Señor10005.pdf", tutorial: "", cover: "" },
-                "A tus pies": { pdf: "A tus pies 10048.pdf", tutorial: "", cover: "" },
+                "A tus pies": { pdf: "A tus pies10048.pdf", tutorial: "", cover: "" },
                 "Alabaré a mi Señor": { pdf: "Alabaré a mi Señor10001.pdf", tutorial: "", cover: "" },
                 "Alabo tu bondad": { pdf: "Alabo tu bondad10002.pdf", tutorial: "", cover: "" },
                 "Aleluya": { pdf: "Aleluya10003.pdf", tutorial: "", cover: "" },
@@ -696,18 +812,19 @@
                 "Estoy a la puerta y llamo": { pdf: "Estoy a la puerta y llamo10052.pdf", tutorial: "", cover: "" },
                 "Granito de Mostaza": { pdf: "Granito de Mostaza10010.pdf", tutorial: "", cover: "" },
                 "Ha Traído la Esperanza": { pdf: "Ha Traído la Esperanza10041.pdf", tutorial: "", cover: "" },
-                "Háblame Señor": { pdf: "Háblame Señor10011.pdf", tutorial: "", cover: "" },
                 "Hoy Señor te damos gracias": { pdf: "Hoy Señor te damos gracias10053.pdf", tutorial: "", cover: "" },
+                "Háblame Señor": { pdf: "Háblame Señor10011.pdf", tutorial: "", cover: "" },
                 "Junto a ti María": { pdf: "Junto a ti María10012.pdf", tutorial: "", cover: "" },
                 "Juntos como Hemanos": { pdf: "Juntos como Hemanos10013.pdf", tutorial: "", cover: "" },
-                "La Paz esté con nosotros": { pdf: "La Paz esté con nosotros10014.pdf", tutorial: "", cover: "" },
                 "La bondad de Dios": { pdf: "La bondad de Dios10054.pdf", tutorial: "", cover: "" },
+                "La Paz esté con nosotros": { pdf: "La Paz esté con nosotros10014.pdf", tutorial: "", cover: "" },
                 "Milagro de amor": { pdf: "Milagro de amor10032.pdf", tutorial: "", cover: "" },
                 "Nadie te ama como Yo": { pdf: "Nadie te ama como Yo10031.pdf", tutorial: "", cover: "" },
                 "Ofrenda de Amor": { pdf: "Ofrenda de Amor10015.pdf", tutorial: "", cover: "" },
                 "Pacto de esperanza": { pdf: "Pacto de esperanza10033.pdf", tutorial: "", cover: "" },
                 "Padre Nuestro": { pdf: "Padre Nuestro10016.pdf", tutorial: "", cover: "" },
                 "Padre Nuestro Gallego": { pdf: "Padre Nuestro Gallego10017.pdf", tutorial: "", cover: "" },
+                "Pan de Vida": { pdf: "Pan de Vida10049.pdf", tutorial: "", cover: "" },
                 "Perdona a tu pueblo Señor": { pdf: "Perdona a tu pueblo Señor10036.pdf", tutorial: "", cover: "" },
                 "Pescador de Hombres": { pdf: "Pescador de Hombres10018.pdf", tutorial: "", cover: "" },
                 "Por la vía dolorosa": { pdf: "Por la vía dolorosa10026.pdf", tutorial: "", cover: "" },
@@ -723,9 +840,12 @@
                 "Vamos cantando al Señor": { pdf: "Vamos cantando al Señor10045.pdf", tutorial: "", cover: "" },
                 "Venimos hoy a tu altar": { pdf: "Venimos hoy a tu altar10029.pdf", tutorial: "", cover: "" },
                 "Vienen con alegría": { pdf: "Vienen con alegría10027.pdf", tutorial: "", cover: "" },
-                "Ya no eres pan y vino": { pdf: "Ya no eres pan y vino10023.pdf", tutorial: "", cover: "" }
+                "Ya no eres pan y vino": { pdf: "Ya no eres pan y vino10023.pdf", tutorial: "", cover: "" },
+                "Yo soy el Pan de la Vida": { pdf: "Yo soy el Pan de la Vida10051.pdf", tutorial: "", cover: "" }
             }
         };
+
+        
 
         let currentCategory = 'populares';
 
@@ -776,6 +896,309 @@
             });
         }
 
+        // ===== DIAGRAMAS DE ACORDES =====
+        const chordDB = {
+            // Mayores abiertos
+            "DO":  { f: [0, 3, 2, 0, 1, 0] },
+            "RE":  { f: [0, 0, 0, 2, 3, 2] },
+            "MI":  { f: [0, 2, 2, 1, 0, 0] },
+            "FA":  { f: [1, 3, 3, 2, 1, 1], b: 1 },
+            "SOL": { f: [3, 2, 0, 0, 0, 3] },
+            "LA":  { f: [0, 0, 2, 2, 2, 0] },
+            "SI":  { f: [2, 2, 2, 4, 4, 2], b: 2 },
+            // Menores abiertos
+            "DOm": { f: [0, 3, 3, 0, 1, 0] },
+            "REm": { f: [0, 0, 0, 2, 3, 1] },
+            "MIm": { f: [0, 2, 2, 0, 0, 0] },
+            "SOLm":{ f: [3, 3, 3, 0, 0, 3] },
+            "LAm": { f: [0, 0, 2, 2, 1, 0] },
+            "Sim": { f: [2, 2, 2, 4, 4, 2], b: 2 },
+            // Séptimas mayores
+            "DO7": { f: [0, 3, 2, 3, 1, 0] },
+            "RE7": { f: [0, 0, 0, 2, 1, 2] },
+            "MI7": { f: [0, 2, 0, 1, 0, 0] },
+            "FA7": { f: [1, 3, 1, 2, 1, 1], b: 1 },
+            "SOL7":{ f: [3, 2, 0, 0, 0, 1] },
+            "LA7": { f: [0, 0, 2, 0, 2, 0] },
+            "SI7": { f: [2, 2, 2, 4, 2, 2], b: 2 },
+            // Séptimas menores
+            "DOm7":{ f: [0, 3, 3, 3, 1, 0] },
+            "REm7":{ f: [0, 0, 0, 2, 1, 1] },
+            "MIm7":{ f: [0, 2, 0, 0, 0, 0] },
+            "SOLm7":{f: [3, 3, 3, 3, 0, 3] },
+            "LAm7":{ f: [0, 0, 2, 0, 1, 0] },
+            "Sim7":{ f: [2, 2, 2, 2, 2, 2], b: 2 },
+            // Maj7
+            "Domaj7":{f: [0, 3, 2, 0, 0, 0] },
+            "Remaj7":{f: [0, 0, 0, 2, 2, 2] },
+            "Mimaj7":{f: [0, 2, 1, 1, 0, 0] },
+            "SOLmaj7":{f:[3, 2, 0, 0, 0, 2] },
+            "Lamaj7":{f:[0, 0, 2, 2, 1, 3] },
+            // Aumentados y disminuidos
+            "DOdim":{f: [0, 3, 4, 3, 4, 0] },
+            "REdim":{f: [0, 0, 0, 1, 2, 1] },
+            "MIdim":{f: [0, 1, 2, 1, 2, 0] },
+            "SOLdim":{f:[3, 4, 3, 4, 0, 0] },
+            "LAdim":{f: [0, 0, 1, 2, 1, 2] },
+            "DOaug":{f: [0, 3, 2, 1, 1, 0] },
+            "SOLaug":{f:[3, 2, 1, 0, 0, 0] },
+            // Cejilla forma E (traste 1)
+            "FA#": { f: [2, 4, 4, 3, 2, 2], b: 2 },
+            "SOL#":{ f: [4, 6, 6, 5, 4, 4], b: 4 },
+            "LA#": { f: [1, 3, 3, 2, 1, 1], b: 1 },
+            "DO#": { f: [4, 6, 6, 5, 4, 4], b: 4 },
+            "RE#": { f: [6, 8, 8, 7, 6, 6], b: 6 },
+            "FA#m":{ f: [2, 4, 4, 2, 2, 2], b: 2 },
+            "SOL#m":{f:[4, 6, 6, 4, 4, 4], b: 4 },
+            "LA#m":{ f: [1, 3, 3, 1, 1, 1], b: 1 },
+            "DO#m":{ f: [4, 6, 6, 5, 4, 4], b: 4 },
+            "RE#m":{ f: [6, 8, 8, 6, 6, 6], b: 6 },
+            // Cejilla forma A
+            "SIb": { f: [1, 1, 3, 3, 3, 1], b: 1 },
+            "MIb": { f: [6, 6, 8, 8, 8, 6], b: 6 },
+            "SOLb":{ f: [2, 2, 4, 4, 4, 2], b: 2 },
+            "REb": { f: [4, 4, 6, 6, 6, 4], b: 4 },
+            // Cejilla forma Am
+            "SIbm":{ f: [1, 1, 3, 3, 2, 1], b: 1 },
+            "MIbm":{ f: [6, 6, 8, 8, 7, 6], b: 6 },
+            // Séptimas cejilla
+            "DO#7":{ f: [4, 6, 6, 4, 4, 4], b: 4 },
+            "FA#7":{ f: [2, 4, 2, 3, 2, 2], b: 2 },
+            "SOL#7":{f:[4, 6, 4, 5, 4, 4], b: 4 },
+            "LA#7":{ f: [1, 3, 1, 2, 1, 1], b: 1 },
+            "RE#7":{ f: [6, 8, 6, 7, 6, 6], b: 6 },
+            "SIb7":{ f: [1, 1, 3, 1, 3, 1], b: 1 },
+            // m7 cejilla
+            "FA#m7":{f:[2, 4, 2, 2, 2, 2], b: 2 },
+            "SOL#m7":{f:[4, 6, 4, 4, 4, 4], b: 4 },
+            "LA#m7":{f:[1, 3, 1, 1, 1, 1], b: 1 },
+            "DO#m7":{f:[4, 6, 4, 4, 4, 4], b: 4 },
+            "RE#m7":{f:[6, 8, 6, 6, 6, 6], b: 6 },
+            // Acorde con bajo
+            "LA/RE":{f:[0, 0, 2, 2, 2, 0] },
+            "MI/SOL#":{f:[0, 2, 2, 1, 0, 0] },
+            "FA/DO":{f:[1, 3, 3, 2, 1, 1], b: 1 },
+            "SOL/RE":{f:[3, 2, 0, 0, 0, 3] },
+            // Sus
+            "REsus":{f:[0, 0, 0, 2, 3, 3] },
+            "LAsus":{f:[0, 0, 2, 2, 3, 0] },
+            "MIsus":{f:[0, 2, 2, 2, 0, 0] },
+            "SOLsus":{f:[3, 2, 0, 0, 0, 3] },
+            // Varios adicionales del cancionero
+            "SOL9":{f:[3, 2, 0, 0, 0, 2] },
+            "LA9":{f:[0, 0, 2, 2, 2, 4] },
+            "MI9":{f:[0, 2, 2, 1, 2, 0] },
+            "FA#9":{f:[2, 4, 4, 3, 4, 2], b: 2 },
+            "DO9":{f:[0, 3, 2, 0, 3, 0] },
+            "SIb9":{f:[1, 1, 3, 1, 3, 1], b: 1 },
+            "SOLmaj7":{f:[3, 2, 0, 0, 0, 2] },
+            "DOmaj7":{f:[0, 3, 2, 0, 0, 0] },
+            "FAmaj7":{f:[1, 3, 3, 2, 1, 0] },
+            "Lamaj7":{f:[0, 0, 2, 2, 1, 3] },
+            "REmaj7":{f:[0, 0, 0, 2, 2, 2] },
+            "SOL6":{f:[3, 2, 0, 0, 0, 0] },
+            "LA6":{f:[0, 0, 2, 2, 2, 2] },
+            "MI6":{f:[0, 2, 2, 1, 2, 0] },
+            "RE6":{f:[0, 0, 0, 2, 0, 2] },
+            "DO6":{f:[0, 3, 2, 0, 1, 0] },
+            "FAadd9":{f:[1, 3, 3, 0, 1, 0] },
+            "DOadd9":{f:[0, 3, 2, 0, 3, 0] },
+            "SOLadd9":{f:[3, 0, 0, 0, 0, 3] },
+            "REadd9":{f:[0, 0, 0, 2, 3, 0] },
+            "MIadd9":{f:[0, 2, 2, 1, 0, 2] },
+            "LAsus4":{f:[0, 0, 2, 2, 3, 0] },
+            "REsus4":{f:[0, 0, 0, 2, 3, 3] },
+            "MIsus4":{f:[0, 2, 2, 2, 0, 0] },
+            "SOLsus4":{f:[3, 2, 0, 0, 0, 1] },
+        };
+
+        // Soportar notación española (DO, RE, MI, FA, SOL, LA, SI) e inglesa (C, D, E, F, G, A, B)
+        const CHORD_REGEX = /\b((?:DO|RE|MI|FA|SOL|LA|SI|[A-G])(?:#|b)?(?:m|dim|aug|sus|sus4|sus2|add|maj|min)*(?:\d+)*(?:\/(?:DO|RE|MI|FA|SOL|LA|SI|[A-G])(?:#|b)?)?)\b/g;
+
+        function normalizeChordName(name) {
+            if (!name) return '';
+            let n = name.trim();
+            if (n === 'MIm' || n === 'MIm') return 'MIm';
+            // Mapeo de nombres alternativos
+            const alias = {
+                'Cm': 'DOm', 'C#': 'DO#', 'C#m': 'DO#m', 'C#7': 'DO#7', 'C#m7': 'DO#m7',
+                'Dm': 'REm', 'D#': 'RE#', 'D#m': 'RE#m', 'D#7': 'RE#7', 'D#m7': 'RE#m7',
+                'Em': 'MIm', 'E#': 'FA', 'Eb': 'RE#', 'Ebm': 'RE#m', 'Eb7': 'RE#7',
+                'Fm': 'FAm', 'F#': 'FA#', 'F#m': 'FA#m', 'F#7': 'FA#7', 'F#m7': 'FA#m7',
+                'Gm': 'SOLm', 'G#': 'SOL#', 'G#m': 'SOL#m', 'G#7': 'SOL#7', 'G#m7': 'SOL#m7',
+                'Am': 'LAm', 'A#': 'LA#', 'A#m': 'LA#m', 'A#7': 'LA#7', 'A#m7': 'LA#m7',
+                'Bm': 'Sim', 'B#': 'DO', 'Bb': 'SIb', 'Bbm': 'SIbm', 'Bb7': 'SIb7', 'Bbm7': 'SIbm7',
+                'C': 'DO', 'D': 'RE', 'E': 'MI', 'F': 'FA', 'G': 'SOL', 'A': 'LA', 'B': 'SI',
+                'C7': 'DO7', 'D7': 'RE7', 'E7': 'MI7', 'F7': 'FA7', 'G7': 'SOL7', 'A7': 'LA7', 'B7': 'SI7',
+                'Cm7': 'DOm7', 'Dm7': 'REm7', 'Em7': 'MIm7', 'Fm7': 'FAm7', 'Gm7': 'SOLm7', 'Am7': 'LAm7', 'Bm7': 'Sim7',
+                'Cmaj7': 'Domaj7', 'Dmaj7': 'Remaj7', 'Emaj7': 'Mimaj7', 'Fmaj7': 'FAmaj7', 'Gmaj7': 'SOLmaj7', 'Amaj7': 'Lamaj7',
+                'Cdim': 'DOdim', 'Ddim': 'REdim', 'Edim': 'MIdim', 'Gdim': 'SOLdim', 'Adim': 'LAdim',
+                'Caug': 'DOaug', 'Gaug': 'SOLaug',
+                'Csus4': 'DOsus', 'Dsus4': 'REsus', 'Esus4': 'MIsus', 'Asus4': 'LAsus', 'Gsus4': 'SOLsus',
+                'Csus': 'DOsus', 'Dsus': 'REsus', 'Esus': 'MIsus', 'Asus': 'LAsus', 'Gsus': 'SOLsus',
+                'Dsus2': 'REsus', 'Esus2': 'MIsus', 'Asus2': 'LAsus',
+                'G/B': 'SOL/RE', 'D/F#': 'RE/FA#', 'C/G': 'DO/SOL', 'D/A': 'RE/LA',
+                'A/C#': 'LA/DO#', 'A/E': 'LA/MI',
+            };
+            return alias[n] || n;
+        }
+
+        function getChordFrets(chordName) {
+            const norm = normalizeChordName(chordName);
+            const entry = chordDB[norm];
+            if (entry) return entry;
+            // Buscar sin alteraciones (ej: DO#m7 -> buscar DO#m primero)
+            if (norm.length > 2) {
+                for (let len = norm.length; len >= 2; len--) {
+                    const sub = norm.substring(0, len);
+                    if (chordDB[sub]) return chordDB[sub];
+                }
+            }
+            return null;
+        }
+
+        function extractChordsFromHTML(html) {
+            const chords = new Set();
+            const text = html.replace(/<[^>]*>/g, ' ').replace(/&[^;]+;/g, ' ');
+            let m;
+            while ((m = CHORD_REGEX.exec(text)) !== null) {
+                const raw = m[1].trim();
+                if (raw.length < 1 || raw.length > 10) continue;
+                // Descartar palabras comunes que NO son acordes
+                if (/^(El|Los|Las|Y|O|E|Un|Una|Por|Con|Sin|Del|Que|Se|No|Me|Te|Le|Lo|Su|Tu|De|En|A|Al|Es|Son|Fue|Era|Has|He|Ha|Hay|Más|Muy|Tan|Tanto|Siempre|Cuando|Como|Este|Esta|Estos|Estas|Ese|Esa|Esos|Esas|Todo|Toda|Todos|Todas|Cada|Mismo|Misma|Gran|Grande|Poco|Poca|Otro|Otra|Otros|Otras|Varios|Varias|Mucho|Mucha|Muchos|Muchas|Pocos|Pocas|Demás|Ambos|Sólo|Solo|Aquél|Aquella|Intro|Final|Bis|Solo|Verso|Coro)$/i.test(raw)) continue;
+                let norm = normalizeChordName(raw);
+                if (!norm) continue;
+                // Normalizar: "SIm7" -> "Sim7" (sufijo en minúscula tras la raíz)
+                const rootMatch = norm.match(/^(DO|RE|MI|FA|SOL|LA|SI)([#b])?/);
+                if (rootMatch) {
+                    const rootFull = rootMatch[0];
+                    norm = rootFull + norm.substring(rootFull.length).toLowerCase();
+                }
+                if (chordDB[norm]) {
+                    chords.add(norm);
+                } else if (norm.length > 1) {
+                    const base = norm.replace(/\d+$/, '').replace(/\/.*$/, '');
+                    if (base.length > 0 && chordDB[base]) chords.add(norm);
+                }
+            }
+            return [...chords].sort();
+        }
+
+        function renderChordSVG(chordName, size) {
+            size = size || 90;
+            const paddingTop = 20;
+            const paddingLeft = 16;
+            const fretLabelWidth = 12;
+            const diagramLeft = paddingLeft + fretLabelWidth;
+            const stringSpacing = (size - diagramLeft - 6) / 5;
+            const fretSpacing = (size - paddingTop - 6) / 5;
+            const svgW = size;
+            const svgH = size + 20;
+            const stringCount = 6;
+            const fretCount = 5;
+
+            const entry = getChordFrets(chordName);
+            if (!entry) return '';
+
+            const frets = entry.f;
+            const barre = entry.b || 0;
+
+            let minFret = 99;
+            for (let s = 0; s < stringCount; s++) {
+                const f = frets[s];
+                if (f > 0 && f < minFret) minFret = f;
+            }
+            if (barre > 0 && barre < minFret) minFret = barre;
+            if (minFret === 99) minFret = 0;
+
+            const showFretNum = minFret > 1;
+            const displayFrets = frets.map(f => f === 0 ? 0 : (f - minFret + 1));
+            const displayBarre = barre > 0 ? (barre - minFret + 1) : 0;
+
+            let svg = `<svg width="${svgW}" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" xmlns="http://www.w3.org/2000/svg">`;
+            svg += `<rect width="${svgW}" height="${svgH}" fill="none"/>`;
+
+            // Cuerdas (verticales)
+            for (let s = 0; s < stringCount; s++) {
+                const x = diagramLeft + s * stringSpacing;
+                svg += `<line x1="${x}" y1="${paddingTop}" x2="${x}" y2="${paddingTop + fretCount * fretSpacing}" stroke="#777" stroke-width="${s === 0 || s === 5 ? 1.2 : 0.9}"/>`;
+            }
+
+            // Trastes (horizontales)
+            for (let f = 0; f <= fretCount; f++) {
+                const y = paddingTop + f * fretSpacing;
+                svg += `<line x1="${diagramLeft}" y1="${y}" x2="${diagramLeft + (stringCount - 1) * stringSpacing}" y2="${y}" stroke="#777" stroke-width="${f === 0 ? 2.5 : 0.9}"/>`;
+            }
+
+            // Cejilla
+            if (displayBarre > 0 && displayBarre <= fretCount) {
+                const y = paddingTop + (displayBarre - 1) * fretSpacing + fretSpacing / 2;
+                svg += `<line x1="${diagramLeft - stringSpacing/4}" y1="${y}" x2="${diagramLeft + (stringCount - 1) * stringSpacing + stringSpacing/4}" y2="${y}" stroke="#222" stroke-width="4" stroke-linecap="round"/>`;
+            }
+
+            // Círculos y marcas
+            for (let s = 0; s < stringCount; s++) {
+                const x = diagramLeft + s * stringSpacing;
+                const fret = frets[s];
+                if (fret === 0) {
+                    const y = paddingTop - 9;
+                    svg += `<circle cx="${x}" cy="${y}" r="4.5" fill="none" stroke="#555" stroke-width="1.5"/>`;
+                } else if (fret === -1 || fret === null || fret === undefined) {
+                    const y = paddingTop - 9;
+                    svg += `<text x="${x}" y="${y + 4}" text-anchor="middle" font-size="11" fill="#c00" font-family="Arial" font-weight="bold">✕</text>`;
+                } else {
+                    const df = displayFrets[s];
+                    if (df > 0 && !(barre > 0 && fret === barre)) {
+                        const y = paddingTop + (df - 1) * fretSpacing + fretSpacing / 2;
+                        svg += `<circle cx="${x}" cy="${y}" r="${stringSpacing * 0.38}" fill="#222" stroke="none"/>`;
+                    }
+                }
+            }
+
+            // Número de traste
+            if (showFretNum && minFret > 0) {
+                svg += `<text x="${diagramLeft - 4}" y="${paddingTop + fretSpacing / 2 + 3}" text-anchor="end" font-size="10" font-weight="bold" fill="#444" font-family="Arial">${minFret}</text>`;
+            }
+
+            svg += '</svg>';
+            return svg;
+        }
+
+        function renderChordsSection(chords) {
+            const grid = document.getElementById('chordDiagramsGrid');
+            const section = document.getElementById('chordDiagramsSection');
+            grid.innerHTML = '';
+            if (!chords || chords.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+            section.style.display = 'block';
+            chords.forEach(chord => {
+                const svgHtml = renderChordSVG(chord);
+                if (!svgHtml) return;
+                const box = document.createElement('div');
+                box.className = 'chord-diagram-box';
+                const frets = getChordFrets(chord);
+                const fretStr = frets ? frets.f.map(v => v === 0 ? '0' : v === -1 || v === null ? 'X' : v).join(' ') : '';
+                box.innerHTML = `<div class="chord-name">${chord}</div>${svgHtml}${fretStr ? `<div class="chord-frets">${fretStr}</div>` : ''}`;
+                grid.appendChild(box);
+            });
+        }
+
+        function togglePdf() {
+            const container = document.getElementById('pdfContainer');
+            const btn = document.getElementById('btnPdfToggle');
+            if (container.style.display !== 'none') {
+                container.style.display = 'none';
+                btn.innerHTML = '📄 Mostrar PDF Original';
+                btn.classList.remove('active');
+            } else {
+                container.style.display = 'block';
+                btn.innerHTML = '📄 Ocultar PDF';
+                btn.classList.add('active');
+            }
+        }
+
         function loadSong(name) {
             const songData = cancionero[currentCategory][name];
             if (!songData) return;
@@ -790,69 +1213,69 @@
             document.getElementById('chordContent').style.display = 'block';
             document.getElementById('songTitleDisplay').innerText = name;
 
-            // Mostrar descripción para AdSense y usuarios
             const descArea = document.getElementById('songDescription');
             descArea.innerText = songData.description || `Explora los acordes y la letra de '${name}'. Una excelente pieza para practicar en tu guitarra y mejorar tu técnica de acompañamiento.`;
 
             const folderName = currentCategory === 'populares' ? 'Cancionero Popular' : 'Canciones para Dios Word';
             const pdfUrl = `${encodeURIComponent(folderName)}/${encodeURIComponent(songData.pdf)}`;
 
-            // Actualizar Action Buttons (Tutorial/Cover/PDF)
+            // Action Buttons
             const actionArea = document.getElementById('actionButtons');
             actionArea.innerHTML = '';
-
             let buttonsHtml = '<div class="action-buttons">';
-
-            if (currentCategory === 'populares') {
-                if (songData.tutorial && songData.tutorial.trim() !== "") {
-                    buttonsHtml += `<a href="${songData.tutorial}" target="_blank" class="btn-action btn-tutorial"><span>📺</span> Tutorial</a>`;
-                }
-                if (songData.cover && songData.cover.trim() !== "") {
-                    buttonsHtml += `<a href="${songData.cover}" target="_blank" class="btn-action btn-cover"><span>🎸</span> Cover</a>`;
-                }
+            if (songData.tutorial && songData.tutorial.trim() !== "") {
+                buttonsHtml += `<a href="${songData.tutorial}" target="_blank" class="btn-action btn-tutorial"><span>📺</span> Tutorial</a>`;
             }
-
-            // Botón de PDF para todos
+            if (songData.cover && songData.cover.trim() !== "") {
+                buttonsHtml += `<a href="${songData.cover}" target="_blank" class="btn-action btn-cover"><span>🎸</span> Cover</a>`;
+            }
             buttonsHtml += `
                 <a href="javascript:void(0)" onclick="handleDownload('${pdfUrl}', '${name}')" class="btn-action btn-pdf"><span>📄</span> Descargar PDF</a>
             `;
-
             buttonsHtml += '</div>';
             actionArea.innerHTML = buttonsHtml;
 
-            // Cargar SIEMPRE el PDF original (para conservar diagramas) y añadir el texto debajo para SEO
+            // Cargar letra con acordes desde songsHtmlData
             const jsKey = currentCategory + '/' + songData.pdf;
-            let textualContent = '';
+            const lyricsDiv = document.getElementById('lyricsContent');
 
             if (typeof songsHtmlData !== 'undefined' && songsHtmlData[jsKey]) {
-                textualContent = `
-                    <div style="margin-top: 40px; text-align: left; width: 100%;">
+                const htmlContent = songsHtmlData[jsKey];
+                lyricsDiv.innerHTML = `
+                    <div style="margin-top: 0; text-align: left; width: 100%;">
                         <h3 style="color: var(--stripe-blue); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 1.3rem; margin-bottom: 15px;">Letra y Acordes</h3>
                         <div class="chord-sheet-container" style="
-                            background: #fdfdfd; 
-                            padding: 25px; 
-                            font-family: 'Courier New', Courier, monospace; 
-                            font-size: 1.05rem; 
-                            line-height: 1.6; 
-                            white-space: pre; 
-                            overflow-x: auto; 
-                            color: #1a1a1a; 
-                            border-radius: 12px; 
+                            background: #fdfdfd;
+                            padding: 25px;
+                            font-family: 'Courier New', Courier, monospace;
+                            font-size: 1.05rem;
+                            line-height: 1.6;
+                            white-space: pre;
+                            overflow-x: auto;
+                            color: #1a1a1a;
+                            border-radius: 12px;
                             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
                             border: 1px solid #eee;
-                            width: 100%;">${songsHtmlData[jsKey]}</div>
+                            width: 100%;">${htmlContent}</div>
                     </div>
                 `;
+                // Extraer acordes y renderizar diagramas
+                const chords = extractChordsFromHTML(htmlContent);
+                renderChordsSection(chords);
+            } else {
+                lyricsDiv.innerHTML = '<p style="color: var(--text-light); text-align: center; padding: 40px 0;">Contenido no disponible. Selecciona otra canción.</p>';
+                document.getElementById('chordDiagramsSection').style.display = 'none';
             }
 
-            document.getElementById('textTarget').innerHTML = `
-                <div class="pdf-viewer-container">
-                    <iframe src="${pdfUrl}#toolbar=0&navpanes=0"></iframe>
-                </div>
-                ${textualContent}
-            `;
+            // PDF (oculto por defecto)
+            const pdfContainer = document.getElementById('pdfContainer');
+            const pdfIframe = document.getElementById('pdfIframe');
+            pdfIframe.src = pdfUrl + '#toolbar=0&navpanes=0';
+            pdfContainer.style.display = 'none';
+            const btnPdf = document.getElementById('btnPdfToggle');
+            btnPdf.innerHTML = '📄 Mostrar PDF Original';
+            btnPdf.classList.remove('active');
 
-            // Evitamos el scroll horizontal en PC para que el menú no desaparezca
             if (window.innerWidth <= 900) {
                 document.getElementById('chordContent').scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
