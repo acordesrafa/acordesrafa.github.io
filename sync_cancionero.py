@@ -296,7 +296,7 @@ def main():
     if os.path.exists(PDF_TO_HTML_PY):
         print("Ejecutando pdf_to_html.py para actualizar letras, sitemap y songs_data.js...")
         try:
-            result = subprocess.run([sys.executable, PDF_TO_HTML_PY], capture_output=True, text=True, encoding='utf-8')
+            result = subprocess.run([sys.executable, PDF_TO_HTML_PY], capture_output=True, text=True, encoding='latin-1', errors='replace')
             print("--- SALIDA DE pdf_to_html.py ---")
             print(result.stdout)
             if result.stderr:
