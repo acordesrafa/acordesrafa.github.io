@@ -917,7 +917,7 @@
             "MIm": { f: [0, 2, 2, 0, 0, 0] },
             "SOLm":{ f: [3, 5, 5, 3, 3, 3], b: 3 },
             "LAm": { f: [0, 0, 2, 2, 1, 0] },
-            "Sim": { f: [2, 2, 4, 4, 3, 2], b: 2 },
+            "SIm": { f: [2, 2, 4, 4, 3, 2], b: 2 },
             // Séptimas mayores
             "DO7": { f: [0, 3, 2, 3, 1, 0] },
             "RE7": { f: [0, 0, 0, 2, 1, 2] },
@@ -932,7 +932,7 @@
             "MIm7":{ f: [0, 2, 0, 0, 0, 0] },
             "SOLm7":{f: [3, 3, 3, 3, 0, 3] },
             "LAm7":{ f: [0, 0, 2, 0, 1, 0] },
-            "Sim7":{ f: [2, 2, 2, 2, 2, 2], b: 2 },
+            "SIm7":{ f: [2, 2, 2, 2, 2, 2], b: 2 },
             // Maj7
             "Domaj7":{f: [0, 3, 2, 0, 0, 0] },
             "Remaj7":{f: [0, 0, 0, 2, 2, 2] },
@@ -1052,11 +1052,20 @@
             const norm = normalizeChordName(chordName);
             const entry = chordDB[norm];
             if (entry) return entry;
+            // Búsqueda case-insensitive como respaldo
+            const normLower = norm.toLowerCase();
+            for (const key of Object.keys(chordDB)) {
+                if (key.toLowerCase() === normLower) return chordDB[key];
+            }
             // Buscar sin alteraciones (ej: DO#m7 -> buscar DO#m primero)
             if (norm.length > 2) {
                 for (let len = norm.length; len >= 2; len--) {
                     const sub = norm.substring(0, len);
                     if (chordDB[sub]) return chordDB[sub];
+                    const subLower = sub.toLowerCase();
+                    for (const key of Object.keys(chordDB)) {
+                        if (key.toLowerCase() === subLower) return chordDB[key];
+                    }
                 }
             }
             return null;
@@ -1073,7 +1082,7 @@
                 if (/^(El|Los|Las|Y|O|E|Un|Una|Por|Con|Sin|Del|Que|Se|No|Me|Te|Le|Lo|Su|Tu|De|En|A|Al|Es|Son|Fue|Era|Has|He|Ha|Hay|Más|Muy|Tan|Tanto|Siempre|Cuando|Como|Este|Esta|Estos|Estas|Ese|Esa|Esos|Esas|Todo|Toda|Todos|Todas|Cada|Mismo|Misma|Gran|Grande|Poco|Poca|Otro|Otra|Otros|Otras|Varios|Varias|Mucho|Mucha|Muchos|Muchas|Pocos|Pocas|Demás|Ambos|Sólo|Solo|Aquél|Aquella|Intro|Final|Bis|Solo|Verso|Coro)$/i.test(raw)) continue;
                 let norm = normalizeChordName(raw);
                 if (!norm) continue;
-                // Normalizar: "SIm7" -> "Sim7" (sufijo en minúscula tras la raíz)
+                // Normalizar sufijo a minúsculas (e.g., "SIm7" -> "SIm7", "DOmaj7" -> "DOmaj7")
                 const rootMatch = norm.match(/^(DO|RE|MI|FA|SOL|LA|SI)([#b])?/);
                 if (rootMatch) {
                     const rootFull = rootMatch[0];
@@ -1081,9 +1090,26 @@
                 }
                 if (chordDB[norm]) {
                     chords.add(norm);
-                } else if (norm.length > 1) {
+                    continue;
+                }
+                // Búsqueda case-insensitive en chordDB
+                const normLower = norm.toLowerCase();
+                const matchedKey = Object.keys(chordDB).find(k => k.toLowerCase() === normLower);
+                if (matchedKey) {
+                    chords.add(matchedKey);
+                    continue;
+                }
+                if (norm.length > 1) {
                     const base = norm.replace(/\d+$/, '').replace(/\/.*$/, '');
-                    if (base.length > 0 && chordDB[base]) chords.add(norm);
+                    if (base.length > 0) {
+                        if (chordDB[base]) {
+                            chords.add(norm);
+                            continue;
+                        }
+                        const baseLower = base.toLowerCase();
+                        const baseKey = Object.keys(chordDB).find(k => k.toLowerCase() === baseLower);
+                        if (baseKey) chords.add(norm);
+                    }
                 }
             }
             return [...chords].sort();
