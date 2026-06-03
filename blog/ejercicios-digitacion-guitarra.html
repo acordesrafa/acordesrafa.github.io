@@ -7,7 +7,11 @@
     <meta name="description" content="Mejora tu velocidad y técnica en guitarra con estos 7 ejercicios de digitación: patrón cromático, secuencias de 3 notas, saltos de cuerda, ligados, trinos, arpegios y más.">
     <meta name="keywords" content="ejercicios digitacion guitarra, velocidad guitarra, tecnica guitarra, patron cromatico, ligados guitarra, trinos, arpegios guitarra">
 
-    <link rel="stylesheet" href="../styles.css">
+        <!-- Google Fonts (non-render-blocking) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="../styles.css">
     <link rel="preload" as="image" href="../Fondoapp-420.webp">
     <link rel="icon" href="../Fondoapp-420.webp">
     <style>
@@ -123,6 +127,11 @@
                 <li><a href="../sobre-mi.html">Sobre mí</a></li>
                 <li><a href="../contacto.html">Contacto</a></li>
             </ul>
+            <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </nav>
     </header>
 
@@ -213,6 +222,21 @@
     <script>
         loadVisitCounter('blog-ejercicios-digitacion');
         loadAdsense();
+        // Hamburger Menu Toggle
+        const hm = document.getElementById('hamburger');
+        if (hm) {
+            const nl = document.querySelector('.nav-links');
+            hm.addEventListener('click', () => {
+                hm.classList.toggle('active');
+                nl.classList.toggle('active');
+            });
+            document.querySelectorAll('.nav-links a').forEach(l => {
+                l.addEventListener('click', () => {
+                    hm.classList.remove('active');
+                    nl.classList.remove('active');
+                });
+            });
+        }
     </script>
 </body>
 </html>

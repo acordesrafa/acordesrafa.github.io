@@ -7,6 +7,11 @@
     <meta name="description" content="Artículos educativos de guitarra: técnicas, ejercicios, análisis de canciones y guías para aprender a tocar la guitarra desde cero.">
     <meta name="keywords" content="blog guitarra, aprender guitarra, técnicas guitarra, ejercicios guitarra, análisis canciones">
 
+    <!-- Google Fonts (non-render-blocking) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+
     <link rel="stylesheet" href="../styles.css">
     <link rel="preload" as="image" href="../Fondoapp-420.webp">
     <link rel="icon" href="../Fondoapp-420.webp">
@@ -117,11 +122,15 @@
                 <li><a href="../index.html#lecciones">Lecciones</a></li>
                 <li><a href="../index.html#apps">Apps</a></li>
                 <li><a href="../preguntas-frecuentes.html">FAQ</a></li>
-
                 <li><a href="../blog/index.html" class="active">Blog</a></li>
                 <li><a href="../sobre-mi.html">Sobre mí</a></li>
                 <li><a href="../contacto.html">Contacto</a></li>
             </ul>
+            <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </nav>
     </header>
 
@@ -225,6 +234,22 @@
     <script>
         loadVisitCounter('blog');
         loadAdsense();
+
+        // Hamburger Menu Toggle
+        const hm = document.getElementById('hamburger');
+        if (hm) {
+            const nl = document.querySelector('.nav-links');
+            hm.addEventListener('click', () => {
+                hm.classList.toggle('active');
+                nl.classList.toggle('active');
+            });
+            document.querySelectorAll('.nav-links a').forEach(l => {
+                l.addEventListener('click', () => {
+                    hm.classList.remove('active');
+                    nl.classList.remove('active');
+                });
+            });
+        }
     </script>
 </body>
 </html>
