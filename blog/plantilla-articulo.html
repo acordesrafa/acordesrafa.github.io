@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- ======================================================================
+    PLANTILLA DE ARTÍCULO PARA EL BLOG DE ACORDES RAFA
+    ======================================================================
+    INSTRUCCIONES PARA AÑADIR UN NUEVO ARTÍCULO:
+    
+    1. Copia este archivo y renómbralo con el nombre de tu artículo,
+       usando guiones bajos: nombre-del-articulo.html
+    
+    2. Cambia las siguientes secciones (marcadas con "CAMBIAR"):
+       - <title> (línea ~6)
+       - <meta name="description"> (línea ~7)
+       - <meta name="keywords"> (línea ~8)
+       - <h1> dentro de .article-header (línea ~128)
+       - <p class="meta"> (línea ~130)
+       - Todo el contenido dentro de .article-content (líneas ~134-210)
+       - El parámetro de loadVisitCounter (línea ~242)
+    
+    3. IMPORTANTE:
+       - Todos los enlaces a assets (CSS, imágenes, scripts, otras páginas)
+         deben usar "../" (ej: ../styles.css, ../index.html, ../acordes.html)
+       - Mantén exactamente los mismos 8 items en <nav> en el mismo orden
+       - Usa loadVisitCounter('blog-NOMBRE'); con un nombre único
+       - Mantén la estructura HTML exacta: mismo <header>, <footer>, scripts
+       - El enlace "← Volver al blog" enlaza siempre a index.html dentro de blog/
+    ====================================================================== -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- CAMBIAR: Título único y descriptivo -->
+    <title>Título del artículo | Acordes Rafa</title>
+    <!-- CAMBIAR: Descripción para SEO (máx. 160 caracteres) -->
+    <meta name="description" content="Descripción breve del artículo para motores de búsqueda.">
+    <!-- CAMBIAR: Palabras clave separadas por comas -->
+    <meta name="keywords" content="palabra clave 1, palabra clave 2, palabra clave 3">
+
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="preload" as="image" href="../Fondoapp-420.webp">
+    <link rel="icon" href="../Fondoapp-420.webp">
+    <style>
+        /* ======================================================================
+           ESTILOS DEL ARTÍCULO
+           ======================================================================
+           NO CAMBIAR estos estilos a menos que necesites añadir nuevos.
+           Mantienen la coherencia visual con el resto del blog.
+        */
+        .article-header {
+            padding: 140px 24px 60px;
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.06) 0%, rgba(255, 107, 138, 0.04) 100%);
+            text-align: center;
+        }
+        .article-header h1 {
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+        .article-header .meta {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        .article-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 24px 100px;
+        }
+        .article-content h2 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-top: 48px;
+            margin-bottom: 20px;
+        }
+        .article-content h3 {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+        .article-content p {
+            color: var(--text-muted);
+            line-height: 1.9;
+            margin-bottom: 20px;
+        }
+        .article-content ul, .article-content ol {
+            color: var(--text-muted);
+            line-height: 1.9;
+            margin-left: 24px;
+            margin-bottom: 20px;
+        }
+        .article-content li {
+            margin-bottom: 8px;
+        }
+        .article-content .tip-box {
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.06), rgba(108, 99, 255, 0.02));
+            border-left: 4px solid var(--primary);
+            padding: 20px 24px;
+            border-radius: 0 12px 12px 0;
+            margin: 24px 0;
+        }
+        .article-content .tip-box strong {
+            color: var(--primary);
+        }
+        .article-content .progression-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 16px 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover {
+            transform: translateX(-4px);
+        }
+    </style>
+</head>
+<body>
+    <div class="fixed-background">
+        <img src="../Fondoapp-900.webp" srcset="../Fondoapp-420.webp 420w, ../Fondoapp-900.webp 900w" sizes="(max-width: 768px) 420px, 900px" alt="Fondo Decorativo" width="900" height="883" loading="eager" fetchpriority="high" decoding="async">
+    </div>
+    <div class="fixed-guitar">
+        <picture>
+            <source srcset="../Guitarra_Ibanez-220.webp 220w, ../Guitarra_Ibanez-320.webp 320w" sizes="220px" type="image/webp">
+            <img src="../Guitarra_Ibanez-320.webp" alt="Guitarra Ibanez Acordes Rafa" width="320" height="320" loading="eager" fetchpriority="low" decoding="async">
+        </picture>
+    </div>
+
+    <header>
+        <nav>
+            <!-- ======================================================================
+                 NAVEGACIÓN: 8 items exactos. NO CAMBIAR el orden ni los enlaces.
+                 ====================================================================== -->
+            <a href="../index.html" class="logo">
+                <img src="../Fondoapp-420.webp" alt="Logo Acordes Rafa" width="35" height="35" decoding="async">
+                Acordes Rafa
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../acordes.html">Tutoriales y Acordes</a></li>
+                <li><a href="../guitar-tool.html">Herramienta de Acordes</a></li>
+                <li><a href="../index.html#lecciones">Lecciones</a></li>
+                <li><a href="../index.html#apps">Apps</a></li>
+                <li><a href="../preguntas-frecuentes.html">FAQ</a></li>
+
+                <li><a href="../blog/index.html">Blog</a></li>
+                <li><a href="../sobre-mi.html">Sobre mí</a></li>
+                <li><a href="../contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <article>
+        <div class="article-header">
+            <!-- CAMBIAR: Título del artículo (debe coincidir con el <title>) -->
+            <h1>Título del artículo</h1>
+            <!-- CAMBIAR: Fecha o descripción corta -->
+            <p class="meta">Breve descripción · Actualizado: mes año</p>
+        </div>
+
+        <div class="article-content">
+            <!-- ======================================================================
+                 CONTENIDO DEL ARTÍCULO
+                 ======================================================================
+                 CAMBIAR TODO EL CONTENIDO a partir de aquí.
+                 
+                 Estructura recomendada:
+                 - Párrafo introductorio
+                 - <h2>Secciones principales</h2>
+                 - <h3>Subsecciones</h3>
+                 - Listas <ul>/<ol> para enumerar puntos
+                 - <div class="tip-box"> para consejos destacados
+                 - <div class="progression-box"> para ejemplos visuales destacados
+                 - Enlaces de referencia a otras páginas del sitio (con ../)
+                 
+                 Clases disponibles:
+                 - .tip-box: Caja con borde izquierdo morado para consejos
+                 - .progression-box: Caja centrada con sombra para ejemplos destacados
+                 - .back-link: Enlace de "← Volver al blog" (no cambiar)
+                 
+                 Reglas de contenido:
+                 - Contenido original y educativo sobre guitarra/música
+                 - Sin letras de canciones con copyright
+                 - Sin enlaces externos que no sean del propio sitio o YouTube
+                 ====================================================================== -->
+
+            <a href="index.html" class="back-link">← Volver al blog</a>
+
+            <!-- CAMBIAR: Contenido del artículo aquí -->
+            <p>Párrafo introductorio del artículo. Explica de qué trata y qué aprenderá el lector.</p>
+
+            <h2>Primera sección</h2>
+            <p>Contenido de la primera sección. Puedes incluir tantas secciones como necesites.</p>
+
+            <h3>Subsección</h3>
+            <p>Contenido de la subsección.</p>
+
+            <ul>
+                <li>Elemento de lista 1</li>
+                <li>Elemento de lista 2</li>
+                <li>Elemento de lista 3</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>Consejo:</strong> Usa este tipo de caja para destacar consejos, trucos o ejercicios.
+            </div>
+
+            <div class="progression-box">
+                Usa esta caja para ejemplos visuales como progresiones de acordes o tablas.
+            </div>
+
+            <h2>Recursos en Acordes Rafa</h2>
+            <ul>
+                <li><a href="../acordes.html">Tutoriales y Acordes</a> — descripción del recurso.</li>
+                <li><a href="../guitar-tool.html">Herramienta de Acordes</a> — descripción del recurso.</li>
+            </ul>
+            <!-- FIN DEL CONTENIDO DEL ARTÍCULO -->
+        </div>
+    </article>
+
+    <footer>
+        <!-- ======================================================================
+             FOOTER: NO CAMBIAR. Mantener igual en todos los artículos.
+             ====================================================================== -->
+        <div class="container">
+            <p>&copy; 2026 Acordes Rafa. Todos los derechos reservados.</p>
+            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 5px;">
+                <a href="../privacidad.html" style="color: var(--text-muted); text-decoration: none;">Privacidad</a>
+                <a href="../terminos.html" style="color: var(--text-muted); text-decoration: none;">Términos</a>
+                <a href="../dmca.html" style="color: var(--text-muted); text-decoration: none;">DMCA</a>
+                <a href="../contacto.html" style="color: var(--text-muted); text-decoration: none;">Contacto</a>
+                <a href="https://www.youtube.com/@AcordesRafa" target="_blank" style="color: var(--text-muted); text-decoration: none;">YouTube</a>
+            </div>
+            <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.8; display: none;">
+                <span id="visitas-count"></span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../site-performance.js"></script>
+    <script src="../cookie-banner.js"></script>
+    <script>
+        /* CAMBIAR: loadVisitCounter('blog-NOMBRE'); con un nombre único */
+        loadVisitCounter('blog-nombre-del-articulo');
+        loadAdsense();
+    </script>
+</body>
+</html>

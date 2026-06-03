@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cómo leer tablatura y diagramas de acordes | Acordes Rafa</title>
+    <meta name="description" content="Aprende a leer tablatura para guitarra: números en cuerdas, símbolos (h, p, /, ~), diagramas de acordes, cifrado americano y ejercicios prácticos para empezar a leer.">
+    <meta name="keywords" content="leer tablatura, tablatura guitarra, diagramas acordes, cifrado americano, como leer tabs, simbolos tablatura">
+
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="preload" as="image" href="../Fondoapp-420.webp">
+    <link rel="icon" href="../Fondoapp-420.webp">
+    <style>
+        .article-header {
+            padding: 140px 24px 60px;
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.06) 0%, rgba(255, 107, 138, 0.04) 100%);
+            text-align: center;
+        }
+        .article-header h1 {
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+        .article-header .meta {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        .article-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 24px 100px;
+        }
+        .article-content h2 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-top: 48px;
+            margin-bottom: 20px;
+        }
+        .article-content h3 {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+        .article-content p {
+            color: var(--text-muted);
+            line-height: 1.9;
+            margin-bottom: 20px;
+        }
+        .article-content ul, .article-content ol {
+            color: var(--text-muted);
+            line-height: 1.9;
+            margin-left: 24px;
+            margin-bottom: 20px;
+        }
+        .article-content li {
+            margin-bottom: 8px;
+        }
+        .article-content .tip-box {
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.06), rgba(108, 99, 255, 0.02));
+            border-left: 4px solid var(--primary);
+            padding: 20px 24px;
+            border-radius: 0 12px 12px 0;
+            margin: 24px 0;
+        }
+        .article-content .tip-box strong {
+            color: var(--primary);
+        }
+        .article-content .progression-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 16px 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover {
+            transform: translateX(-4px);
+        }
+    </style>
+</head>
+<body>
+    <div class="fixed-background">
+        <img src="../Fondoapp-900.webp" srcset="../Fondoapp-420.webp 420w, ../Fondoapp-900.webp 900w" sizes="(max-width: 768px) 420px, 900px" alt="Fondo Decorativo" width="900" height="883" loading="eager" fetchpriority="high" decoding="async">
+    </div>
+    <div class="fixed-guitar">
+        <picture>
+            <source srcset="../Guitarra_Ibanez-220.webp 220w, ../Guitarra_Ibanez-320.webp 320w" sizes="220px" type="image/webp">
+            <img src="../Guitarra_Ibanez-320.webp" alt="Guitarra Ibanez Acordes Rafa" width="320" height="320" loading="eager" fetchpriority="low" decoding="async">
+        </picture>
+    </div>
+
+    <header>
+        <nav>
+            <a href="../index.html" class="logo">
+                <img src="../Fondoapp-420.webp" alt="Logo Acordes Rafa" width="35" height="35" decoding="async">
+                Acordes Rafa
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../acordes.html">Tutoriales y Acordes</a></li>
+                <li><a href="../guitar-tool.html">Herramienta de Acordes</a></li>
+                <li><a href="../index.html#lecciones">Lecciones</a></li>
+                <li><a href="../index.html#apps">Apps</a></li>
+                <li><a href="../preguntas-frecuentes.html">FAQ</a></li>
+
+                <li><a href="../blog/index.html">Blog</a></li>
+                <li><a href="../sobre-mi.html">Sobre mí</a></li>
+                <li><a href="../contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <article>
+        <div class="article-header">
+            <h1>Cómo leer tablatura y diagramas de acordes</h1>
+            <p class="meta">Guía completa para leer tabs y charts · Actualizado: junio 2026</p>
+        </div>
+
+        <div class="article-content">
+            <a href="index.html" class="back-link">← Volver al blog</a>
+
+            <p>La tablatura (o tab) es el sistema de notación más usado por guitarristas. A diferencia del pentagrama, la tablatura te dice exactamente dónde poner los dedos en el mástil. En este artículo aprenderás a leer tablaturas y diagramas de acordes desde cero.</p>
+
+            <h2>¿Qué es la tablatura?</h2>
+            <p>La tablatura representa las seis cuerdas de la guitarra mediante seis líneas horizontales. La línea de arriba es la cuerda más aguda (MI, cuerda 1) y la de abajo es la más grave (MI, cuerda 6). Los números indican el traste que debes pisar: un 0 significa cuerda al aire, un 3 significa tercer traste, y así sucesivamente.</p>
+
+            <div class="progression-box">
+                Cuerda 1 (MI aguda):  e|--0--3--5--<br>
+                Cuerda 2 (SI):       B|--1--3--5--<br>
+                Cuerda 3 (SOL):      G|--0--2--4--<br>
+                Cuerda 4 (RE):       D|--2--3--5--<br>
+                Cuerda 5 (LA):       A|--3--5--7--<br>
+                Cuerda 6 (MI grave): E|--0--3--5--
+            </div>
+
+            <p>En este ejemplo, la tablatura muestra un patrón cromático ascendente desde la cuerda 6 a la 1. Los números se leen de izquierda a derecha. Cuando varios números están alineados verticalmente, significa que debes tocarlos simultáneamente (formando un acorde).</p>
+
+            <h2>Símbolos de técnicas en tablatura</h2>
+            <p>Las tablaturas usan letras para indicar técnicas específicas:</p>
+            <ul>
+                <li><strong>h</strong> (hammer-on): Toca la primera nota y martillea el segundo traste sin usar la púa. Ejemplo: 5h7 significa "toca traste V y martillea traste VII sin rasguear de nuevo".</li>
+                <li><strong>p</strong> (pull-off): Toca ambas notas pero solo rasgueas la primera; "tiras" del dedo para que suene la nota más grave. Ejemplo: 7p5.</li>
+                <li><strong>/</strong> (slide ascendente): Desliza el dedo desde un traste a otro sin levantar la presión. Ejemplo: 5/7 significa "toca traste V y deslízate hasta el VII".</li>
+                <li><strong>\</strong> (slide descendente): Igual que el anterior pero hacia trastes más graves. Ejemplo: 7\5.</li>
+                <li><strong>~</strong> (vibrato): Mueve ligeramente el dedo hacia adelante y atrás para producir una oscilación en el tono.</li>
+                <li><strong>b</strong> (bend): Estira la cuerda hacia arriba (o abajo) para elevar el tono. b7 significa "toca traste VII y haz un bend".</li>
+                <li><strong>r</strong> (release bend): Vuelve el bend a su tono original.</li>
+                <li><strong>x</strong> (mute/golpe seco): Golpea la cuerda pero ahogándola con la mano izquierda para producir un sonido percusivo.</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>Ejemplo visual:</strong> Una línea como "e|--5h7p5--7/9--9\7--7~--|" se lee: toca traste V, martillea a VII, tira a V, deslízate a IX, deslízate de vuelta a VII, y haz vibrato en VII. Todo en la cuerda 1 (MI aguda).
+            </div>
+
+            <h2>Cómo leer diagramas de acordes</h2>
+            <p>Los diagramas de acordes son representaciones visuales del mástil visto de frente. Se leen así:</p>
+            <ul>
+                <li><strong>Las 6 líneas verticales</strong> representan las cuerdas (de izquierda a derecha: MI grave a MI aguda, o de derecha a izquierda según la convención —en Acordes Rafa usamos el orden estándar: E-A-D-G-B-e de izquierda a derecha).</li>
+                <li><strong>Los trastes</strong> son las líneas horizontales. La línea más gruesa de arriba es la cejilla (traste 0) o el número romano indica el traste de inicio.</li>
+                <li><strong>Los círculos negros</strong> indican dónde pisar con los dedos. A veces llevan números 1-2-3-4 que indican qué dedo usar (índice, medio, anular, meñique).</li>
+                <li><strong>Círculo hueco (○)</strong> sobre una cuerda significa que debe tocarse al aire.</li>
+                <li><strong>X</strong> sobre una cuerda significa que no debe tocarse o debe silenciarse.</li>
+            </ul>
+
+            <p>Por ejemplo, un diagrama de DO mayor muestra: X en cuerda 6, dedo 3 en cuerda 5 traste III, dedo 2 en cuerda 4 traste II, cuerda 3 al aire (○), dedo 1 en cuerda 2 traste I, cuerda 1 al aire (○). La cejilla (línea gruesa) está en el traste 0 (las cuerdas al aire).</p>
+
+            <h2>El cifrado americano</h2>
+            <p>En la música popular, los acordes se nombran con el cifrado americano (letras). Es el sistema que usamos en Acordes Rafa y en prácticamente todas las tablaturas modernas:</p>
+
+            <div class="progression-box">
+                C = DO · D = RE · E = MI · F = FA · G = SOL · A = LA · B = SI
+            </div>
+
+            <ul>
+                <li>C = DO mayor. Cm = DO menor. C7 = DO con séptima menor. Cmaj7 = DO con séptima mayor. Cm7 = DO menor con séptima.</li>
+                <li>El sostenido (#) sube un semitono (C# = DO♯). El bemol (b) baja un semitono (Bb = SI♭).</li>
+                <li>C/E significa "DO mayor con bajo en MI" (primera inversión).</li>
+            </ul>
+
+            <p>Memorizar esta correspondencia es fundamental: C-D-E-F-G-A-B = DO-RE-MI-FA-SOL-LA-SI. Escríbela en una nota y pégala en tu funda de guitarra hasta que la interiorices.</p>
+
+            <h2>Ejercicio práctico: traduce esta tablatura</h2>
+            <p>Aquí tienes una tablatura sencilla. Intenta tocarla:</p>
+            <div class="progression-box">
+                e|--0--1--3--|--3--1--0--|<br>
+                B|--1--3--5--|--5--3--1--|<br>
+                G|--0--2--4--|--4--2--0--|<br>
+                D|----------|----------|<br>
+                A|----------|----------|<br>
+                E|----------|----------|
+            </div>
+            <p>Esta es una melodía ascendente y descendente en las tres cuerdas más agudas. Toca cada nota una por una, leyendo de izquierda a derecha y de arriba abajo cuando los números están alineados verticalmente (en este caso no hay acordes, solo notas individuales).</p>
+
+            <div class="tip-box">
+                <strong>Consejo para principiantes:</strong> Cuando veas una tablatura por primera vez, identifica primero el tempo (BPM) y los acordes escritos arriba. Luego lee la línea de la cuerda 1 (e) y ve bajando. No intentes leer todas las cuerdas a la vez hasta que te sientas cómodo con una sola línea melódica.
+            </div>
+
+            <h2>Errores comunes al leer tablatura</h2>
+            <ul>
+                <li><strong>Confundir la cuerda 1 con la 6:</strong> Recuerda: e (cuerda 1) es la línea de arriba en la tablatura, E (cuerda 6) es la de abajo.</li>
+                <li><strong>Ignorar el ritmo:</strong> La tablatura básica no indica duración de las notas. Busca tabs con notación rítmica (barras, corcheas) o escucha la canción original para el timing.</li>
+                <li><strong>No verificar la afinación:</strong> Muchas tabs asumen afinación estándar. Si la canción usa Drop D, la tab lo indicará al principio.</li>
+            </ul>
+
+            <h2>Recursos en Acordes Rafa</h2>
+            <ul>
+                <li><a href="../acordes.html">Tutoriales y Acordes</a> — todas nuestras canciones incluyen diagramas de acordes y cifrado americano.</li>
+                <li><a href="../guitar-tool.html">Herramienta de Acordes</a> — visualiza cualquier acorde en el mástil con su diagrama interactivo.</li>
+            </ul>
+        </div>
+    </article>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Acordes Rafa. Todos los derechos reservados.</p>
+            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 5px;">
+                <a href="../privacidad.html" style="color: var(--text-muted); text-decoration: none;">Privacidad</a>
+                <a href="../terminos.html" style="color: var(--text-muted); text-decoration: none;">Términos</a>
+                <a href="../dmca.html" style="color: var(--text-muted); text-decoration: none;">DMCA</a>
+                <a href="../contacto.html" style="color: var(--text-muted); text-decoration: none;">Contacto</a>
+                <a href="https://www.youtube.com/@AcordesRafa" target="_blank" style="color: var(--text-muted); text-decoration: none;">YouTube</a>
+            </div>
+            <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.8; display: none;">
+                <span id="visitas-count"></span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../site-performance.js"></script>
+    <script src="../cookie-banner.js"></script>
+    <script>
+        loadVisitCounter('blog-como-leer-tablatura');
+        loadAdsense();
+    </script>
+</body>
+</html>
