@@ -1,0 +1,12 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Rafa",
+  "url": "https://acordesrafa.github.io",
+  "sameAs": [
+    "https://www.youtube.com/@AcordesRafa"
+  ],
+  "jobTitle": "Profesor de Guitarra",
+  "description": "Creador de contenido educativo de guitarra en Acordes Rafa. Autor de diagramas de acordes, lecciones y análisis armónico.",
+  "knowsAbout": ["Guitarra", "Música", "Armonía", "Educación Musical"]
+}

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ritmos Básicos de Guitarra | Acordes Rafa</title>
+    <meta name="description" content="Aprende patrones de rasgueo y ritmos para guitarra: ritmos pop, rock, baladas y folclore. Mejora tu técnica de mano derecha con ejercicios prácticos.">
+    <meta name="keywords" content="ritmos guitarra, rasgueos guitarra, patrones de rasgueo, ritmos pop guitarra, técnica mano derecha">
 
     <link rel="stylesheet" href="styles.css">
     
@@ -96,15 +98,18 @@
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="acordes.html">Tutoriales y Acordes</a></li>
                 <li><a href="guitar-tool.html">Herramienta de Acordes</a></li>
-                <li><a href="index.html#lecciones">Lecciones</a></li>
+                <li><a href="index.html#lecciones" class="active">Lecciones</a></li>
                 <li><a href="index.html#apps">Apps</a></li>
+                <li><a href="preguntas-frecuentes.html">FAQ</a></li>
+
+                <li><a href="blog/index.html">Blog</a></li>
                 <li><a href="sobre-mi.html">Sobre mí</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
             </ul>
         </nav>
     </header>
 
-    <main>
+    <div class="lesson-page">
     <div class="lesson-header">
         <h1>Ritmos y Rasgueos Básicos para Guitarra</h1>
         <p class="leccion-fecha">Última actualización: mayo 2026</p>
@@ -164,6 +169,7 @@
             </a>
         </div>
     </main>
+    </div>
 
     <footer>
         <div class="container">
@@ -171,6 +177,7 @@
             <div style="display: flex; justify-content: center; gap: 20px; margin-top: 5px;">
                 <a href="privacidad.html" style="color: var(--text-muted); text-decoration: none;">Privacidad</a>
                 <a href="terminos.html" style="color: var(--text-muted); text-decoration: none;">Términos</a>
+                <a href="dmca.html" style="color: var(--text-muted); text-decoration: none;">DMCA</a>
                 <a href="contacto.html" style="color: var(--text-muted); text-decoration: none;">Contacto</a>
                 <a href="https://www.youtube.com/@AcordesRafa" target="_blank" style="color: var(--text-muted); text-decoration: none;">YouTube</a>
             </div>
@@ -185,6 +192,22 @@
     <script>
         loadVisitCounter('leccion-ritmos');
         loadAdsense();
+
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
     </script>
 
 </body>
