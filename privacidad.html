@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Política de Privacidad | Acordes Rafa</title>
 
+    <!-- Google Fonts (non-render-blocking) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+
     <link rel="stylesheet" href="styles.css">
     <!-- Preload main background -->
     <link rel="preload" as="image" href="Fondoapp-420.webp">
@@ -16,15 +21,9 @@
             margin: 0 auto;
         }
         .legal-content h1 {
-            font-family: var(--font-heading);
-            font-size: 2.8rem;
-            color: var(--text-dark);
             margin-bottom: 24px;
-            letter-spacing: -1px;
         }
         .legal-content h2 {
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
             color: var(--primary);
             margin-top: 36px;
             margin-bottom: 16px;
@@ -79,11 +78,15 @@
                 <li><a href="index.html#lecciones">Lecciones</a></li>
                 <li><a href="index.html#apps">Apps</a></li>
                 <li><a href="preguntas-frecuentes.html">FAQ</a></li>
-
                 <li><a href="blog/index.html">Blog</a></li>
                 <li><a href="sobre-mi.html">Sobre mí</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
             </ul>
+            <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </nav>
     </header>
 
@@ -108,8 +111,8 @@
             <ul>
                 <li><strong>Google AdSense:</strong> Google utiliza cookies y tecnologías similares para mostrar anuncios, incluida publicidad personalizada según tus visitas a este y otros sitios.</li>
             </ul>
-            <p>Puedes obtener más información sobre cómo Google gestiona los datos en su política oficial: <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">https://policies.google.com/technologies/ads</a></p>
-            <p><strong>Google Analytics 4 (GA4):</strong> si aceptas el banner de cookies, utilizamos Google Analytics 4 mediante la etiqueta <code>gtag.js</code> con el ID de medición <strong>G-QCXGHBB63Y</strong> para entender de forma agregada el uso del sitio (por ejemplo páginas vistas y origen aproximado del tráfico). Puedes revisar cómo Google trata estos datos en <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">https://policies.google.com/privacy</a>.</p>
+            <p>Puedes obtener más información sobre cómo Google gestiona los datos en su <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">política oficial de publicidad</a>.</p>
+            <p><strong>Google Analytics 4 (GA4):</strong> si aceptas el banner de cookies, utilizamos Google Analytics 4 mediante la etiqueta <code>gtag.js</code> con el ID de medición <strong>G-QCXGHBB63Y</strong> para entender de forma agregada el uso del sitio (por ejemplo páginas vistas y origen aproximado del tráfico). Puedes revisar cómo Google trata estos datos en su <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">política de privacidad</a>.</p>
             <p><strong>Consent Mode (Google):</strong> el sitio envía a Google el estado de consentimiento (Consent Mode v2) para publicidad y, cuando aceptas, para analítica: <em>ad_storage</em>, <em>ad_user_data</em>, <em>ad_personalization</em> y <em>analytics_storage</em>. El script <em>gtag.js</em> solo se carga después de que confirmas en el banner.</p>
         </section>
 
@@ -159,6 +162,22 @@
     <script>
         loadVisitCounter('privacidad');
         loadAdsense();
+
+        // Hamburger Menu Toggle
+        const hm = document.getElementById('hamburger');
+        if (hm) {
+            const nl = document.querySelector('.nav-links');
+            hm.addEventListener('click', () => {
+                hm.classList.toggle('active');
+                nl.classList.toggle('active');
+            });
+            document.querySelectorAll('.nav-links a').forEach(l => {
+                l.addEventListener('click', () => {
+                    hm.classList.remove('active');
+                    nl.classList.remove('active');
+                });
+            });
+        }
     </script>
 
 

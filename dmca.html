@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Política DMCA | Acordes Rafa</title>
 
+    <!-- Google Fonts (non-render-blocking) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+
     <link rel="stylesheet" href="styles.css">
     <link rel="preload" as="image" href="Fondoapp-420.webp">
     <link rel="icon" href="Fondoapp-420.webp">
@@ -15,15 +20,9 @@
             margin: 0 auto;
         }
         .legal-content h1 {
-            font-family: var(--font-heading);
-            font-size: 2.8rem;
-            color: var(--text-dark);
             margin-bottom: 24px;
-            letter-spacing: -1px;
         }
         .legal-content h2 {
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
             color: var(--primary);
             margin-top: 36px;
             margin-bottom: 16px;
@@ -76,11 +75,15 @@
                 <li><a href="index.html#lecciones">Lecciones</a></li>
                 <li><a href="index.html#apps">Apps</a></li>
                 <li><a href="preguntas-frecuentes.html">FAQ</a></li>
-
                 <li><a href="blog/index.html">Blog</a></li>
                 <li><a href="sobre-mi.html">Sobre mí</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
             </ul>
+            <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </nav>
     </header>
 
@@ -149,6 +152,22 @@
     <script>
         loadVisitCounter('dmca');
         loadAdsense();
+
+        // Hamburger Menu Toggle
+        const hm = document.getElementById('hamburger');
+        if (hm) {
+            const nl = document.querySelector('.nav-links');
+            hm.addEventListener('click', () => {
+                hm.classList.toggle('active');
+                nl.classList.toggle('active');
+            });
+            document.querySelectorAll('.nav-links a').forEach(l => {
+                l.addEventListener('click', () => {
+                    hm.classList.remove('active');
+                    nl.classList.remove('active');
+                });
+            });
+        }
     </script>
 
 </body>

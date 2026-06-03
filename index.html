@@ -19,15 +19,20 @@
     <meta property="og:url" content="https://acordesrafa.github.io/">
     <meta property="og:title" content="Acordes Rafa | Tutoriales de Guitarra y Lecciones Sencillas">
     <meta property="og:description" content="Aprende guitarra con Acordes Rafa. Tutoriales modernos de acordes, teoría musical y técnica para guitarristas.">
-    <meta property="og:image" content="https://acordesrafa.github.io/Iconogrande.jpg">
+    <meta property="og:image" content="https://acordesrafa.github.io/Iconogrande.webp">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://acordesrafa.github.io/">
     <meta property="twitter:title" content="Acordes Rafa | Tutoriales de Guitarra y Lecciones Sencillas">
     <meta property="twitter:description" content="Aprende guitarra con Acordes Rafa. Tutoriales modernos de acordes, teoría musical y técnica para guitarristas.">
-    <meta property="twitter:image" content="https://acordesrafa.github.io/Iconogrande.jpg">
+    <meta property="twitter:image" content="https://acordesrafa.github.io/Iconogrande.webp">
     
+    <!-- Google Fonts (preloaded, non-render-blocking) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
     
@@ -57,7 +62,7 @@
       "@type": "Organization",
       "name": "Acordes Rafa",
       "url": "https://acordesrafa.github.io/",
-      "logo": "https://acordesrafa.github.io/Iconogrande.jpg",
+      "logo": "https://acordesrafa.github.io/Iconogrande.webp",
       "sameAs": [
         "https://www.youtube.com/@AcordesRafa"
       ]
@@ -76,32 +81,6 @@
 </head>
 <body>
 
-    <header>
-        <nav>
-            <a href="#" class="logo">
-                <img src="Fondoapp-420.webp" alt="Logo de Acordes Rafa" width="35" height="35" decoding="async">
-                Acordes Rafa
-            </a>
-            <ul class="nav-links">
-                <li><a href="index.html" class="active">Inicio</a></li>
-                <li><a href="acordes.html">Tutoriales y Acordes</a></li>
-                <li><a href="guitar-tool.html">Herramienta de Acordes</a></li>
-                <li><a href="index.html#lecciones">Lecciones</a></li>
-                <li><a href="index.html#apps">Apps</a></li>
-                <li><a href="preguntas-frecuentes.html">FAQ</a></li>
-
-                <li><a href="blog/index.html">Blog</a></li>
-                <li><a href="sobre-mi.html">Sobre mí</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-            </ul>
-            <button class="hamburger" id="hamburger" aria-label="Abrir menú">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </nav>
-    </header>
-
     <!-- Global Background Logo -->
     <div class="fixed-background">
         <img src="Fondoapp-900.webp" srcset="Fondoapp-420.webp 420w, Fondoapp-900.webp 900w" sizes="(max-width: 768px) 420px, 900px" alt="Fondo Decorativo" width="900" height="883" loading="eager" fetchpriority="high" decoding="async">
@@ -114,6 +93,31 @@
             <img src="Guitarra_Ibanez-320.webp" alt="Guitarra Ibanez Acordes Rafa" width="320" height="320" loading="eager" fetchpriority="low" decoding="async">
         </picture>
     </div>
+
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <img src="Fondoapp-420.webp" alt="Logo de Acordes Rafa" width="35" height="35" decoding="async">
+                Acordes Rafa
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Inicio</a></li>
+                <li><a href="acordes.html">Tutoriales y Acordes</a></li>
+                <li><a href="guitar-tool.html">Herramienta de Acordes</a></li>
+                <li><a href="index.html#lecciones">Lecciones</a></li>
+                <li><a href="index.html#apps">Apps</a></li>
+                <li><a href="preguntas-frecuentes.html">FAQ</a></li>
+                <li><a href="blog/index.html">Blog</a></li>
+                <li><a href="sobre-mi.html">Sobre mí</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
 
     <main>
     <!-- INICIO (HERO) -->
@@ -226,7 +230,7 @@
     <section id="sobre-mi">
         <div class="container">
             <div class="profile-card">
-                <img src="Iconogrande.jpg" class="profile-img" alt="Rafa Acordes" width="300" height="300" loading="lazy">
+                <img src="Iconogrande.webp" class="profile-img" alt="Rafa Acordes" width="300" height="300" loading="lazy">
                 <div style="text-align: left;">
                     <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Hola, soy Rafa</h2>
                     <p style="color: var(--text-muted); font-size: 1.1rem;">Soy Rafael, creador de Acordes Rafa. Mi misión es democratizar el aprendizaje de la guitarra, simplificando el proceso para que cualquier persona, sin importar su experiencia previa pueda dominar niveles básico e intermedio con confianza y placer.
@@ -269,6 +273,22 @@ Ya sea que seas principiante absoluto o busques pulir tus habilidades intermedia
     </script>
 
     <script>
+        // Highlight correct nav item for anchor-based pages (Lecciones, Apps)
+        function updateNavFromHash() {
+            const hash = window.location.hash;
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(a => a.classList.remove('active'));
+            if (hash === '#lecciones') {
+                document.querySelector('.nav-links a[href="index.html#lecciones"]')?.classList.add('active');
+            } else if (hash === '#apps') {
+                document.querySelector('.nav-links a[href="index.html#apps"]')?.classList.add('active');
+            } else {
+                document.querySelector('.nav-links a[href="index.html"]')?.classList.add('active');
+            }
+        }
+        window.addEventListener('hashchange', updateNavFromHash);
+        updateNavFromHash();
+
         // Hamburger Menu Toggle
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.querySelector('.nav-links');
