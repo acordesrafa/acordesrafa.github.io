@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecciones de Guitarra | Acordes Rafa</title>
+    <meta name="description" content="Lecciones de guitarra paso a paso: fundamentos, acordes abiertos, ritmos, armonía, técnica y escalas.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preload" as="image" href="Fondoapp-420.webp">
+    <link rel="icon" href="Fondoapp-420.webp">
+</head>
+<body>
+    <div class="fixed-background">
+        <img src="Fondoapp-900.webp" srcset="Fondoapp-420.webp 420w, Fondoapp-900.webp 900w" sizes="(max-width: 768px) 420px, 900px" alt="Fondo Decorativo" width="900" height="883" loading="eager" fetchpriority="high" decoding="async">
+    </div>
+
+    <div class="fixed-guitar">
+        <picture>
+            <source srcset="Guitarra_Ibanez-220.webp 220w, Guitarra_Ibanez-320.webp 320w" sizes="220px" type="image/webp">
+            <img src="Guitarra_Ibanez-320.webp" alt="Guitarra Ibanez Acordes Rafa" width="320" height="320" loading="eager" fetchpriority="low" decoding="async">
+        </picture>
+    </div>
+
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <img src="Fondoapp-logo.webp" alt="Logo Acordes Rafa" width="35" height="35" decoding="async">
+                Acordes Rafa
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="acordes.html">Tutoriales y Acordes</a></li>
+                <li><a href="guitar-tool.html">Herramienta de Acordes</a></li>
+                <li><a href="lecciones.html" class="active">Lecciones</a></li>
+                <li><a href="apps.html">Apps</a></li>
+                <li><a href="preguntas-frecuentes.html">FAQ</a></li>
+                <li><a href="blog/index.html">Blog</a></li>
+                <li><a href="sobre-mi.html">Sobre mí</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <h1>Lecciones</h1>
+        <p>Aprende guitarra paso a paso con nuestras lecciones estructuradas.</p>
+    </div>
+
+    <main class="lesson-content">
+        <div class="grid">
+            <div class="card" onclick="window.location.href='leccion-fundamentos.html'">
+                <h3>Fundamentos</h3>
+                <p>La base para cualquier guitarrista: postura, digitación y los primeros acordes abiertos.</p>
+                <a href="leccion-fundamentos.html" class="btn btn-primary card-btn">Leer lección →</a>
+            </div>
+            <div class="card" onclick="window.location.href='leccion-acordes-abiertos.html'">
+                <h3>Acordes Abiertos</h3>
+                <p>Domina los acordes esenciales que te permitirán tocar el 80% de las canciones populares.</p>
+                <a href="leccion-acordes-abiertos.html" class="btn btn-primary card-btn">Leer lección →</a>
+            </div>
+            <div class="card" onclick="window.location.href='leccion-ritmos.html'">
+                <h3>Ritmos y Rasgueos</h3>
+                <p>Dale vida a tus canciones con patrones de rasgueo para pop, rock y baladas.</p>
+                <a href="leccion-ritmos.html" class="btn btn-primary card-btn">Leer lección →</a>
+            </div>
+            <div class="card" onclick="window.location.href='leccion-armonia.html'">
+                <h3>Armonía Moderna</h3>
+                <p>Entiende cómo se construyen los acordes y cómo usarlos para componer o rearmonizar.</p>
+                <a href="leccion-armonia.html" class="btn btn-primary card-btn">Leer lección →</a>
+            </div>
+            <div class="card" onclick="window.location.href='leccion-tecnica.html'">
+                <h3>Técnica Simplificada</h3>
+                <p>Especialízate en técnicas efectivas para tocar tus canciones favoritas con fluidez.</p>
+                <a href="leccion-tecnica.html" class="btn btn-primary card-btn">Leer lección →</a>
+            </div>
+            <div class="card" onclick="window.location.href='leccion-escalas.html'">
+                <h3>Teoría y Escalas</h3>
+                <p>El mapa para moverte por todo el mástil y empezar a crear tus propios solos y melodías.</p>
+                <a href="leccion-escalas.html" class="btn btn-primary card-btn">Leer lección →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Acordes Rafa. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="privacidad.html">Privacidad</a>
+                <a href="terminos.html">Términos</a>
+                <a href="dmca.html">DMCA</a>
+                <a href="contacto.html">Contacto</a>
+                <a href="https://www.youtube.com/@AcordesRafa" target="_blank">YouTube</a>
+            </div>
+            <div id="visitas-container" class="footer-visits" style="display: none;">
+                <span id="visitas-count"></span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="site-performance.js"></script>
+    <script src="cookie-banner.js" defer></script>
+    <script>
+        loadVisitCounter('lecciones');
+        loadAdsense();
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

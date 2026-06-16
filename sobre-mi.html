@@ -16,25 +16,26 @@
     
     <style>
         .about-content {
-            padding: 140px 24px 80px;
-            max-width: 900px;
+            max-width: 960px;
             margin: 0 auto;
+            padding: 48px 24px 80px;
         }
-        .about-grid {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 40px;
-            align-items: start;
+        .about-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 36px;
+            color: var(--primary);
+        }
+        .about-body {
+            display: flow-root;
         }
         .about-image {
-            width: 100%;
+            float: left;
+            width: 200px;
+            height: auto;
+            margin: 4px 32px 24px 0;
             border-radius: var(--radius-xl);
             box-shadow: var(--shadow-lg);
-            position: sticky;
-            top: 100px;
-        }
-        .about-text h1 {
-            margin-bottom: 20px;
         }
         .about-text p {
             color: var(--text-muted);
@@ -48,18 +49,11 @@
             color: var(--primary);
         }
         @media (max-width: 768px) {
-            .about-grid {
-                grid-template-columns: 1fr;
-            }
             .about-image {
-                position: static;
+                float: none;
                 width: 200px;
                 margin: 0 auto 30px;
                 display: block;
-            }
-            .about-text h1 {
-                font-size: 2.2rem;
-                text-align: center;
             }
         }
     </style>
@@ -88,8 +82,8 @@
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="acordes.html">Tutoriales y Acordes</a></li>
                 <li><a href="guitar-tool.html">Herramienta de Acordes</a></li>
-                <li><a href="index.html#lecciones">Lecciones</a></li>
-                <li><a href="index.html#apps">Apps</a></li>
+                <li><a href="lecciones.html">Lecciones</a></li>
+                <li><a href="apps.html">Apps</a></li>
                 <li><a href="preguntas-frecuentes.html">FAQ</a></li>
                 <li><a href="blog/index.html">Blog</a></li>
                 <li><a href="sobre-mi.html" class="active">Sobre mí</a></li>
@@ -104,10 +98,10 @@
     </header>
 
     <main class="about-content">
-        <div class="about-grid">
+        <h1 class="about-title">Hola, soy Rafa</h1>
+        <div class="about-body">
             <img src="Iconogrande-220.webp" alt="Rafa Acordes" class="about-image" width="220" height="220">
             <div class="about-text">
-                <h1>Hola, soy Rafa</h1>
                 <p>¡Bienvenido a mi rincón musical! Soy Rafael, el creador y alma detrás de <strong>Acordes Rafa</strong>. Mi viaje con la guitarra no comenzó en un conservatorio prestigioso ni bajo la tutela de grandes maestros desde los cinco años. Como muchos de ustedes, mi historia empezó con una vieja guitarra de cuerdas de nylon, mucha curiosidad y las ganas inmensas de tocar esas canciones que escuchaba en la radio.</p>
                 
                 <h2>Mi Historia con la Guitarra</h2>
@@ -118,9 +112,9 @@
                 <p>En este sitio, mi objetivo es claro: <strong>democratizar el aprendizaje de la guitarra</strong>. He visto demasiados métodos que se pierden en teorías complejas antes de dejarte tocar una sola nota. Mi enfoque es radicalmente distinto. Aquí priorizamos lo práctico y lo emocional. Creo firmemente que la mejor manera de aprender teoría es aplicándola inmediatamente a una canción que te apasione.</p>
                 <p>Nuestra metodología se basa en tres pilares fundamentales:</p>
                 <ul>
-                    <li><strong style="color: var(--text-dark);">Simplificación Inteligente:</strong> No necesitas saber todas las escalas para sonar bien. Te enseño los acordes esenciales y los ritmos que desbloquean el 80% de la música popular.</li>
-                    <li><strong style="color: var(--text-dark);">Progresión Motivadora:</strong> Cada lección está diseñada para que sientas un avance real. Si hoy aprendes un rasgueo, mañana estarás acompañando tu primera letra.</li>
-                    <li><strong style="color: var(--text-dark);">Conexión Emocional:</strong> La técnica es importante, pero transmitir emoción es lo que realmente nos hace guitarristas. En Acordes Rafa, te ayudo a que tu música respire y cuente una historia.</li>
+                    <li><strong class="highlight-strong">Simplificación Inteligente:</strong> No necesitas saber todas las escalas para sonar bien. Te enseño los acordes esenciales y los ritmos que desbloquean el 80% de la música popular.</li>
+                    <li><strong class="highlight-strong">Progresión Motivadora:</strong> Cada lección está diseñada para que sientas un avance real. Si hoy aprendes un rasgueo, mañana estarás acompañando tu primera letra.</li>
+                    <li><strong class="highlight-strong">Conexión Emocional:</strong> La técnica es importante, pero transmitir emoción es lo que realmente nos hace guitarristas. En Acordes Rafa, te ayudo a que tu música respire y cuente una historia.</li>
                 </ul>
 
                 <h2>¿Qué ofrece este sitio?</h2>
@@ -131,7 +125,7 @@
                 <p>El aprendizaje de la guitarra es un camino que nunca termina, y me siento honrado de poder acompañarte en una parte del tuyo. Ya sea que tengas una guitarra eléctrica, acústica o electroacústica, el lenguaje de las seis cuerdas es universal. Mi compromiso contigo es seguir actualizando este espacio con contenido de calidad, herramientas útiles y esa motivación extra que a veces todos necesitamos para no dejar la guitarra en el estuche.</p>
                 <p>¡Gracias por ser parte de esta comunidad! Toma tu guitarra, afínala bien y empecemos a tocar.</p>
                 
-                <p style="margin-top: 30px;"><em>— Rafa</em></p>
+                    <p class="legal-note"><em>— Rafa</em></p>
             </div>
         </div>
     </main>
@@ -139,14 +133,14 @@
     <footer>
         <div class="container">
             <p>&copy; 2026 Acordes Rafa. Todos los derechos reservados.</p>
-            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 5px;">
-                <a href="privacidad.html" style="color: var(--text-muted); text-decoration: none;">Privacidad</a>
-                <a href="terminos.html" style="color: var(--text-muted); text-decoration: none;">Términos</a>
-                <a href="dmca.html" style="color: var(--text-muted); text-decoration: none;">DMCA</a>
-                <a href="contacto.html" style="color: var(--text-muted); text-decoration: none;">Contacto</a>
-                <a href="https://www.youtube.com/@AcordesRafa" target="_blank" style="color: var(--text-muted); text-decoration: none;">YouTube</a>
+            <div class="footer-links">
+                <a href="privacidad.html">Privacidad</a>
+                <a href="terminos.html">Términos</a>
+                <a href="dmca.html">DMCA</a>
+                <a href="contacto.html">Contacto</a>
+                <a href="https://www.youtube.com/@AcordesRafa" target="_blank">YouTube</a>
             </div>
-            <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.8; display: none;">
+            <div id="visitas-container" class="footer-visits" style="display: none;">
                 <span id="visitas-count"></span>
             </div>
         </div>

@@ -17,7 +17,6 @@
     <link rel="icon" href="Fondoapp-420.webp">
     <style>
         .legal-content {
-            padding: 140px 24px 100px;
             max-width: 800px;
             margin: 0 auto;
         }
@@ -89,15 +88,15 @@
     <header>
         <nav>
             <a href="index.html" class="logo">
-                <img src="Fondoapp-420.webp" alt="Logo Acordes Rafa" width="35" height="35" decoding="async">
+                <img src="Fondoapp-logo.webp" alt="Logo Acordes Rafa" width="35" height="35" decoding="async">
                 Acordes Rafa
             </a>
             <ul class="nav-links">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="acordes.html">Tutoriales y Acordes</a></li>
                 <li><a href="guitar-tool.html">Herramienta de Acordes</a></li>
-                <li><a href="index.html#lecciones">Lecciones</a></li>
-                <li><a href="index.html#apps">Apps</a></li>
+                <li><a href="lecciones.html">Lecciones</a></li>
+                <li><a href="apps.html">Apps</a></li>
                 <li><a href="preguntas-frecuentes.html" class="active">FAQ</a></li>
                 <li><a href="blog/index.html">Blog</a></li>
                 <li><a href="sobre-mi.html">Sobre mí</a></li>
@@ -111,9 +110,13 @@
         </nav>
     </header>
 
+    <div class="page-header">
+        <h1>Preguntas Frecuentes</h1>
+        <p>Respuestas a las dudas más comunes sobre Acordes Rafa, nuestras herramientas y cómo aprender guitarra.</p>
+    </div>
+
     <main class="legal-content">
         <a href="index.html" class="back-link">← Volver al inicio</a>
-        <h1>Preguntas Frecuentes</h1>
 
         <h2><span class="toggle-icon">▶</span> ¿Qué es Acordes Rafa?</h2>
         <div class="faq-answer">
@@ -132,7 +135,7 @@
 
         <h2><span class="toggle-icon">▶</span> ¿Las lecciones son para principiantes?</h2>
         <div class="faq-answer">
-            <p>Sí, nuestras <a href="index.html#lecciones">lecciones</a> están diseñadas para todos los niveles, desde principiantes absolutos hasta guitarristas intermedios. La lección de <a href="leccion-fundamentos.html">Fundamentos</a> es el mejor punto de partida si nunca has tocado la guitarra. Desde ahí puedes avanzar a acordes abiertos, ritmos, armonía, técnica y escalas.</p>
+            <p>Sí, nuestras <a href="lecciones.html">lecciones</a> están diseñadas para todos los niveles, desde principiantes absolutos hasta guitarristas intermedios. La lección de <a href="leccion-fundamentos.html">Fundamentos</a> es el mejor punto de partida si nunca has tocado la guitarra. Desde ahí puedes avanzar a acordes abiertos, ritmos, armonía, técnica y escalas.</p>
         </div>
 
         <h2><span class="toggle-icon">▶</span> ¿El sitio tiene contenido original?</h2>
@@ -164,21 +167,21 @@
     <footer>
         <div class="container">
             <p>&copy; 2026 Acordes Rafa. Todos los derechos reservados.</p>
-            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 5px;">
-                <a href="privacidad.html" style="color: var(--text-muted); text-decoration: none;">Privacidad</a>
-                <a href="terminos.html" style="color: var(--text-muted); text-decoration: none;">Términos</a>
-                <a href="dmca.html" style="color: var(--text-muted); text-decoration: none;">DMCA</a>
-                <a href="contacto.html" style="color: var(--text-muted); text-decoration: none;">Contacto</a>
-                <a href="https://www.youtube.com/@AcordesRafa" target="_blank" style="color: var(--text-muted); text-decoration: none;">YouTube</a>
+            <div class="footer-links">
+                <a href="privacidad.html">Privacidad</a>
+                <a href="terminos.html">Términos</a>
+                <a href="dmca.html">DMCA</a>
+                <a href="contacto.html">Contacto</a>
+                <a href="https://www.youtube.com/@AcordesRafa" target="_blank">YouTube</a>
             </div>
-            <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.8; display: none;">
+            <div id="visitas-container" class="footer-visits" style="display: none;">
                 <span id="visitas-count"></span>
             </div>
         </div>
     </footer>
 
     <script src="site-performance.js"></script>
-    <script src="cookie-banner.js"></script>
+    <script src="cookie-banner.js" defer></script>
     <script>
         loadVisitCounter('preguntas-frecuentes');
         loadAdsense();

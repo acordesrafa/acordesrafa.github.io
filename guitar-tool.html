@@ -33,7 +33,7 @@
             font-family: var(--font-body);
             background: var(--surface);
             color: var(--text);
-            padding-top: 140px;
+            padding-top: 48px;
             min-height: 100vh;
         }
 
@@ -568,15 +568,15 @@
     <header>
         <nav>
             <a href="index.html" class="logo">
-                <img src="Fondoapp-420.webp" alt="Logo Acordes Rafa" width="35" height="35" decoding="async">
+                <img src="Fondoapp-logo.webp" alt="Logo Acordes Rafa" width="35" height="35" decoding="async">
                 Acordes Rafa
             </a>
             <ul class="nav-links">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="acordes.html">Tutoriales y Acordes</a></li>
                 <li><a href="guitar-tool.html" class="active">Herramienta de Acordes</a></li>
-                <li><a href="index.html#lecciones">Lecciones</a></li>
-                <li><a href="index.html#apps">Apps</a></li>
+                <li><a href="lecciones.html">Lecciones</a></li>
+                <li><a href="apps.html">Apps</a></li>
                 <li><a href="preguntas-frecuentes.html">FAQ</a></li>
 
                 <li><a href="blog/index.html">Blog</a></li>
@@ -598,8 +598,8 @@
             <p>Genera digitaciones desde un nombre o identifica un acorde desde las pisadas — basado en teoría musical formal</p>
         </div>
 
-        <div class="card" style="margin-bottom: 30px; line-height: 1.8; color: var(--muted);">
-            <p style="margin-bottom: 0;">Bienvenido a la <strong>Herramienta de Acordes de Acordes Rafa</strong>, una aplicación interactiva diseñada para ayudar a guitarristas de todos los niveles a comprender y visualizar la armonía en el mástil. Ya sea que estés componiendo una canción y necesites una digitación específica, o que hayas encontrado una posición interesante en tu guitarra y quieras saber cómo se llama el acorde, esta herramienta es tu compañera ideal.</p>
+        <div class="card tool-description-card">
+            <p>Bienvenido a la <strong>Herramienta de Acordes de Acordes Rafa</strong>, una aplicación interactiva diseñada para ayudar a guitarristas de todos los niveles a comprender y visualizar la armonía en el mástil. Ya sea que estés componiendo una canción y necesites una digitación específica, o que hayas encontrado una posición interesante en tu guitarra y quieras saber cómo se llama el acorde, esta herramienta es tu compañera ideal.</p>
         </div>
 
         <!-- ═══════════════════════════════════════════════ -->
@@ -608,10 +608,10 @@
         <div class="card">
             <p class="section-subtitle">Generar, Buscar o Identificar Acordes</p>
             
-            <div class="two-col" style="margin-bottom: 24px; align-items: start;">
+            <div class="two-col tool-controls-row">
                 <!-- Left: Text Search -->
                 <div>
-                    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 10px;">Escribe el nombre del acorde:</p>
+                    <p class="tool-label">Escribe el nombre del acorde:</p>
                     <div class="input-row">
                         <input type="text" id="chordInput" class="chord-input"
                             placeholder="Ej: Cmaj7, LAm7, SOL7..."
@@ -620,7 +620,7 @@
                             onkeydown="if(event.key==='Enter') generateChord()">
                         <button class="btn-generate" onclick="generateChord()">Generar</button>
                     </div>
-                    <div class="presets-row" style="margin-top: 15px;">
+                    <div class="presets-row preset-margin">
                         <button class="preset-btn" onclick="setChord('Cmaj7')">Cmaj7</button>
                         <button class="preset-btn" onclick="setChord('Am7')">Am7</button>
                         <button class="preset-btn" onclick="setChord('G7')">G7</button>
@@ -630,27 +630,27 @@
 
                 <!-- Right: Quick Controls -->
                 <div>
-                    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 10px;">O marca las pisadas en el mástil abajo:</p>
-                    <div style="display:flex; gap:10px;">
-                        <button class="btn-generate" style="background:var(--surface); color:var(--muted); border:2px solid var(--border); box-shadow:none; flex:1;" onclick="clearUnified()">Limpiar Todo</button>
-                        <button class="btn-generate" style="background:var(--success); flex:1;" onclick="identifyChord()">Identificar</button>
+                    <p class="tool-label">O marca las pisadas en el mástil abajo:</p>
+                    <div class="tool-btn-row">
+                        <button class="btn-generate btn-clear" onclick="clearUnified()">Limpiar Todo</button>
+                        <button class="btn-generate btn-identify" onclick="identifyChord()">Identificar</button>
                     </div>
                 </div>
             </div>
 
             <!-- Unified Interactive Fretboard & Guide -->
-            <div style="display: flex; gap: 20px; align-items: center; justify-content: center; flex-wrap: wrap;">
-                <div class="fretboard-interactive-wrap" id="unifiedFretboardContainer" style="flex: 1; min-width: 300px;">
+            <div class="fretboard-guide-row">
+                <div class="fretboard-interactive-wrap fretboard-flex" id="unifiedFretboardContainer">
                     <!-- SVG generated here -->
                 </div>
-                <div style="text-align: center; min-width: 200px;">
-                    <p style="font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-bottom: 10px; text-transform: uppercase;">Guía de Dedos</p>
-                    <img src="fingering-guide.png" alt="Guía de dedos guitarra" style="width: 100%; max-width: 180px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <div class="guide-column">
+                    <p class="guide-label">Guía de Dedos</p>
+                    <img src="fingering-guide.png" alt="Guía de dedos guitarra" class="guide-image">
                 </div>
             </div>
 
             <!-- Hidden inputs for identifying (used by JS) -->
-            <div id="hiddenInputs" style="display:none;">
+            <div id="hiddenInputs" class="hidden-inputs">
                 <input type="text" id="str0"><input type="text" id="str1"><input type="text" id="str2">
                 <input type="text" id="str3"><input type="text" id="str4"><input type="text" id="str5">
                 <button id="mute0"></button><button id="mute1"></button><button id="mute2"></button>
@@ -671,17 +671,17 @@
             <div class="modal-content" onclick="event.stopPropagation()">
                 <button class="modal-close" onclick="closeZoomModal()">&times;</button>
                 <div id="zoomModalBody" class="modal-zoom-svg-wrap"></div>
-                <div style="text-align:center; margin-top:10px; width: 100%;">
-                    <button class="btn-generate" id="zoomSelectBtn" style="width: 100%; max-width: 300px;">Seleccionar este acorde</button>
+                <div class="zoom-select-wrapper">
+                    <button class="btn-generate zoom-select-btn" id="zoomSelectBtn">Seleccionar este acorde</button>
                 </div>
             </div>
         </div>
 
         <!-- Descriptive info -->
-        <div class="card" style="line-height: 1.8; color: var(--muted);">
-            <p style="margin-bottom: 15px;">Nuestra plataforma cuenta con dos modos principales: el <strong>Generador de Acordes</strong>, que utiliza algoritmos basados en teoría musical para mostrarte las mejores formas de tocar cualquier acorde (desde tríadas básicas hasta complejas extensiones de jazz), y el <strong>Identificador de Acordes</strong>, que analiza las notas que coloques en el diapasón virtual para darte el nombre exacto y sus posibles variantes armónicas.</p>
+        <div class="card tool-description-card">
+            <p>Nuestra plataforma cuenta con dos modos principales: el <strong>Generador de Acordes</strong>, que utiliza algoritmos basados en teoría musical para mostrarte las mejores formas de tocar cualquier acorde (desde tríadas básicas hasta complejas extensiones de jazz), y el <strong>Identificador de Acordes</strong>, que analiza las notas que coloques en el diapasón virtual para darte el nombre exacto y sus posibles variantes armónicas.</p>
 
-            <p style="margin-bottom: 15px;">Para usar el generador, simplemente escribe el nombre del acorde en el buscador (por ejemplo, "Cmaj7" o "LAm7") y presiona Enter. Verás diagramas claros con la posición de los dedos y las notas que componen el acorde. En el identificador, haz clic sobre los trastes en el mástil interactivo para marcar tus dedos; el sistema calculará instantáneamente la estructura interválica y te sugerirá el nombre más apropiado según la teoría musical moderna.</p>
+            <p>Para usar el generador, simplemente escribe el nombre del acorde en el buscador (por ejemplo, "Cmaj7" o "LAm7") y presiona Enter. Verás diagramas claros con la posición de los dedos y las notas que componen el acorde. En el identificador, haz clic sobre los trastes en el mástil interactivo para marcar tus dedos; el sistema calculará instantáneamente la estructura interválica y te sugerirá el nombre más apropiado según la teoría musical moderna.</p>
 
             <p>Esta herramienta es totalmente gratuita y ha sido optimizada para funcionar tanto en computadoras como en dispositivos móviles. Esperamos que te sea de gran utilidad en tu camino de aprendizaje y que te ayude a desbloquear nuevas posibilidades sonoras en tu guitarra.</p>
         </div>
@@ -692,21 +692,21 @@
     <footer>
         <div class="container">
             <p>&copy; 2026 Acordes Rafa. Todos los derechos reservados.</p>
-            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 5px;">
-                <a href="privacidad.html" style="color: var(--text-muted); text-decoration: none;">Privacidad</a>
-                <a href="terminos.html" style="color: var(--text-muted); text-decoration: none;">Términos</a>
-                <a href="dmca.html" style="color: var(--text-muted); text-decoration: none;">DMCA</a>
-                <a href="contacto.html" style="color: var(--text-muted); text-decoration: none;">Contacto</a>
-                <a href="https://www.youtube.com/@AcordesRafa" target="_blank" style="color: var(--text-muted); text-decoration: none;">YouTube</a>
+            <div class="footer-links">
+                <a href="privacidad.html">Privacidad</a>
+                <a href="terminos.html">Términos</a>
+                <a href="dmca.html">DMCA</a>
+                <a href="contacto.html">Contacto</a>
+                <a href="https://www.youtube.com/@AcordesRafa" target="_blank">YouTube</a>
             </div>
-            <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.8; display: none;">
+            <div id="visitas-container" class="footer-visits" style="display: none;">
                 <span id="visitas-count"></span>
             </div>
         </div>
     </footer>
 
     <script src="site-performance.js"></script>
-    <script src="cookie-banner.js"></script>
+    <script src="cookie-banner.js" defer></script>
     <script>
         loadVisitCounter('guitar-tool');
         loadAdsense();

@@ -381,6 +381,7 @@
         .chord-diagrams-section {
             width: 100%;
             margin-bottom: 30px;
+            display: none;
         }
 
         .chord-diagrams-section h3 {
@@ -512,15 +513,15 @@
     <header>
         <nav>
             <a href="index.html" class="logo">
-                <img src="Fondoapp-420.webp" alt="Logo de Acordes Rafa" width="35" height="35" decoding="async">
+                <img src="Fondoapp-logo.webp" alt="Logo de Acordes Rafa" width="35" height="35" decoding="async">
                 Acordes Rafa
             </a>
             <ul class="nav-links">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="acordes.html" class="active">Tutoriales y Acordes</a></li>
                 <li><a href="guitar-tool.html">Herramienta de Acordes</a></li>
-                <li><a href="index.html#lecciones">Lecciones</a></li>
-                <li><a href="index.html#apps">Apps</a></li>
+                <li><a href="lecciones.html">Lecciones</a></li>
+                <li><a href="apps.html">Apps</a></li>
                 <li><a href="preguntas-frecuentes.html">FAQ</a></li>
 
                 <li><a href="blog/index.html">Blog</a></li>
@@ -535,16 +536,16 @@
         </nav>
     </header>
 
+    <div class="page-header">
+        <h1>Acordes de Guitarra con Análisis Armónico</h1>
+        <p>Bienvenido a nuestro cancionero interactivo educativo, un espacio diseñado <strong>para aprender a tocar la guitarra</strong> mediante el análisis armónico de canciones populares. Aquí encontrarás diagramas de acordes, progresiones armónicas y tutoriales en video que te ayudarán a comprender la estructura musical de tus canciones favoritas.</p>
+    </div>
+
     <main>
-        <section class="seo-intro">
-            <h1>Acordes de Guitarra con Análisis Armónico</h1>
-            <p>Bienvenido a nuestro cancionero interactivo educativo, un espacio diseñado <strong>para aprender a tocar la guitarra</strong> mediante el análisis armónico de canciones populares. Aquí encontrarás diagramas de acordes, progresiones armónicas y tutoriales en video que te ayudarán a comprender la estructura musical de tus canciones favoritas. Nuestro contenido es creado por Rafa, guitarrista y educador, con el propósito exclusivo de <strong>enseñanza musical y análisis de acordes</strong>. El repertorio abarca desde los clásicos del cancionero popular hasta música cristiana contemporánea, permitiéndote practicar mientras estudias teoría musical aplicada. Cada entrada incluye diagramas de pisadas y análisis de progresiones para mejorar tu técnica.</p>
-            
-            <p class="note" style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 8px; margin-top: 20px;">
-                <strong>📚 Nota educativa:</strong> Los acordes y diagramas son análisis originales de Acordes Rafa. Las letras de las canciones se muestran exclusivamente con fines educativos y de referencia para el estudio de guitarra. Todos los derechos de las letras pertenecen a sus respectivos autores y editoriales. Si eres titular de derechos y consideras que algo debe ser modificado, 
-                <a href="contacto.html" style="color: var(--primary); font-weight: 600;">contáctanos</a>.
-            </p>
-        </section>
+        <p class="note notice-box">
+            <strong>📚 Nota educativa:</strong> Los acordes y diagramas son análisis originales de Acordes Rafa. Las letras de las canciones se muestran exclusivamente con fines educativos y de referencia para el estudio de guitarra. Todos los derechos de las letras pertenecen a sus respectivos autores y editoriales. Si eres titular de derechos y consideras que algo debe ser modificado, 
+            <a href="contacto.html" class="highlight-accent">contáctanos</a>.
+        </p>
 
         <div class="search-container">
             <input type="text" id="searchInput" class="search-box" placeholder="Busca por canción, artista o tema..."
@@ -568,18 +569,16 @@
 
                 <div class="chord-viewer-container">
                     <div id="viewerPlaceholder" class="viewer-placeholder">
-                        <img src="Fondoapp-420.webp" alt="Logo" width="80" height="80"
-                            style="opacity: 0.1; margin-bottom: 20px;" loading="lazy" decoding="async">
+                        <img src="Fondoapp-420.webp" alt="Logo" width="80" height="80" class="viewer-logo" loading="lazy" decoding="async">
                         <p>Selecciona una obra para visualizar los acordes protegidos.</p>
                     </div>
 
                     <div id="chordContent" class="protected-content">
                         <div id="actionButtons"></div>
                         <h2 id="songTitleDisplay" class="song-title-display"></h2>
-                        <div id="songDescription"
-                            style="margin-bottom: 25px; color: var(--text-muted); line-height: 1.6; font-size: 1.05rem; padding: 0 10px;">
+                        <div id="songDescription" class="song-description">
                         </div>
-                        <div id="chordDiagramsSection" class="chord-diagrams-section" style="display:none;">
+                        <div id="chordDiagramsSection" class="chord-diagrams-section">
                             <h3>Diagramas de Acordes</h3>
                             <div id="chordDiagramsGrid" class="chord-diagrams-grid"></div>
                         </div>
@@ -597,7 +596,7 @@
             </div>
         </div>
 
-        <section class="seo-intro" style="margin-top: 10px; padding-top: 20px; border-top: 1px solid var(--border);">
+        <section class="seo-intro seo-bottom-section">
             <h2>¿Cómo usar esta herramienta educativa?</h2>
             <p>Utiliza el buscador para encontrar la canción que deseas estudiar. Al seleccionarla, el sistema mostrará los diagramas de acordes y el análisis armónico. Puedes cambiar entre 'Cancionero Popular' y 'Cantos para Dios' usando las pestañas. El contenido se presenta con fines educativos: las letras se incluyen únicamente como referencia para el estudio de la progresión de acordes. Los miembros de la comunidad pueden descargar los PDF con los diagramas completos para práctica sin conexión.</p>
 
@@ -616,17 +615,14 @@
                     acordes a donde quieras, incluso sin conexión.</p>
                 <a href="https://www.youtube.com/@AcordesRafa/join" target="_blank" id="subscribeBtn"
                     class="btn btn-premium" onclick="startValidation()">Suscribirme Ahora</a>
-                <div id="countdownArea" style="display: none; margin-top: 20px;">
-                    <p id="countdownText" style="color: var(--stripe-blue); font-weight: 700;">Verificando
+                <div id="countdownArea" class="countdown-area">
+                    <p id="countdownText" class="countdown-text">Verificando
                         suscripción... <span id="timer">10</span>s</p>
-                    <div
-                        style="width: 100%; background: #eee; height: 6px; border-radius: 3px; margin-top: 10px; overflow: hidden;">
-                        <div id="progressBar"
-                            style="width: 0%; background: var(--stripe-blue); height: 100%; transition: width 1s linear;">
-                        </div>
+                    <div class="progress-track">
+                        <div id="progressBar" class="progress-bar"></div>
                     </div>
                 </div>
-                <p style="margin-top: 15px; font-size: 0.8rem; color: #999;">Apoya el crecimiento de Acordes Rafa</p>
+                <p class="countdown-support">Apoya el crecimiento de Acordes Rafa</p>
             </div>
         </div>
     </main>
@@ -634,24 +630,22 @@
     <footer>
         <div class="container">
             <p>&copy; 2026 Acordes Rafa. Todos los derechos reservados.</p>
-            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 5px;">
-                <a href="privacidad.html" style="color: var(--text-muted); text-decoration: none;">Privacidad</a>
-                <a href="terminos.html" style="color: var(--text-muted); text-decoration: none;">Términos</a>
-                <a href="dmca.html" style="color: var(--text-muted); text-decoration: none;">DMCA</a>
-                <a href="contacto.html" style="color: var(--text-muted); text-decoration: none;">Contacto</a>
-                <a href="https://www.youtube.com/@AcordesRafa" target="_blank"
-                    style="color: var(--text-muted); text-decoration: none;">YouTube</a>
+            <div class="footer-links">
+                <a href="privacidad.html">Privacidad</a>
+                <a href="terminos.html">Términos</a>
+                <a href="dmca.html">DMCA</a>
+                <a href="contacto.html">Contacto</a>
+                <a href="https://www.youtube.com/@AcordesRafa" target="_blank">YouTube</a>
             </div>
             <!-- Contador de Visitas -->
-            <div id="visitas-container"
-                style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.8; display: none;">
+            <div id="visitas-container" class="footer-visits" style="display: none;">
                 <span id="visitas-count"></span>
             </div>
         </div>
     </footer>
 
     <script src="site-performance.js"></script>
-    <script src="cookie-banner.js"></script>
+    <script src="cookie-banner.js" defer></script>
     <script>
         loadVisitCounter('acordes');
         loadAdsense();
@@ -1296,28 +1290,16 @@
             if (typeof songsHtmlData !== 'undefined' && songsHtmlData[jsKey]) {
                 const htmlContent = songsHtmlData[jsKey];
                 lyricsDiv.innerHTML = `
-                    <div style="margin-top: 0; text-align: left; width: 100%;">
-                        <h3 style="color: var(--stripe-blue); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 1.3rem; margin-bottom: 15px;">Letra y Acordes</h3>
-                        <div class="chord-sheet-container" style="
-                            background: #fdfdfd;
-                            padding: 25px;
-                            font-family: 'Courier New', Courier, monospace;
-                            font-size: 1.05rem;
-                            line-height: 1.6;
-                            white-space: pre;
-                            overflow-x: auto;
-                            color: #1a1a1a;
-                            border-radius: 12px;
-                            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-                            border: 1px solid #eee;
-                            width: 100%;">${htmlContent}</div>
+                    <div class="js-lyrics-wrapper">
+                        <h3 class="letras-h2-accent">Letra y Acordes</h3>
+                        <div class="chord-sheet">${htmlContent}</div>
                     </div>
                 `;
                 // Extraer acordes y renderizar diagramas
                 const chords = extractChordsFromHTML(htmlContent);
                 renderChordsSection(chords);
             } else {
-                lyricsDiv.innerHTML = '<p style="color: var(--text-light); text-align: center; padding: 40px 0;">Contenido no disponible. Selecciona otra canción.</p>';
+                lyricsDiv.innerHTML = '<p class="empty-state">Contenido no disponible. Selecciona otra canción.</p>';
                 document.getElementById('chordDiagramsSection').style.display = 'none';
             }
 

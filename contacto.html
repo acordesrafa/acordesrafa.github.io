@@ -15,7 +15,6 @@
     <link rel="icon" href="Fondoapp-420.webp">
     <style>
         .contact-content {
-            padding: 140px 24px 100px;
             max-width: 800px;
             margin: 0 auto;
             text-align: center;
@@ -91,15 +90,15 @@
     <header>
         <nav>
             <a href="index.html" class="logo">
-                <img src="Fondoapp-420.webp" alt="Logo Acordes Rafa" width="35" height="35" decoding="async">
+                <img src="Fondoapp-logo.webp" alt="Logo Acordes Rafa" width="35" height="35" decoding="async">
                 Acordes Rafa
             </a>
             <ul class="nav-links">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="acordes.html">Tutoriales y Acordes</a></li>
                 <li><a href="guitar-tool.html">Herramienta de Acordes</a></li>
-                <li><a href="index.html#lecciones">Lecciones</a></li>
-                <li><a href="index.html#apps">Apps</a></li>
+                <li><a href="lecciones.html">Lecciones</a></li>
+                <li><a href="apps.html">Apps</a></li>
                 <li><a href="preguntas-frecuentes.html">FAQ</a></li>
 
                 <li><a href="blog/index.html">Blog</a></li>
@@ -114,9 +113,11 @@
         </nav>
     </header>
 
-    <main class="contact-content">
+    <div class="page-header">
         <h1>¿Tienes alguna duda o sugerencia?</h1>
         <p>En Acordes Rafa estamos para ayudarte a progresar con la guitarra. No dudes en contactarnos a través de nuestras redes o correo electrónico.</p>
+    </div>
+    <main class="contact-content">
         
         <div class="contact-methods">
             <a href="mailto:acordes.rafa@gmail.com" class="contact-card">
@@ -142,14 +143,14 @@
     <footer>
         <div class="container">
             <p>&copy; 2026 Acordes Rafa. Todos los derechos reservados.</p>
-            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 5px;">
-                <a href="privacidad.html" style="color: var(--text-muted); text-decoration: none;">Privacidad</a>
-                <a href="terminos.html" style="color: var(--text-muted); text-decoration: none;">Términos</a>
-                <a href="dmca.html" style="color: var(--text-muted); text-decoration: none;">DMCA</a>
-                <a href="contacto.html" style="color: var(--text-muted); text-decoration: none;">Contacto</a>
-                <a href="https://www.youtube.com/@AcordesRafa" target="_blank" style="color: var(--text-muted); text-decoration: none;">YouTube</a>
+            <div class="footer-links">
+                <a href="privacidad.html">Privacidad</a>
+                <a href="terminos.html">Términos</a>
+                <a href="dmca.html">DMCA</a>
+                <a href="contacto.html">Contacto</a>
+                <a href="https://www.youtube.com/@AcordesRafa" target="_blank">YouTube</a>
             </div>
-            <div id="visitas-container" style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted); opacity: 0.8; display: none;">
+            <div id="visitas-container" class="footer-visits" style="display: none;">
                 <span id="visitas-count"></span>
             </div>
         </div>
@@ -175,7 +176,7 @@
 
     </script>
     <script src="site-performance.js"></script>
-    <script src="cookie-banner.js"></script>
+    <script src="cookie-banner.js" defer></script>
     <script>
         loadVisitCounter('contacto');
         loadAdsense();

@@ -40,56 +40,71 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <meta name="keywords" content="{title} acordes, {title} letra, acordes de guitarra, cancionero {category}">
     <link rel="canonical" href="https://acordesrafa.github.io/letras/{safe_name}.html">
     
-    <!-- Google Fonts Preconnect -->
+    <!-- Google Fonts (non-render-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
 
     <link rel="stylesheet" href="../styles.css">
     
     <!-- Preload LCP Image -->
-    <link rel="preload" as="image" href="../Fondoapp.webp">
-    <link rel="icon" href="../Fondoapp.webp">
+    <link rel="preload" as="image" href="../Fondoapp-logo.webp">
+    <link rel="icon" href="../Fondoapp-logo.webp">
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2394918736393015" crossorigin="anonymous"></script>
-    <style>
-        .song-container {{ max-width: 900px; margin: 120px auto 50px; padding: 30px; background: white; border-radius: 16px; box-shadow: var(--shadow-soft); }}
-        .chord-sheet {{ font-family: 'Courier New', Courier, monospace; font-size: 1.1rem; line-height: 1.6; color: #1a1a1a; white-space: pre-wrap; overflow-x: auto; background: #fdfdfd; padding: 25px; border-radius: 12px; border: 1px solid #eee; }}
-        .btn-back {{ display: inline-flex; align-items: center; justify-content: center; background: var(--stripe-blue); color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 20px; transition: 0.3s; }}
-        .btn-back:hover {{ transform: translateY(-2px); filter: brightness(1.1); }}
-        .video-container {{ position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: 12px; margin-bottom: 30px; }}
-        .video-container iframe {{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }}
-        .song-meta-box {{ background: #f8faff; padding: 20px; border-radius: 12px; margin-bottom: 30px; border-left: 4px solid var(--stripe-blue); }}
-    </style>
 </head>
 <body>
+    <!-- Global Background Logo -->
+    <div class="fixed-background">
+        <img src="../Fondoapp-900.webp" srcset="../Fondoapp-420.webp 420w, ../Fondoapp-900.webp 900w" sizes="(max-width: 768px) 420px, 900px" alt="Fondo Decorativo" width="900" height="883" loading="eager" fetchpriority="high" decoding="async">
+    </div>
+
+    <!-- Global Floating Guitar -->
+    <div class="fixed-guitar">
+        <picture>
+            <source srcset="../Guitarra_Ibanez-220.webp 220w, ../Guitarra_Ibanez-320.webp 320w" sizes="220px" type="image/webp">
+            <img src="../Guitarra_Ibanez-320.webp" alt="Guitarra Ibanez Acordes Rafa" width="320" height="320" loading="eager" fetchpriority="low" decoding="async">
+        </picture>
+    </div>
+
     <header>
         <nav>
             <a href="../index.html" class="logo">
-                <img src="../Fondoapp.webp" alt="Logo Acordes Rafa" width="35" height="35">
+                <img src="../Fondoapp-logo.webp" alt="Logo Acordes Rafa" width="35" height="35" decoding="async">
                 Acordes Rafa
             </a>
             <ul class="nav-links">
                 <li><a href="../index.html">Inicio</a></li>
-                <li><a href="../acordes.html" class="active">Herramienta de Acordes</a></li>
-                <li><a href="../guitar-tool.html">🎸 Generador</a></li>
+                <li><a href="../acordes.html" class="active">Tutoriales y Acordes</a></li>
+                <li><a href="../guitar-tool.html">Herramienta de Acordes</a></li>
+                <li><a href="../index.html#lecciones">Lecciones</a></li>
+                <li><a href="../index.html#apps">Apps</a></li>
+                <li><a href="../preguntas-frecuentes.html">FAQ</a></li>
+                <li><a href="../blog/index.html">Blog</a></li>
+                <li><a href="../sobre-mi.html">Sobre mí</a></li>
+                <li><a href="../contacto.html">Contacto</a></li>
             </ul>
+            <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </nav>
     </header>
 
     <main>
     <div class="song-container">
-        <h1 style="font-family: 'Outfit', sans-serif; color: var(--stripe-blue); margin-bottom: 10px; text-align: center;">{title}</h1>
-        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 0.9rem;">Categoría: {category_name} · <strong><a href="../acordes.html" style="color: var(--stripe-blue);">Visor Interactivo y PDF</a></strong></p>
+        <h1 style="color: var(--primary); margin-bottom: 10px; text-align: center;">{title}</h1>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 0.9rem;">Categoría: {category_name} · <strong><a href="../acordes.html" style="color: var(--primary);">Visor Interactivo y PDF</a></strong></p>
         
         {video_embed}
 
         <div class="song-meta-box">
             <h2 style="font-size: 1.2rem; margin-bottom: 10px; color: var(--text-dark);">Sobre esta canción</h2>
-            <p style="color: var(--text-muted); line-height: 1.6;">{description}</p>
+            <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 0;">{description}</p>
         </div>
 
-        <h2 style="font-size: 1.3rem; margin-bottom: 15px; color: var(--stripe-blue); font-family: 'Outfit', sans-serif;">Letra y Acordes</h2>
+        <h2 style="font-size: 1.3rem; margin-bottom: 15px; color: var(--primary);">Letra y Acordes</h2>
         {html_content}
 
         <div style="text-align: center; margin-top: 40px;">
@@ -110,6 +125,23 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <script src="../site-performance.js"></script>
     <script>
         loadVisitCounter('letras-{safe_name}');
+
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {{
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }});
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {{
+            link.addEventListener('click', () => {{
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            }});
+        }});
     </script>
 </body>
 </html>"""
