@@ -228,9 +228,9 @@ body {
     align-items: center;
     gap: 16px;
     max-width: 480px;
+    margin: 28px auto 0;
     transition: var(--transition);
     cursor: pointer;
-    margin-top: 28px;
     text-decoration: none;
     box-shadow: var(--shadow-sm);
 }
@@ -340,6 +340,7 @@ body {
 
 .hero-content {
     flex: 1;
+    text-align: center;
 }
 
 .hero-image {
@@ -389,6 +390,8 @@ body {
     color: var(--text-muted);
     margin-bottom: 20px;
     max-width: 440px;
+    margin-left: auto;
+    margin-right: auto;
     line-height: 1.7;
 }
 
@@ -397,6 +400,7 @@ body {
     flex-wrap: wrap;
     gap: 12px;
     align-items: center;
+    justify-content: center;
 }
 
 /* =============================================
