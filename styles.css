@@ -777,6 +777,12 @@ footer a:hover {
         left: 0;
     }
 
+    .nav-links li {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
     .nav-links a {
         font-size: 1.15rem;
         padding: 12px 24px;
