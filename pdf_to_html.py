@@ -253,7 +253,7 @@ def update_sitemap(new_urls):
         print(f"Sitemap actualizado: {added} nuevas URLs añadidas.")
 
 def load_metadata():
-    """Carga los metadatos (descripciones y tutoriales) desde acordes.html"""
+    """Carga los metadatos desde cancionero_raw.txt"""
     metadata = {"populares": {}, "dios": {}}
     raw_path = os.path.join(BASE_DIR, "cancionero_raw.txt")
     if not os.path.exists(raw_path):
@@ -289,17 +289,75 @@ def load_metadata():
             # Extraer campos de forma individual y flexible
             def get_field(field, text):
                 # Busca field: "value" (captura todo entre las comillas exteriores)
-                m = re.search(fr'{field}:\s*"([^"]+)"', text)
+                m = re.search(fr'{field}:\s*"([^"]*)"', text)
                 if not m:
                     # Intento con comillas simples si no hay dobles
-                    m = re.search(fr'{field}:\s*\'([^\']+)\'', text)
+                    m = re.search(fr'{field}:\s*\'([^\']*)\'', text)
                 return m.group(1).strip() if m else ""
 
             metadata[cat][name] = {
+                "pdf": get_field("pdf", inner),
                 "tutorial": get_field("tutorial", inner),
+                "cover": get_field("cover", inner),
                 "description": get_field("description", inner)
             }
     return metadata
+
+def generate_cancionero_js(metadata):
+    lines = ["{"]
+    for cat in ["populares", "dios"]:
+        lines.append(f"            {cat}: {{")
+        sorted_songs = sorted(metadata[cat].keys())
+        for song in sorted_songs:
+            data = metadata[cat][song]
+            props = []
+            for key in ["pdf", "tutorial", "cover", "description"]:
+                if key in data and data[key]:
+                    val = data[key].replace('"', '\\"')
+                    props.append(f'{key}: "{val}"')
+                elif key in ["pdf", "tutorial", "cover"]:
+                    props.append(f'{key}: ""')
+            
+            props_str = ", ".join(props)
+            lines.append(f'                "{song}": {{ {props_str} }},')
+            
+        if lines[-1].endswith(","):
+            lines[-1] = lines[-1][:-1]
+        lines.append("            },")
+        
+    if lines[-1].endswith(","):
+        lines[-1] = lines[-1][:-1]
+    lines.append("        }")
+    return "\n".join(lines)
+
+def save_metadata(metadata):
+    js_content = generate_cancionero_js(metadata)
+    raw_path = os.path.join(BASE_DIR, "cancionero_raw.txt")
+    with open(raw_path, "w", encoding="utf-8") as f:
+        f.write(js_content)
+    
+    html_path = os.path.join(BASE_DIR, "acordes.html")
+    if os.path.exists(html_path):
+        with open(html_path, "r", encoding="utf-8") as f:
+            html = f.read()
+        
+        start_idx = html.find("const cancionero = {")
+        if start_idx != -1:
+            brace_idx = html.find("{", start_idx)
+            count = 0
+            end_idx = -1
+            for i in range(brace_idx, len(html)):
+                if html[i] == '{': count += 1
+                elif html[i] == '}': count -= 1
+                if count == 0:
+                    end_idx = i + 1
+                    break
+            
+            if end_idx != -1:
+                new_html = html[:start_idx] + "const cancionero = " + js_content + html[end_idx:]
+                with open(html_path, "w", encoding="utf-8") as f:
+                    f.write(new_html)
+                print(" -> acordes.html actualizado exitosamente con las nuevas canciones.")
 
 def load_existing_songs_data():
     """Carga los datos previos de songs_data.js para evitar regenerar todo"""
@@ -343,6 +401,17 @@ def main():
             # Nombre de la canción limpio para el título
             title_match = re.search(r"^(.*?)(?:\(|[0-9]{3,})", pdf_file)
             song_title = title_match.group(1).strip() if title_match else pdf_file.replace(".pdf", "")
+            
+            # Registrar en metadata
+            if song_title not in metadata[cat_key]:
+                metadata[cat_key][song_title] = {
+                    "pdf": pdf_file,
+                    "tutorial": "",
+                    "cover": "",
+                    "description": ""
+                }
+            elif metadata[cat_key][song_title].get("pdf") != pdf_file:
+                metadata[cat_key][song_title]["pdf"] = pdf_file
             
             # Nombre seguro (slug) para el archivo HTML
             safe_name = re.sub(r'[^a-zA-Z0-9]+', '-', song_title.lower()).strip('-')
@@ -419,6 +488,9 @@ def main():
         json.dump(songs_html, f, ensure_ascii=False, indent=2)
         f.write(";\n")
 
+    # Guardar metadata actualizada en cancionero_raw.txt y acordes.html
+    save_metadata(metadata)
+
     # Actualizar Sitemap
     update_sitemap(generated_urls)
 
@@ -427,6 +499,14 @@ def main():
     print(f" -> Archivos HTML para SEO (AdSense) generados en: {SEO_FOLDER}/")
     if errors:
         print(f"ATENCION: {errors} PDFs con errores")
-
+        
+    print("\n" + "="*60)
+    print("🚀 ¡ACTUALIZACIÓN LISTA PARA SUBIR A GITHUB!")
+    print("="*60)
+    print("Ejecuta los siguientes comandos en tu terminal para publicar:\n")
+    print('  git add "Cancionero Popular/" "Canciones para Dios Word/" acordes.html cancionero_raw.txt songs_data.js letras/ sitemap.xml')
+    print('  git commit -m "Agregadas nuevas canciones al cancionero"')
+    print('  git push')
+    print("="*60 + "\n")
 if __name__ == "__main__":
     main()
