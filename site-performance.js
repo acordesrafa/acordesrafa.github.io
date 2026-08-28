@@ -92,7 +92,23 @@ function runWhenIdle(callback) {
 
 function loadVisitCounter(path) {
     const target = document.getElementById('visitas-count');
+    const container = document.getElementById('visitas-container');
     if (!target) return;
+    if (container) container.style.display = 'block';
+
+    function showCount(count) {
+        target.innerHTML = `<strong>${count.toLocaleString()}</strong> visitas desde 2026`;
+    }
+
+    function showLocalCount() {
+        let n = 0;
+        try {
+            const key = 'acordesrafa_v_' + path;
+            n = parseInt(localStorage.getItem(key), 10) || 0;
+            localStorage.setItem(key, String(n + 1));
+        } catch (e) { /* private mode / blocked storage */ }
+        showCount(n + 1);
+    }
 
     window.addEventListener('load', () => {
         runWhenIdle(() => {
@@ -101,15 +117,10 @@ function loadVisitCounter(path) {
                     if (!res.ok) throw new Error('Servicio no disponible');
                     return res.json();
                 })
-                .then(data => {
-                    target.innerHTML = `<strong>${data.count.toLocaleString()}</strong> visitas desde 2026`;
-                    const container = document.getElementById('visitas-container');
-                    if (container) container.style.display = 'block';
-                })
+                .then(data => showCount(data.count))
                 .catch(err => {
-                    console.error('Error al cargar visitas:', err);
-                    const container = document.getElementById('visitas-container');
-                    if (container) container.style.display = 'none';
+                    console.warn('Contador remoto no disponible, usando contador local:', err.message);
+                    showLocalCount();
                 });
         });
     });
