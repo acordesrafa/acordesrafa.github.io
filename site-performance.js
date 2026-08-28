@@ -112,7 +112,9 @@ function loadVisitCounter(path) {
 
     window.addEventListener('load', () => {
         runWhenIdle(() => {
-            fetch(`https://api.counterapi.dev/v1/acordesrafa/${path}/up`)
+            const counterUrl = (window.ACORDESRAFA_COUNTER_URL || 'https://acordesrafa-counter.YOUR_SUBDOMAIN.workers.dev') +
+                `?page=${encodeURIComponent(path)}&mode=up`;
+            fetch(counterUrl)
                 .then(res => {
                     if (!res.ok) throw new Error('Servicio no disponible');
                     return res.json();
