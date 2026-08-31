@@ -90,6 +90,20 @@ function runWhenIdle(callback) {
     }
 }
 
+function getVisitorId() {
+    try {
+        const key = 'acordesrafa_visitor_id';
+        let id = localStorage.getItem(key);
+        if (!id) {
+            id = 'v-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12);
+            localStorage.setItem(key, id);
+        }
+        return id;
+    } catch (e) {
+        return 'v-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12);
+    }
+}
+
 function loadVisitCounter(path) {
     const target = document.getElementById('visitas-count');
     const container = document.getElementById('visitas-container');
@@ -100,20 +114,10 @@ function loadVisitCounter(path) {
         target.innerHTML = `<strong>${count.toLocaleString()}</strong> visitas desde 2026`;
     }
 
-    function showLocalCount() {
-        let n = 0;
-        try {
-            const key = 'acordesrafa_v_' + path;
-            n = parseInt(localStorage.getItem(key), 10) || 0;
-            localStorage.setItem(key, String(n + 1));
-        } catch (e) { /* private mode / blocked storage */ }
-        showCount(n + 1);
-    }
-
     window.addEventListener('load', () => {
         runWhenIdle(() => {
-            const counterUrl = (window.ACORDESRAFA_COUNTER_URL || 'https://acordesrafa-counter.YOUR_SUBDOMAIN.workers.dev') +
-                `?page=${encodeURIComponent(path)}&mode=up`;
+            const counterUrl = (window.ACORDESRAFA_COUNTER_URL || 'https://acordesrafa-counter.acordes-rafa.workers.dev') +
+                `?page=${encodeURIComponent(path)}&visitor=${encodeURIComponent(getVisitorId())}`;
             fetch(counterUrl)
                 .then(res => {
                     if (!res.ok) throw new Error('Servicio no disponible');
@@ -121,8 +125,8 @@ function loadVisitCounter(path) {
                 })
                 .then(data => showCount(data.count))
                 .catch(err => {
-                    console.warn('Contador remoto no disponible, usando contador local:', err.message);
-                    showLocalCount();
+                    console.warn('Contador remoto no disponible:', err.message);
+                    showCount(0);
                 });
         });
     });

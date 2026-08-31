@@ -103,7 +103,7 @@
         <section>
             <h2>2. Almacenamiento local y métricas agregadas</h2>
             <p>Utilizamos tecnologías de almacenamiento local (localStorage) para mejorar el funcionamiento técnico del sitio y recordar tus preferencias de usuario, como la aceptación del banner de cookies o configuraciones específicas en nuestras herramientas interactivas. Estos datos permanecen en tu dispositivo salvo que borres los datos del sitio.</p>
-            <p>Para mostrar un <strong>contador aproximado de visitas</strong> en el pie de algunas páginas, el navegador puede enviar una petición al servicio <strong>CounterAPI</strong> (counterapi.dev) al cargar la página. Esa petición se usa solo para incrementar y leer un recuento agregado asociado a la ruta de la página; consulta la política de ese proveedor si necesitas más detalle.</p>
+            <p>Para mostrar un <strong>contador de visitas</strong> en el pie de algunas páginas, el navegador genera un identificador aleatorio anónimo (almacenado en localStorage) y envía una petición a nuestro servicio propio de contador (un Worker de Cloudflare con almacenamiento KV). Esa petición se usa solo para incrementar y leer un recuento agregado asociado a la ruta de la página. No se recopila ni se comparte con terceros información que te identifique a partir de este mecanismo.</p>
         </section>
 
         <section>
