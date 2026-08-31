@@ -7,16 +7,20 @@ main_pages = [
     ("", 1.0),
     ("acordes.html", 0.9),
     ("guitar-tool.html", 0.9),
+    ("apps.html", 0.8),
     ("sobre-mi.html", 0.8),
+    ("lecciones.html", 0.8),
     ("leccion-fundamentos.html", 0.7),
     ("leccion-acordes-abiertos.html", 0.7),
     ("leccion-ritmos.html", 0.7),
     ("leccion-armonia.html", 0.7),
     ("leccion-tecnica.html", 0.7),
     ("leccion-escalas.html", 0.7),
+    ("preguntas-frecuentes.html", 0.6),
     ("contacto.html", 0.5),
     ("privacidad.html", 0.3),
     ("terminos.html", 0.3),
+    ("dmca.html", 0.3),
 ]
 
 xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']

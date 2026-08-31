@@ -532,6 +532,7 @@ section.active-section {
     align-items: center;
     gap: 28px;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 .app-item {
