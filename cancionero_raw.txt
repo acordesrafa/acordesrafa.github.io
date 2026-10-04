@@ -78,6 +78,7 @@
                 "Alabaré a mi Señor": { pdf: "Alabaré a mi Señor10001.pdf", tutorial: "", cover: "" },
                 "Alabo tu bondad": { pdf: "Alabo tu bondad10002.pdf", tutorial: "", cover: "" },
                 "Aleluya": { pdf: "Aleluya10003.pdf", tutorial: "", cover: "" },
+                "Alma Misionera-Llévame donde los hombres…": { pdf: "Alma Misionera-Llévame donde los hombres…10059.pdf", tutorial: "", cover: "" },
                 "Alto Escuchame": { pdf: "Alto Escuchame10004.pdf", tutorial: "", cover: "" },
                 "Arrepiéntete y cree en el Evangelio": { pdf: "Arrepiéntete y cree en el Evangelio10035.pdf", tutorial: "", cover: "" },
                 "Ave María": { pdf: "Ave María10050.pdf", tutorial: "", cover: "" },
