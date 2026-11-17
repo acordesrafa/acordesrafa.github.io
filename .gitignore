@@ -24,4 +24,9 @@ Thumbs.db
 
 # Dependencias (por si se añaden en el futuro)
 node_modules/
-" path="C:\Users\rafae\Downloads\Google_AI_Pruebas\acordes_rafa_web\.gitignore"
+
+# Caché de herramientas
+cloudflare-counter/.wrangler/
+
+# Archivos grandes opcionales no publicados
+Resumen *.pdf
