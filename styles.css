@@ -113,12 +113,30 @@ header {
     box-shadow: 2px 0 12px rgba(108,99,255,0.06);
     overflow-y: auto;
     overflow-x: hidden;
+    --scrollbar-thumb: var(--border);
+    --scrollbar-track: transparent;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: thin;
 }
 
-/* ── Thin custom scrollbar for sidebar ── */
-header::-webkit-scrollbar { width: 4px; }
-header::-webkit-scrollbar-track { background: transparent; }
-header::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+/* Visually hidden utility (screen-reader only) */
+.visually-hidden:where(:not(:focus-within, :active)) {
+    position: absolute !important;
+    clip-path: inset(50%) !important;
+    overflow: hidden !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    white-space: nowrap !important;
+}
+@supports not (scrollbar-color: auto) {
+    header { scrollbar-width: auto; }
+    header::-webkit-scrollbar { width: 4px; height: 4px; }
+    header::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+    header::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+}
 
 nav {
     display: flex;

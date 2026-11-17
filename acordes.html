@@ -131,19 +131,19 @@
             overflow-y: auto;
             border-right: 1px solid var(--border);
             background: var(--bg-card);
+            --scrollbar-thumb: rgba(108, 99, 255, 0.2);
+            --scrollbar-thumb-hover: rgba(108, 99, 255, 0.4);
+            --scrollbar-track: transparent;
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+            scrollbar-width: thin;
         }
 
-        .songs-list-container::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .songs-list-container::-webkit-scrollbar-thumb {
-            background: rgba(108, 99, 255, 0.2);
-            border-radius: 10px;
-        }
-
-        .songs-list-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(108, 99, 255, 0.4);
+        @supports not (scrollbar-color: auto) {
+            .songs-list-container { scrollbar-width: auto; }
+            .songs-list-container::-webkit-scrollbar { width: 6px; height: 6px; }
+            .songs-list-container::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 10px; }
+            .songs-list-container::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+            .songs-list-container::-webkit-scrollbar-track { background: var(--scrollbar-track); }
         }
 
         .list-header {
@@ -548,7 +548,8 @@
         </p>
 
         <div class="search-container">
-            <input type="text" id="searchInput" class="search-box" placeholder="Busca por canción, artista o tema..."
+<label for="searchInput" class="visually-hidden">Buscar canción, artista o tema</label>
+            <input type="search" id="searchInput" class="search-box" placeholder="Busca por canción, artista o tema…" autocomplete="off"
                 oninput="filterSongs()">
         </div>
 
@@ -562,7 +563,7 @@
             <div class="explorer-layout">
                 <div class="songs-list-container">
                     <div class="list-header" id="listHeaderTitle">Canciones Populares</div>
-                    <div class="songs-list" id="songsList">
+                    <div class="songs-list" id="songsList" aria-live="polite" aria-atomic="false">
                         <!-- Se llenará dinámicamente -->
                     </div>
                 </div>
@@ -589,7 +590,7 @@
                             <button id="btnPdfToggle" class="btn-pdf-toggle" onclick="togglePdf()">📄 Mostrar PDF Original</button>
                         </div>
                         <div id="pdfContainer">
-                            <iframe id="pdfIframe" src="about:blank"></iframe>
+                            <iframe id="pdfIframe" src="about:blank" title="Visor de PDF de la canción" loading="lazy"></iframe>
                         </div>
                     </div>
                 </div>
@@ -901,7 +902,7 @@
         function filterSongs() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const list = document.getElementById('songsList');
-            list.innerHTML = '';
+            list.replaceChildren();
 
             const songs = Object.keys(cancionero[currentCategory]);
             const filtered = songs.filter(s => {
@@ -914,7 +915,24 @@
                 const div = document.createElement('div');
                 div.className = 'song-item';
                 div.dataset.song = song;
-                div.innerHTML = `<span style="flex-shrink:0; margin-top: 2px;">📄</span><span style="flex:1;">${song}${artist ? ` <span style="color:var(--text-light); font-weight:400; font-size:0.8rem;">— ${artist}</span>` : ''}</span>`;
+                div.replaceChildren();
+                const iconSpan = document.createElement('span');
+                iconSpan.style.flexShrink = '0';
+                iconSpan.style.marginTop = '2px';
+                iconSpan.textContent = '📄';
+                const titleSpan = document.createElement('span');
+                titleSpan.style.flex = '1';
+                titleSpan.textContent = song;
+                div.appendChild(iconSpan);
+                div.appendChild(titleSpan);
+                if (artist) {
+                    const artistSpan = document.createElement('span');
+                    artistSpan.style.color = 'var(--text-light)';
+                    artistSpan.style.fontWeight = '400';
+                    artistSpan.style.fontSize = '0.8rem';
+                    artistSpan.textContent = ` — ${artist}`;
+                    titleSpan.appendChild(artistSpan);
+                }
                 div.onclick = () => loadSong(song);
                 list.appendChild(div);
             });
@@ -1215,7 +1233,7 @@
         function renderChordsSection(chords) {
             const grid = document.getElementById('chordDiagramsGrid');
             const section = document.getElementById('chordDiagramsSection');
-            grid.innerHTML = '';
+            grid.replaceChildren();
             if (!chords || chords.length === 0) {
                 section.style.display = 'none';
                 return;
@@ -1238,11 +1256,11 @@
             const btn = document.getElementById('btnPdfToggle');
             if (container.style.display !== 'none') {
                 container.style.display = 'none';
-                btn.innerHTML = '📄 Mostrar PDF Original';
+                btn.textContent = '📄 Mostrar PDF Original';
                 btn.classList.remove('active');
             } else {
                 container.style.display = 'block';
-                btn.innerHTML = '📄 Ocultar PDF';
+                btn.textContent = '📄 Ocultar PDF';
                 btn.classList.add('active');
             }
         }
@@ -1269,7 +1287,7 @@
 
             // Action Buttons
             const actionArea = document.getElementById('actionButtons');
-            actionArea.innerHTML = '';
+            actionArea.replaceChildren();
             let buttonsHtml = '<div class="action-buttons">';
             if (songData.tutorial && songData.tutorial.trim() !== "") {
                 buttonsHtml += `<a href="${songData.tutorial}" target="_blank" class="btn-action btn-tutorial"><span>📺</span> Tutorial</a>`;
@@ -1289,17 +1307,26 @@
 
             if (typeof songsHtmlData !== 'undefined' && songsHtmlData[jsKey]) {
                 const htmlContent = songsHtmlData[jsKey];
-                lyricsDiv.innerHTML = `
+                const lyricsHtml = `
                     <div class="js-lyrics-wrapper">
                         <h3 class="letras-h2-accent">Letra y Acordes</h3>
                         <div class="chord-sheet">${htmlContent}</div>
                     </div>
                 `;
+                if ('setHTML' in Element.prototype) {
+                    lyricsDiv.setHTML(lyricsHtml);
+                } else {
+                    lyricsDiv.innerHTML = lyricsHtml;
+                }
                 // Extraer acordes y renderizar diagramas
                 const chords = extractChordsFromHTML(htmlContent);
                 renderChordsSection(chords);
             } else {
-                lyricsDiv.innerHTML = '<p class="empty-state">Contenido no disponible. Selecciona otra canción.</p>';
+                lyricsDiv.replaceChildren();
+                const emptyP = document.createElement('p');
+                emptyP.className = 'empty-state';
+                emptyP.textContent = 'Contenido no disponible. Selecciona otra canción.';
+                lyricsDiv.appendChild(emptyP);
                 document.getElementById('chordDiagramsSection').style.display = 'none';
             }
 
@@ -1309,11 +1336,14 @@
             pdfIframe.src = pdfUrl + '#toolbar=0&navpanes=0&view=FitH';
             pdfContainer.style.display = 'none';
             const btnPdf = document.getElementById('btnPdfToggle');
-            btnPdf.innerHTML = '📄 Mostrar PDF Original';
+            btnPdf.textContent = '📄 Mostrar PDF Original';
             btnPdf.classList.remove('active');
 
             if (window.innerWidth <= 900) {
                 document.getElementById('chordContent').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const chordContentEl = document.getElementById('chordContent');
+                chordContentEl.setAttribute('tabindex', '-1');
+                chordContentEl.focus({ preventScroll: true });
             }
         }
 

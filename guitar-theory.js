@@ -431,7 +431,7 @@ const GuitarTheory = (() => {
           + (hasThird ? 10 : 0)
           + (matched === formula.length ? 30 : 0);
 
-        const lowestPlayed = playedNotes.slice().sort((a,b) => a.string - b.string)[0];
+        const lowestPlayed = playedNotes.toSorted((a,b) => a.string - b.string)[0];
         const isInversion = lowestPlayed.noteIdx !== ri;
         const root = indexToNote(ri);
         const qd = QUALITY_DISPLAY[quality] || quality;
