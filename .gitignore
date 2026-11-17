@@ -1,0 +1,27 @@
+# Herramientas de desarrollo / editores
+.agents/
+.kilo/
+.vscode/
+.idea/
+
+# Python / scripts de mantenimiento (no necesarios en el sitio publicado)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos temporales / backups
+*.tmp
+*.bak
+*.log
+*.old
+.DS_Store
+Thumbs.db
+
+# Entorno
+.env
+.env.*
+
+# Dependencias (por si se añaden en el futuro)
+node_modules/
+" path="C:\Users\rafae\Downloads\Google_AI_Pruebas\acordes_rafa_web\.gitignore"
