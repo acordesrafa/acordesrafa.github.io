@@ -1,0 +1,7 @@
+name = "acordesrafa-counter"
+main = "index.js"
+compatibility_date = "2024-11-01"
+
+[[kv_namespaces]]
+binding = "VISITS"
+id = "b70da35582004fe7b2f44764910f4ede"
